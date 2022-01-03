@@ -74,7 +74,7 @@
     <Folder Include="wwwroot\kmz\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="GeoPlus.Common\GeoPlus.Common.csproj" />
+    <ProjectReference Include="GeoPlus.Common\Aprotur.Common.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Content Update="wwwroot\css\jquery.dataTables.css">

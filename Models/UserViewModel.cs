@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using GeoPlus.Common.Enums;
+using Aprotur.Common.Enums;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace GeoPlus.Models
+namespace AproturWeb.Models
 {
     public class UserViewModel
     {

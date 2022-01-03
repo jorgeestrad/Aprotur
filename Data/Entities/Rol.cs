@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace GeoPlus.Data.Entities
+namespace AproturWeb.Data.Entities
 {
     public class Rol : IdentityRole
     {

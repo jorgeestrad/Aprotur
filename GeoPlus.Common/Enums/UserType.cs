@@ -1,5 +1,5 @@
 ﻿
-namespace GeoPlus.Common.Enums
+namespace Aprotur.Common.Enums
 {
     public enum UserType
     {

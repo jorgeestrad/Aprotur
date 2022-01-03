@@ -1,7 +1,7 @@
-﻿namespace GeoPlus.Controllers.Api
+﻿namespace AproturWeb.Controllers.Api
 {
-    using GeoPlus.Common.Models;
-    using GeoPlus.Helpers;
+    using Aprotur.Common.Models;
+    using AproturWeb.Helpers;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
@@ -57,7 +57,7 @@
                 Nombres = request.Nombres,
                 Email = request.Email,
                 UserName = request.Email,
-                UserType = Common.Enums.UserType.User,
+                UserType = Aprotur.Common.Enums.UserType.User,
                 EmailConfirmed = true,
             };
 

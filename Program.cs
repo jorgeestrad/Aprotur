@@ -1,10 +1,10 @@
-﻿using GeoPlus.Data;
+﻿using AproturWeb.Data;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace GeoPlus
+namespace AproturWeb
 {
     public class Program
     {

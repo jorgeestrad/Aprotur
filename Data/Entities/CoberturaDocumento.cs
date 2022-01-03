@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-namespace GeoPlus.Data.Entities
+namespace AproturWeb.Data.Entities
 {
     [Table("CoberturaDocumento", Schema = "Proyectos")]
     public class CoberturaDocumento

@@ -1,4 +1,4 @@
-﻿namespace GeoPlus.Common.Models
+﻿namespace Aprotur.Common.Models
 {
     public class Response
     {

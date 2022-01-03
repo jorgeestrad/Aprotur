@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace GeoPlus.Models
+namespace AproturWeb.Models
 {
     public class LoginViewModel
     {

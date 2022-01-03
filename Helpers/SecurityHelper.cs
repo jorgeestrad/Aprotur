@@ -1,4 +1,4 @@
-﻿namespace GeoPlus.Helpers
+﻿namespace AproturWeb.Helpers
 {
     using System.Security.Cryptography;
     using System.Text;

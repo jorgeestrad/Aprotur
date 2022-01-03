@@ -1,6 +1,6 @@
-﻿namespace GeoPlus.Common.Models
+﻿namespace Aprotur.Common.Models
 {
-    using GeoPlus.Common.Enums;
+    using Aprotur.Common.Enums;
     using System.ComponentModel.DataAnnotations;
     public  class NewUserRequest
     {

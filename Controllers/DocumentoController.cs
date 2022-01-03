@@ -1,6 +1,6 @@
-﻿using GeoPlus.Data;
-using GeoPlus.Data.Entities;
-using GeoPlus.Models;
+﻿using AproturWeb.Data;
+using AproturWeb.Data.Entities;
+using AproturWeb.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;

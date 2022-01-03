@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace GeoPlus.Models
+namespace AproturWeb.Models
 {
     public class EditUserViewModel
     {

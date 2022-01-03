@@ -10,7 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Elementos de la solución",
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeoPlus.Common", "GeoPlus.Common\GeoPlus.Common.csproj", "{C3614567-D1CA-4993-99BF-027AC84617B0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aprotur.Common", "GeoPlus.Common\Aprotur.Common.csproj", "{C3614567-D1CA-4993-99BF-027AC84617B0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

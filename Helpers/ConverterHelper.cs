@@ -1,12 +1,12 @@
-﻿using GeoPlus.Data;
-using GeoPlus.Data.Entities;
-using GeoPlus.Models;
+﻿using AproturWeb.Data;
+using AproturWeb.Data.Entities;
+using AproturWeb.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace GeoPlus.Helpers
+namespace AproturWeb.Helpers
 {
     public class ConverterHelper : IConverterHelper
     {

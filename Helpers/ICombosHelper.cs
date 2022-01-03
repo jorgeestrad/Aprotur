@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 
-namespace GeoPlus.Helpers
+namespace AproturWeb.Helpers
 {
     public interface ICombosHelper
     {

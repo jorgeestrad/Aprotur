@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace GeoPlus.Data.Entities
+namespace AproturWeb.Data.Entities
 {
     [Table("Documento", Schema = "Proyectos")]
     public class Documento
@@ -17,6 +17,9 @@ namespace GeoPlus.Data.Entities
         public int TipoDocumentoId { get; set; }
 
         public TipoDocumento TipoDocumento { get; set; }
+
+        [Display(Name = "Año")]
+        public int Anio { get; set; }
 
         [Display(Name = "Nombre")]
         [Required(ErrorMessage = "Debe ingresar el Nombre del Documento!")]

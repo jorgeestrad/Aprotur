@@ -1,10 +1,10 @@
-﻿using GeoPlus.Data.Entities;
+﻿using AproturWeb.Data.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
-namespace GeoPlus.Data
+namespace AproturWeb.Data
 {
     public class DataContext : IdentityDbContext<User>
     {

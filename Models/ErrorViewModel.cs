@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GeoPlus.Models
+namespace AproturWeb.Models
 {
     public class ErrorViewModel
     {

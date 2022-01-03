@@ -1,6 +1,6 @@
-﻿using GeoPlus.Common.Models;
+﻿using Aprotur.Common.Models;
 
-namespace GeoPlus.Helpers
+namespace AproturWeb.Helpers
 {
     public interface IMailHelper
     {

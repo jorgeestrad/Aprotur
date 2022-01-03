@@ -1,6 +1,6 @@
-﻿using GeoPlus.Data;
-using GeoPlus.Data.Entities;
-using GeoPlus.Helpers;
+﻿using AproturWeb.Data;
+using AproturWeb.Data.Entities;
+using AproturWeb.Helpers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -14,7 +14,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Text.Json.Serialization;
 
-namespace GeoPlus
+namespace AproturWeb
 {
     public class Startup
     {

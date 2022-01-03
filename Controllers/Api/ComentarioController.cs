@@ -1,6 +1,6 @@
-﻿using GeoPlus.Common.Models;
-using GeoPlus.Data;
-using GeoPlus.Models;
+﻿using Aprotur.Common.Models;
+using AproturWeb.Data;
+using AproturWeb.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -8,9 +8,9 @@ using System;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using DbUpdateException = Microsoft.EntityFrameworkCore.DbUpdateException;
-using Response = GeoPlus.Common.Models.Response;
+using Response = Aprotur.Common.Models.Response;
 
-namespace GeoPlus.Controllers.Api
+namespace AproturWeb.Controllers.Api
 {
     [Route("api/[controller]")]
     [ApiController]

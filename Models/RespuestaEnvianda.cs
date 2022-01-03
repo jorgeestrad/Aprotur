@@ -1,4 +1,4 @@
-﻿namespace GeoPlus.Models
+﻿namespace AproturWeb.Models
 {
     using Newtonsoft.Json;
     using System;

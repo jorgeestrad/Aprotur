@@ -1,6 +1,6 @@
-﻿namespace GeoPlus.Models
+﻿namespace AproturWeb.Models
 {
-    using GeoPlus.Data.Entities;
+    using AproturWeb.Data.Entities;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc.Rendering;
     using System.Collections.Generic;

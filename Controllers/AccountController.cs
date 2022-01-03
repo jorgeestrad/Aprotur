@@ -1,8 +1,8 @@
 ﻿namespace GeoPlus.Controllers
 {
-    using GeoPlus.Data.Entities;
-    using GeoPlus.Helpers;
-    using GeoPlus.Models;
+    using AproturWeb.Data.Entities;
+    using AproturWeb.Helpers;
+    using AproturWeb.Models;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using System.Linq;
@@ -158,7 +158,7 @@
                         this.userHelper.AsingUserTypeToUser(user);
 
                         var listObjects = await this.userHelper.GetAllObjectsAsync();
-                        foreach (Data.Entities.Objeto obj in listObjects)
+                        foreach (AproturWeb.Data.Entities.Objeto obj in listObjects)
                         {
                             var permissionsPerUserType = this.userHelper.GetAllPermissionPerUserType(UserType.Id, obj.Id);
                             PermisosPorUsuario permissionPerUser = new PermisosPorUsuario

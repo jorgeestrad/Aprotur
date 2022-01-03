@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AproturWeb.Data.Entities
 {
-    [Table("TipoDocumento", Schema = "Seguridad")]
-    public class TipoDocumento
+    [Table("TipoFuenteBibliografica", Schema = "Seguridad")]
+    public class TipoFuenteBibliografica
     {
         [Key]
         public int Id { get; set; }

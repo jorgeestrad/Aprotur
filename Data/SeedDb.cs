@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using GeoPlus.Common.Enums;
-using GeoPlus.Data.Entities;
-using GeoPlus.Helpers;
+using Aprotur.Common.Enums;
+using AproturWeb.Data.Entities;
+using AproturWeb.Helpers;
 
-namespace GeoPlus.Data
+namespace AproturWeb.Data
 {
     public class SeedDb
     {
@@ -23,10 +23,7 @@ namespace GeoPlus.Data
             await _context.Database.EnsureCreatedAsync();
             await CheckDocumentTypesAsync();
             await CheckRolesAsycn();
-            await CheckUserAsync("1010", "Luis", "Salazar", "luis@yopmail.com", "311 322 4620", "Calle Luna Calle Sol", UserType.Admin);
-            await CheckUserAsync("2020", "Juan", "Zuluaga", "zulu@yopmail.com", "311 322 4620", "Calle Luna Calle Sol", UserType.User);
-            await CheckUserAsync("3030", "Ledys", "Bedoya", "ledys@yopmail.com", "311 322 4620", "Calle Luna Calle Sol", UserType.User);
-            await CheckUserAsync("4040", "Sandra", "Lopera", "sandra@yopmail.com", "311 322 4620", "Calle Luna Calle Sol", UserType.Admin);
+            await CheckUserAsync("1010", "Admin", "Admin", "aprotur@yopmail.com", "311 322 4620", "Aprotur", UserType.Admin);
             await CheckPaisesAsync();
             await CheckDepartamentosAsync();
             await CheckMunicipiosAsync();
@@ -136,7 +133,7 @@ namespace GeoPlus.Data
                 _context.TiposDocumento.Add(new TipoDocumento { Nombre = "Imagen", Extension = "png" });
                 _context.TiposDocumento.Add(new TipoDocumento { Nombre = "Audio", Extension = "mp3" });
                 _context.TiposDocumento.Add(new TipoDocumento { Nombre = "Vídeo" , Extension= "mp4"});
-                _context.TiposDocumento.Add(new TipoDocumento { Nombre = "Imagen de Proyecto", Extension = "png" });
+                _context.TiposDocumento.Add(new TipoDocumento { Nombre = "Base Documental", Extension = "pdf" });
                 await _context.SaveChangesAsync();
             }
         }
@@ -145,9 +142,9 @@ namespace GeoPlus.Data
         {
             if (!_context.Proyectos.Any())
             {
-                _context.Proyectos.Add(new Proyecto { Nombre = "Camino Indio", RutaKML= "https://drive.google.com/uc?id=1f3h4451vw1TUEZsHnhbd_8z64QHDvKti", TipoGeograficoId=0 });
+                //_context.Proyectos.Add(new Proyecto { Nombre = "Camino Indio", RutaKML= "https://drive.google.com/uc?id=1f3h4451vw1TUEZsHnhbd_8z64QHDvKti", TipoGeograficoId=0 });
                 
-                await _context.SaveChangesAsync();
+                //await _context.SaveChangesAsync();
             }
         }
 

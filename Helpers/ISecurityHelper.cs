@@ -1,4 +1,4 @@
-﻿namespace GeoPlus.Helpers
+﻿namespace AproturWeb.Helpers
 {
     public interface ISecurityHelper
     {

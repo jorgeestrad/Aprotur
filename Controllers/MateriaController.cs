@@ -1,5 +1,5 @@
-﻿using GeoPlus.Data;
-using GeoPlus.Data.Entities;
+﻿using AproturWeb.Data;
+using AproturWeb.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Data.Entity.Infrastructure;

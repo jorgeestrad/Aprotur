@@ -1,6 +1,6 @@
-﻿namespace GeoPlus.Models
+﻿namespace AproturWeb.Models
 {
-    using GeoPlus.Data.Entities;
+    using AproturWeb.Data.Entities;
     using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;

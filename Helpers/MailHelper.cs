@@ -1,10 +1,10 @@
-﻿using GeoPlus.Common.Models;
+﻿using Aprotur.Common.Models;
 using MailKit.Net.Smtp;
 using Microsoft.Extensions.Configuration;
 using MimeKit;
 using System;
 
-namespace GeoPlus.Helpers
+namespace AproturWeb.Helpers
 {
     public class MailHelper : IMailHelper
     {
