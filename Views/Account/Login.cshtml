@@ -1,0 +1,50 @@
+﻿@model GeoPlus.Models.LoginViewModel
+
+<div class="row col-md-12">
+        <div class="center-block">
+            <form method="post">
+                <br />
+                <br />
+
+                <div class="form-group col-md-10 col-md-offset-1">
+                     <p style="font-size:large; align-content:center"><b>Login</b></p>
+                    <hr />
+                </div>
+                 <div class="form-group col-md-10 col-md-offset-1">
+                    <label id="icon" for="Username"><i class="fa fa-user"></i></label>
+                    @Html.LabelFor(model => model.Username)
+                    <input asp-for="Username" class="form-control" placeholder="Username" />
+                    <span asp-validation-for="Username" class="text-warning"></span>
+                </div>
+
+                 <div class="form-group col-md-10 col-md-offset-1">
+                    <label id="icon" for="password"><i class="fa fa-key"></i></label>
+                    @Html.LabelFor(model => model.Password)
+                    <input asp-for="Password" type="password" class="form-control" placeholder="Password" />
+                    <span asp-validation-for="Password" class="text-warning"></span>
+                </div>
+
+                <div class="form-group col-md-10 col-md-offset-1">
+                    <div class="form-check">
+                        <input asp-for="RememberMe" type="checkbox" class="form-check-input" />
+                        @Html.LabelFor(model => model.RememberMe)
+                        <span asp-validation-for="RememberMe" class="text-warning" style="color:darkred"></span>
+                        <div asp-validation-summary="ModelOnly" style="color:darkred"></div>
+                    </div>
+                </div>
+                <div class="form-group col-md-10 col-md-offset-1">
+                    <hr />
+                    <input type="submit" value="Login" class="btn btn-success" />
+                    <a asp-action="Register" class="btn btn-primary">Registrarse</a>
+                    <a asp-action="RecoverPassword" class="btn btn-link">Olvidé mi contraseña</a>
+                </div>
+                
+            </form>
+        </div>
+    </div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+

@@ -1,0 +1,30 @@
+﻿@model GeoPlus.Models.MateriaDocumentoViewModel
+
+<br />
+<br />
+<h2>Vincular Materia al Documento</h2>
+<hr />
+
+<div class="row">
+    <div class="col-md-8">
+        <form asp-action="VincularMateria">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="DocumentoId" />
+
+            <div class="form-group col-lg-10 col-md-10 col-sm-10">
+               Proyecto
+                <select asp-for="MateriaId" asp-items="Model.Materias" id="DatatypeId" class="form-control"></select>
+                <span asp-validation-for="MateriaId" class="text-warning"></span>
+            </div>
+            <div class="form-group col-lg-10 col-md-10 col-sm-10">
+                <input type="submit" value=Vincular class="btn btn-primary" data-toggle="tooltip" data-placement="top" title=Vincular Proyecto />
+                <a asp-action="Materias" asp-route-id=@Model.DocumentoId class="btn btn-success" data-toggle="tooltip" data-placement="top" title=Retornar>Retornar al listado de materias vinculadas</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+}

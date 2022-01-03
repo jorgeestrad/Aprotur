@@ -1,0 +1,64 @@
+﻿@model GeoPlus.Models.RegisterNewUserViewModel
+
+<h2>@ViewData["RegisterTitle"]</h2>
+<hr />
+<div class="row">
+    <div class="col-md-12 ">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly"></div>
+            <input type="hidden" asp-for="UserType" />
+
+            <div class="row">
+                <div class="col-lg-5">
+                    @Html.LabelFor(model => model.Nombres)
+                    <input asp-for="Nombres" class="form-control" />
+                    <span asp-validation-for="Nombres" class="text-warning"></span>
+                </div>
+
+                <div class="col-lg-5">
+                    @Html.LabelFor(model => model.Apellidos)
+                    <input asp-for="Apellidos" class="form-control" />
+                    <span asp-validation-for="Apellidos" class="text-warning"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-5">
+                    @Html.LabelFor(model => model.Username)
+                    <input asp-for="Username" class="form-control" />
+                    <span asp-validation-for="Username" class="text-warning"></span>
+                </div>
+
+                <div class="col-lg-5">
+                    @Html.LabelFor(model => model.Password)
+                    <input asp-for="Password" type="password" class="form-control" />
+                    <span asp-validation-for="Password" class="text-warning"></span>
+                </div>
+             </div>
+            <div class="row">
+                <div class="col-lg-5">
+                    @Html.LabelFor(model => model.Confirm)
+                    <input asp-for="Confirm" type="password" class="form-control" />
+                    <span asp-validation-for="Confirm" class="text-warning"></span>
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-lg-10">
+                    <input type="submit" value=@ViewData["RegisterButton"] class="btn btn-primary" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="text-success">
+    <p>
+        @ViewBag.Message
+    </p>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+  
+    
+}

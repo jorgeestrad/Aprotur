@@ -1,0 +1,144 @@
+﻿@inject GeoPlus.Helpers.IUserHelper userHelper
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - GeoPlus</title>
+    <link href="~/css/devextreme/dx.common.css" rel="stylesheet" />
+    <link href="~/css/devextreme/dx.light.css" rel="stylesheet" />
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/js/devextreme/cldr.js"></script>
+    <script src="~/js/devextreme/cldr/event.js"></script>
+    <script src="~/js/devextreme/cldr/supplemental.js"></script>
+    <script src="~/js/devextreme/cldr/unresolved.js"></script>
+    <script src="~/js/devextreme/globalize.js"></script>
+    <script src="~/js/devextreme/globalize/message.js"></script>
+    <script src="~/js/devextreme/globalize/number.js"></script>
+    <script src="~/js/devextreme/globalize/currency.js"></script>
+    <script src="~/js/devextreme/globalize/date.js"></script>
+    <script src="~/js/devextreme/dx.all.js"></script>
+    <script src="~/js/devextreme/aspnet/dx.aspnet.mvc.js"></script>
+    <link href="~/css/jquery.dataTables.css" rel="stylesheet" />
+    <link href="~/css/select.dataTables.css" rel="stylesheet" />
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBchYFYCO81Ydv__rL3YS8aK45IVl6d7JQ"></script>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link href="~/Components/fontawesome/css/fontawesome.css" rel="stylesheet" />
+    <link href="~/Components/fontawesome/css/all.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+@{
+    var email = string.Empty;
+    var rol = string.Empty;
+
+    if (this.User.Identity.IsAuthenticated && this.User.Identity.Name != null)
+    {
+        email = this.User.Identity.Name;
+        if (this.User.IsInRole("Admin"))
+        {
+            rol = "Admin";
+        }
+        var user = this.userHelper.GetUserAsync(email);
+        ViewData["User"] = "";
+        if (user.Result != null)
+        {
+            ViewData["User"] = user.Result.FullName;
+            ViewData["Rol"] = rol;
+        }
+    }
+}
+<body>
+    <header>
+        <div class="pos-f-t">
+            <div class="collapse" id="navbarToggleExternalContent">
+                <div class="bg-dark p-4">
+                    <h4 class="text-white">Collapsed content</h4>
+                    <span class="text-muted">Toggleable via the navbar brand.</span>
+                </div>
+            </div>
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                <a class="navbar-brand" href="#">APROTUR</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home <span class="sr-only">(current)</span></a>
+                        </li>
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" asp-area="" asp-controller="Home" asp-action="Index" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Opciones
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" asp-area="" asp-controller="Materia" asp-action="Index">Descriptores</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="Proyecto" asp-action="Index">Proyectos</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="Documento" asp-action="Index">Documentos</a>
+                            </div>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav mr-auto">
+                        @if (this.User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item active">
+                                <a class="nav-link" asp-area="" asp-controller="Account" asp-action="ChangeUser">@this.User.Identity.Name</a>
+                            </li>
+                            <li class="nav-item active">
+                                <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
+                            </li>
+                        }
+                        else
+                        {
+                             <li class="nav-item active">
+                                <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Login">Login <span class="sr-only">(current)</span></a>
+                            </li>
+                        }
+                    </ul>
+
+                    <form class="form-inline my-2 my-lg-0">
+                        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                    </form>
+                </div>
+            </nav>
+        </div>
+        <div class="row">
+            <div class="col-md-10 offset-1">
+                <img src="~/images/bannerun.png" style="width:100%" />
+            </div>
+        </div>
+        <br />
+    </header>
+    <div class="row">
+        <div class="col-md-12">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
+    </div>
+    <!-- Footer -->
+    <div class="row">
+        <div class="col-md-10 offset-1">
+            <div id="footer">
+                <!-- Copyright -->
+                <div>
+                    © 2022 Copyright:
+                    <a href="https://medellin.unal.edu.co/"> - Universidad Nacional - Medellín Colombia</a>
+                </div>
+                <!-- Copyright -->
+            </div>
+            </div>
+        </div>
+        <!-- Footer -->
+        @*<script src="~/lib/jquery/dist/jquery.js"></script>*@
+        <script src="~/js/jquery.dataTables.js"></script>
+        <script src="~/js/select.dataTables.js"></script>
+        <script src="~/Components/fontawesome/js/fontawesome.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+        @RenderSection("Scripts", required: false)
+</body>
+</html>

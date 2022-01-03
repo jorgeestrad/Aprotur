@@ -1,0 +1,30 @@
+﻿@model GeoPlus.Models.ProyectoDocumentoViewModel
+
+<br />
+<br />
+<h2>Vincular Proyecto al Documento</h2>
+<hr />
+
+<div class="row">
+    <div class="col-md-8">
+        <form asp-action="VincularProyecto">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="DocumentoId" />
+
+            <div class="form-group col-lg-10 col-md-10 col-sm-10">
+               Proyecto
+                <select asp-for="ProyectoId" asp-items="Model.Proyectos" id="DatatypeId" class="form-control"></select>
+                <span asp-validation-for="ProyectoId" class="text-warning"></span>
+            </div>
+            <div class="form-group col-lg-10 col-md-10 col-sm-10">
+                <input type="submit" value=Vincular class="btn btn-primary" data-toggle="tooltip" data-placement="top" title=Vincular Proyecto />
+                <a asp-action="Details" asp-route-id=@Model.DocumentoId class="btn btn-success" data-toggle="tooltip" data-placement="top" title=Retornar>Retornar al listado de proyectos vinculados</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+}

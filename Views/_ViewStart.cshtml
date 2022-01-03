@@ -1,0 +1,15 @@
+﻿@{
+    var controller = ViewContext.RouteData.Values["Controller"];
+    var action = ViewContext.RouteData.Values["Action"];
+
+    switch (controller)
+    {
+        case "Home":
+            Layout = "~/Views/Shared/_Layout.cshtml";
+            break;
+        default:
+            //Admin layout
+            Layout = "~/Views/Shared/_LayoutGen.cshtml";
+            break;
+    }
+}
