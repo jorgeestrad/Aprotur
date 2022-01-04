@@ -25,6 +25,8 @@ namespace AproturWeb.Data
         public DbSet<Proyecto> Proyectos { get; set; }
         public DbSet<Subregion> Subregiones { get; set; }
         public DbSet<TipoDocumento> TiposDocumento { get; set; }
+        public DbSet<FormatoDocumento> FormatosDocumentos { get; set; }
+        public DbSet<TipoFuenteBibliografica> TiposFuenteBibliograficas { get; set; }
         public DbSet<PermisosPorUsuario> PermisosPorUsuarios { get; set; }
         public DbSet<PermisosPorRol> PermisosPorRoles { get; set; }
         public DbSet<Comentario> Comentarios { get; set; }
@@ -55,6 +57,8 @@ namespace AproturWeb.Data
             modelBuilder.Entity<Proyecto>().HasIndex(p => new { p.Nombre }).IsUnique();
             modelBuilder.Entity<Subregion>().HasIndex(p => new { p.Nombre, p.DepartamentoId }).IsUnique();
             modelBuilder.Entity<TipoDocumento>().HasIndex(p => p.Nombre).IsUnique();
+            modelBuilder.Entity<TipoFuenteBibliografica>().HasIndex(p => p.Nombre).IsUnique();
+            modelBuilder.Entity<FormatoDocumento>().HasIndex(p => p.Nombre).IsUnique();
             modelBuilder.Entity<User>(b => {b.ToTable("Users", "Seguridad");});
             modelBuilder.Entity<IdentityUserClaim<string>>(b => {b.ToTable("UserClaims", "Seguridad");});
             modelBuilder.Entity<IdentityUserLogin<string>>(b => {b.ToTable("UserLogins", "Seguridad");});

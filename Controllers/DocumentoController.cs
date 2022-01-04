@@ -40,7 +40,14 @@ namespace GeoPlus.Controllers
                         Id = i.Id,
                         Nombre = i.Nombre,
                         Autor = i.Autor,
-                        Descripcion = i.Descripcion,
+                        Anio = i.Anio,
+                        ReferenciaAPA = i.ReferenciaAPA,
+                        Resumen = i.Resumen,
+                        TemaCentral = i.TemaCentral,
+                        TipoFuenteBibliograficaId = i.TipoFuenteBibliograficaId,
+                        Resultado = i.Resultado,
+                        FormatoDocumentoId = i.FormatoDocumentoId,
+                        AporteDocumento = i.AporteDocumento,
                         FechaPublicacion = i.FechaPublicacion,
                         Ruta = i.Ruta,
                         TipoDocumento = i.TipoDocumento,
@@ -67,13 +74,70 @@ namespace GeoPlus.Controllers
                 DocumentoViewModel viewModel = new DocumentoViewModel
                 {
                     TiposDocumentos = GetTiposDocumentos(),
+                    TiposFuentesBibliograficas = GetFuentesBibligraficas(),
+                    FormatosDocumentos = GetFormatosDocumentos(),
                     FechaPublicacion = DateTime.Now,
+                    Anio = DateTime.Now.Year,
                 };
                 return View(viewModel);
             }
             catch (Exception exp)
             {
                 return NotFound(exp.Message);
+            }
+        }
+
+        private IEnumerable<SelectListItem> GetFormatosDocumentos()
+        {
+            try
+            {
+                var la = from s in this._context.FormatosDocumentos select s;
+
+                var list = la
+                .Select(c => new SelectListItem
+                {
+                    Text = c.Nombre,
+                    Value = c.Id.ToString()
+                }).OrderBy(l => l.Text).ToList();
+
+                list.Insert(0, new SelectListItem
+                {
+                    Text = "Seleccione el Formato del Documento",
+                    Value = "0"
+                });
+
+                return list;
+            }
+            catch (Exception exp)
+            {
+                throw exp;
+            }
+        }
+
+        private IEnumerable<SelectListItem> GetFuentesBibligraficas()
+        {
+            try
+            {
+                var la = from s in this._context.TiposFuenteBibliograficas select s;
+
+                var list = la
+                .Select(c => new SelectListItem
+                {
+                    Text = c.Nombre,
+                    Value = c.Id.ToString()
+                }).OrderBy(l => l.Text).ToList();
+
+                list.Insert(0, new SelectListItem
+                {
+                    Text = "Seleccione el Tipo de Fuente Bibliográfica del Documento",
+                    Value = "0"
+                });
+
+                return list;
+            }
+            catch (Exception exp)
+            {
+                throw exp;
             }
         }
 
@@ -122,7 +186,7 @@ namespace GeoPlus.Controllers
                         Documento documento = new Documento
                         {
                             Nombre = modelo.Nombre,
-                            Descripcion = modelo.Descripcion,
+                            Resultado = modelo.Resultado,
                             FechaPublicacion = modelo.FechaPublicacion,
                             TipoDocumentoId = modelo.TipoDocumentoId,
                             Autor = modelo.Autor,
@@ -130,6 +194,13 @@ namespace GeoPlus.Controllers
                             Ruta = modelo.Ruta,
                             Titulo = modelo.Titulo,
                             Resumen = modelo.Resumen,
+                            AporteDocumento = modelo.AporteDocumento,
+                            FormatoDocumentoId = modelo.FormatoDocumentoId,
+                            ReferenciaAPA = modelo.ReferenciaAPA,
+                            TemaCentral = modelo.TemaCentral,
+                            TipoFuenteBibliograficaId = modelo.TipoFuenteBibliograficaId,
+                            Anio = modelo.Anio,
+                            Enlace = modelo.Enlace,
                         };
                         if (modelo.Archivo != null)
                         {
@@ -175,6 +246,9 @@ namespace GeoPlus.Controllers
                     }
                 }
 
+                modelo.TiposDocumentos = GetTiposDocumentos();
+                modelo.TiposFuentesBibliograficas = GetFuentesBibligraficas();
+                modelo.FormatosDocumentos = GetFormatosDocumentos();
                 return View(modelo);
             }
             catch (Exception exp)
@@ -204,12 +278,18 @@ namespace GeoPlus.Controllers
                     Ruta = s.Ruta,
                     Portada = s.Portada,
                     Autor = s.Autor,
-                    Descripcion = s.Descripcion,
+                    Anio = s.Anio,
+                    AporteDocumento = s.AporteDocumento,
+                    FormatoDocumentoId = s.FormatoDocumentoId,
+                    Resultado = s.Resultado,
+                    ReferenciaAPA = s.ReferenciaAPA,
+                    TemaCentral = s.TemaCentral,
+                    TipoFuenteBibliograficaId = s.TipoFuenteBibliograficaId,
                     TipoDocumentoId = s.TipoDocumentoId,
                     FechaPublicacion = s.FechaPublicacion,
                     Nombre = s.Nombre,
-                    Resumen = s.Resumen
-
+                    Resumen = s.Resumen,
+                    Enlace = s.Enlace,
                 })
                 .Where(f => f.Id == id.Value).FirstOrDefault();
             
@@ -218,7 +298,8 @@ namespace GeoPlus.Controllers
                 return NotFound();
             }
             documento.TiposDocumentos = GetTiposDocumentos();
-
+            documento.TiposFuentesBibliograficas = GetFuentesBibligraficas();
+            documento.FormatosDocumentos = GetFormatosDocumentos();
             return View(documento);
         }
 
@@ -247,7 +328,7 @@ namespace GeoPlus.Controllers
                     {
                         Id = modelo.Id,
                         Nombre = modelo.Nombre,
-                        Descripcion = modelo.Descripcion,
+                        Resultado = modelo.Resultado,
                         FechaPublicacion = modelo.FechaPublicacion,
                         TipoDocumentoId = modelo.TipoDocumentoId,
                         Autor = modelo.Autor,
@@ -255,6 +336,13 @@ namespace GeoPlus.Controllers
                         Ruta = modelo.Ruta,
                         Titulo = modelo.Titulo,
                         Resumen = modelo.Resumen,
+                        AporteDocumento = modelo.AporteDocumento,
+                        FormatoDocumentoId = modelo.FormatoDocumentoId,
+                        ReferenciaAPA = modelo.ReferenciaAPA,
+                        TemaCentral = modelo.TemaCentral,
+                        TipoFuenteBibliograficaId = modelo.TipoFuenteBibliograficaId,
+                        Anio = modelo.Anio,
+                        Enlace = modelo.Enlace,
                     };
 
                     if (modelo.Archivo != null)
@@ -300,6 +388,9 @@ namespace GeoPlus.Controllers
                     ModelState.AddModelError(string.Empty, exception.Message);
                 }
             }
+            modelo.TiposDocumentos = GetTiposDocumentos();
+            modelo.TiposFuentesBibliograficas = GetFuentesBibligraficas();
+            modelo.FormatosDocumentos = GetFormatosDocumentos();
             return View(modelo);
         }
 
@@ -319,14 +410,22 @@ namespace GeoPlus.Controllers
                 .Select(s => new Documento
                 {
                     Id = s.Id,
-                    Titulo = s.Titulo,
-                    Ruta = s.Ruta,
-                    Portada = s.Portada,
-                    Autor = s.Autor,
-                    Descripcion = s.Descripcion,
-                    TipoDocumentoId = s.TipoDocumentoId,
+                    Nombre = s.Nombre,
+                    Resultado = s.Resultado,
                     FechaPublicacion = s.FechaPublicacion,
-                    Nombre = s.Nombre
+                    TipoDocumentoId = s.TipoDocumentoId,
+                    Autor = s.Autor,
+                    Portada = s.Portada,
+                    Ruta = s.Ruta,
+                    Titulo = s.Titulo,
+                    Resumen = s.Resumen,
+                    AporteDocumento = s.AporteDocumento,
+                    FormatoDocumentoId = s.FormatoDocumentoId,
+                    ReferenciaAPA = s.ReferenciaAPA,
+                    TemaCentral = s.TemaCentral,
+                    TipoFuenteBibliograficaId = s.TipoFuenteBibliograficaId,
+                    Anio = s.Anio,
+                    Enlace = s.Enlace,
                 })
                 .Where(f => f.Id == id.Value).FirstOrDefault();
             
@@ -382,14 +481,22 @@ namespace GeoPlus.Controllers
                 .Where(c => c.Id == id)
                 .Select(s => new Documento
                 {
-                    Autor = s.Autor,
-                    Descripcion = s.Descripcion,
-                    FechaPublicacion = s.FechaPublicacion,
-                    Id = s.Id,
                     Nombre = s.Nombre,
-                    Ruta = s.Ruta,
+                    Resultado = s.Resultado,
+                    FechaPublicacion = s.FechaPublicacion,
                     TipoDocumentoId = s.TipoDocumentoId,
+                    Autor = s.Autor,
+                    Portada = s.Portada,
+                    Ruta = s.Ruta,
                     Titulo = s.Titulo,
+                    Resumen = s.Resumen,
+                    AporteDocumento = s.AporteDocumento,
+                    FormatoDocumentoId = s.FormatoDocumentoId,
+                    ReferenciaAPA = s.ReferenciaAPA,
+                    TemaCentral = s.TemaCentral,
+                    TipoFuenteBibliograficaId = s.TipoFuenteBibliograficaId,
+                    Anio = s.Anio,
+                    Enlace = s.Enlace,
                 })
                 .FirstOrDefault();
 
@@ -618,13 +725,21 @@ namespace GeoPlus.Controllers
                 .Select(s => new Documento
                 {
                     Autor = s.Autor,
-                    Descripcion = s.Descripcion,
+                    ReferenciaAPA = s.ReferenciaAPA,
+                    TemaCentral = s.TemaCentral,
+                    Anio = s.Anio,
+                    AporteDocumento = s.AporteDocumento,
+                    Resultado = s.Resultado,
+                    Resumen = s.Resumen,
+                    FormatoDocumentoId = s.FormatoDocumentoId,
+                    TipoFuenteBibliograficaId = s.TipoFuenteBibliograficaId,
                     FechaPublicacion = s.FechaPublicacion,
                     Id = s.Id,
                     Nombre = s.Nombre,
                     Ruta = s.Ruta,
                     TipoDocumentoId = s.TipoDocumentoId,
                     Titulo = s.Titulo,
+                    Enlace = s.Enlace,
                 })
                 .FirstOrDefault();
 

@@ -22,6 +22,8 @@ namespace AproturWeb.Data
         {
             await _context.Database.EnsureCreatedAsync();
             await CheckDocumentTypesAsync();
+            await CheckDocumentFormatsAsync();
+            await CheckDocumentTypesFuentesDocAsync();
             await CheckRolesAsycn();
             await CheckUserAsync("1010", "Admin", "Admin", "aprotur@yopmail.com", "311 322 4620", "Aprotur", UserType.Admin);
             await CheckPaisesAsync();
@@ -29,8 +31,6 @@ namespace AproturWeb.Data
             await CheckMunicipiosAsync();
             await CheckSubRegionesAsync();
             await CheckProyectosAsync();
-
-
         }
 
         private async Task CheckUserAsync(string document, string firstName, string lastName, string email, string phoneNumber, string address, UserType userType)
@@ -125,15 +125,102 @@ namespace AproturWeb.Data
             }
         }
        
+        private async Task CheckDocumentFormatsAsync()
+        {
+            if (!_context.FormatosDocumentos.Any())
+            {
+                _context.FormatosDocumentos.Add(new FormatoDocumento { Nombre = "PDF", Extension = "pdf" });
+                _context.FormatosDocumentos.Add(new FormatoDocumento { Nombre = "Imagen", Extension = "png" });
+                _context.FormatosDocumentos.Add(new FormatoDocumento { Nombre = "Audio", Extension = "mp3" });
+                _context.FormatosDocumentos.Add(new FormatoDocumento { Nombre = "Vídeo" , Extension= "mp4"});
+                _context.FormatosDocumentos.Add(new FormatoDocumento { Nombre = "Base Documental", Extension = "*" });
+                await _context.SaveChangesAsync();
+            }
+        }
+
         private async Task CheckDocumentTypesAsync()
         {
             if (!_context.TiposDocumento.Any())
             {
-                _context.TiposDocumento.Add(new TipoDocumento { Nombre = "PDF", Extension = "pdf" });
-                _context.TiposDocumento.Add(new TipoDocumento { Nombre = "Imagen", Extension = "png" });
-                _context.TiposDocumento.Add(new TipoDocumento { Nombre = "Audio", Extension = "mp3" });
-                _context.TiposDocumento.Add(new TipoDocumento { Nombre = "Vídeo" , Extension= "mp4"});
-                _context.TiposDocumento.Add(new TipoDocumento { Nombre = "Base Documental", Extension = "pdf" });
+                _context.TiposDocumento.Add(new TipoDocumento { Nombre = "Artículo" });
+                _context.TiposDocumento.Add(new TipoDocumento { Nombre = "Artículo de Investigación"});
+                _context.TiposDocumento.Add(new TipoDocumento { Nombre = "Artículo de Revisión" });
+                _context.TiposDocumento.Add(new TipoDocumento { Nombre = "Artículo Descriptivo" });
+                _context.TiposDocumento.Add(new TipoDocumento { Nombre = "Capítulo" });
+                _context.TiposDocumento.Add(new TipoDocumento { Nombre = "Decreto" });
+                _context.TiposDocumento.Add(new TipoDocumento { Nombre = "Norma" });
+                _context.TiposDocumento.Add(new TipoDocumento { Nombre = "Documento de Trabajo" });
+                _context.TiposDocumento.Add(new TipoDocumento { Nombre = "Documento Técnico" });
+                _context.TiposDocumento.Add(new TipoDocumento { Nombre = "Estándar" });
+                _context.TiposDocumento.Add(new TipoDocumento { Nombre = "Estudio" });
+                _context.TiposDocumento.Add(new TipoDocumento { Nombre = "Estudio Colaborativo" });
+                _context.TiposDocumento.Add(new TipoDocumento { Nombre = "Estudio Comparado" });
+                _context.TiposDocumento.Add(new TipoDocumento { Nombre = "Estudio Comparativo" });
+                _context.TiposDocumento.Add(new TipoDocumento { Nombre = "Estudio de País" });
+                _context.TiposDocumento.Add(new TipoDocumento { Nombre = "Estudio: Publicación Digital" });
+                _context.TiposDocumento.Add(new TipoDocumento { Nombre = "Instrumento Legal" });
+                _context.TiposDocumento.Add(new TipoDocumento { Nombre = "Legislación" });
+                _context.TiposDocumento.Add(new TipoDocumento { Nombre = "Ley" });
+                _context.TiposDocumento.Add(new TipoDocumento { Nombre = "Libro" });
+                _context.TiposDocumento.Add(new TipoDocumento { Nombre = "Noticia" });
+                _context.TiposDocumento.Add(new TipoDocumento { Nombre = "Objeto de Conferencia" });
+                _context.TiposDocumento.Add(new TipoDocumento { Nombre = "Publicación Digital" });
+                _context.TiposDocumento.Add(new TipoDocumento { Nombre = "Reporte" });
+                _context.TiposDocumento.Add(new TipoDocumento { Nombre = "Revista" });
+                _context.TiposDocumento.Add(new TipoDocumento { Nombre = "Tesís Doctoral" });
+                _context.TiposDocumento.Add(new TipoDocumento { Nombre = "Tesís Especialización" });
+                _context.TiposDocumento.Add(new TipoDocumento { Nombre = "Tesís Maestría" });
+                _context.TiposDocumento.Add(new TipoDocumento { Nombre = "Tesís Pregrado" });
+                _context.TiposDocumento.Add(new TipoDocumento { Nombre = "Texto / Declaración" });
+                _context.TiposDocumento.Add(new TipoDocumento { Nombre = "Texto de Revisión" });
+                _context.TiposDocumento.Add(new TipoDocumento { Nombre = "Texto descriptivo" });
+                _context.TiposDocumento.Add(new TipoDocumento { Nombre = "Texto Digital" });
+                _context.TiposDocumento.Add(new TipoDocumento { Nombre = "Texto Normativo" });
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        private async Task CheckDocumentTypesFuentesDocAsync()
+        {
+            if (!_context.TiposFuenteBibliograficas.Any())
+            {
+                _context.TiposFuenteBibliograficas.Add(new TipoFuenteBibliografica { Nombre = "ANDI" });
+                _context.TiposFuenteBibliograficas.Add(new TipoFuenteBibliografica { Nombre = "Artículo Técnico" });
+                _context.TiposFuenteBibliograficas.Add(new TipoFuenteBibliografica { Nombre = "Artículo" });
+                _context.TiposFuenteBibliograficas.Add(new TipoFuenteBibliografica { Nombre = "Artículo de Revista" });
+                _context.TiposFuenteBibliograficas.Add(new TipoFuenteBibliografica { Nombre = "Artículo de Investigación" });
+                _context.TiposFuenteBibliograficas.Add(new TipoFuenteBibliografica { Nombre = "Biblioteca Digital de Chile" });
+                _context.TiposFuenteBibliograficas.Add(new TipoFuenteBibliografica { Nombre = "BID" });
+                _context.TiposFuenteBibliograficas.Add(new TipoFuenteBibliografica { Nombre = "CAF" });
+                _context.TiposFuenteBibliograficas.Add(new TipoFuenteBibliografica { Nombre = "Carnegie Endowment for International Peace" });
+                _context.TiposFuenteBibliograficas.Add(new TipoFuenteBibliografica { Nombre = "Documento Técnico" });
+                _context.TiposFuenteBibliograficas.Add(new TipoFuenteBibliografica { Nombre = "Editorial" });
+                _context.TiposFuenteBibliograficas.Add(new TipoFuenteBibliografica { Nombre = "Foro Economico Mundial WEF: Repositorio Digital" });
+                _context.TiposFuenteBibliograficas.Add(new TipoFuenteBibliografica { Nombre = "Investigación" });
+                _context.TiposFuenteBibliograficas.Add(new TipoFuenteBibliografica { Nombre = "Legislativa" });
+                _context.TiposFuenteBibliograficas.Add(new TipoFuenteBibliografica { Nombre = "Ley" });
+                _context.TiposFuenteBibliograficas.Add(new TipoFuenteBibliografica { Nombre = "Libro" });
+                _context.TiposFuenteBibliograficas.Add(new TipoFuenteBibliografica { Nombre = "MinCiencias" });
+                _context.TiposFuenteBibliograficas.Add(new TipoFuenteBibliografica { Nombre = "MinTic" });
+                _context.TiposFuenteBibliograficas.Add(new TipoFuenteBibliografica { Nombre = "Norma Jurídica" });
+                _context.TiposFuenteBibliograficas.Add(new TipoFuenteBibliografica { Nombre = "Normativas OECD" });
+                _context.TiposFuenteBibliograficas.Add(new TipoFuenteBibliografica { Nombre = "Normatividad ETSI" });
+                _context.TiposFuenteBibliograficas.Add(new TipoFuenteBibliografica { Nombre = "OCDE" });
+                _context.TiposFuenteBibliograficas.Add(new TipoFuenteBibliografica { Nombre = "ONU" });
+                _context.TiposFuenteBibliograficas.Add(new TipoFuenteBibliografica { Nombre = "ONU/ CEPAL" });
+                _context.TiposFuenteBibliograficas.Add(new TipoFuenteBibliografica { Nombre = "Publicación de la Unión Europea" });
+                _context.TiposFuenteBibliograficas.Add(new TipoFuenteBibliografica { Nombre = "Publicación Ministerio de Tecnologías de la Información y las Comunicaciones" });
+                _context.TiposFuenteBibliograficas.Add(new TipoFuenteBibliografica { Nombre = "Publicación Instituto Nacional de Ciberseguridad (INCIBE)" });
+                _context.TiposFuenteBibliograficas.Add(new TipoFuenteBibliografica { Nombre = "Publicación del Instituto Nacional de Estándares y Tecnología" });
+                _context.TiposFuenteBibliograficas.Add(new TipoFuenteBibliografica { Nombre = "Red Social de Investigación" });
+                _context.TiposFuenteBibliograficas.Add(new TipoFuenteBibliografica { Nombre = "Repositorio UNAD" });
+                _context.TiposFuenteBibliograficas.Add(new TipoFuenteBibliografica { Nombre = "Repositorio Universidad Complutense de Madrid" });
+                _context.TiposFuenteBibliograficas.Add(new TipoFuenteBibliografica { Nombre = "Repositorio Universidad Francisco de Paula Santander" });
+                _context.TiposFuenteBibliograficas.Add(new TipoFuenteBibliografica { Nombre = "Repositorio Universidad Tecnica de Ambato" });
+                _context.TiposFuenteBibliograficas.Add(new TipoFuenteBibliografica { Nombre = "Repositorio Universidad de Ciencias y Humanidades" });
+                _context.TiposFuenteBibliograficas.Add(new TipoFuenteBibliografica { Nombre = "Revista Shaping Europe´s Digital Future" });
+                _context.TiposFuenteBibliograficas.Add(new TipoFuenteBibliografica { Nombre = "Revista" });
+                _context.TiposFuenteBibliograficas.Add(new TipoFuenteBibliografica { Nombre = "Revista Académica" });
                 await _context.SaveChangesAsync();
             }
         }

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AproturWeb.Data.Entities
 {
-    [Table("TipoDocumento", Schema = "Seguridad")]
+    [Table("TipoDocumento", Schema = "Proyectos")]
     public class TipoDocumento
     {
         [Key]
@@ -12,13 +12,8 @@ namespace AproturWeb.Data.Entities
 
         [Display(Name = "Tipo de Documento")]
         [Required(ErrorMessage = "Debe ingresar el nombre del Tipo de Documento!")]
-        [MaxLength(50, ErrorMessage = "El Nombre del Tipo de Documento puede tener hasta {1} caracteres!")]
+        [MaxLength(200, ErrorMessage = "El Nombre del Tipo de Documento puede tener hasta {1} caracteres!")]
         public string Nombre { get; set; }
-
-        [Display(Name = "Extensión")]
-        [Required(ErrorMessage = "Debe ingresar la extensión del archivo para el Tipo de Documento!")]
-        [MaxLength(5, ErrorMessage = "El Nombre del la extensión del Tipo de Documento puede tener hasta {1} caracteres!")]
-        public string Extension { get; set; }
 
         public ICollection<Documento> Documentos { get; set; }
     }

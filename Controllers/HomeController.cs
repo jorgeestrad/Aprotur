@@ -77,7 +77,11 @@ namespace GeoPlus.Controllers
                     {
                         Id = s.Documento.Id,
                         Autor = s.Documento.Autor,
-                        Descripcion = s.Documento.Descripcion,
+                        Resultado = s.Documento.Resultado,
+                        Resumen = s.Documento.Resumen,
+                        AporteDocumento = s.Documento.AporteDocumento,
+                        TemaCentral = s.Documento.TemaCentral,
+                        ReferenciaAPA = s.Documento.ReferenciaAPA,
                         FechaPublicacion = s.Documento.FechaPublicacion,
                         Nombre = s.Documento.Nombre,
                         Ruta = s.Documento.Ruta,

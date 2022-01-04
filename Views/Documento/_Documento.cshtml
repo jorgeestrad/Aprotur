@@ -1,47 +1,106 @@
 ﻿@model AproturWeb.Models.DocumentoViewModel
 
 <div class="form-group row">
-    <label asp-for="Nombre" class="col-sm-2 col-form-label"></label>
-      <div class="col-sm-10">
+    <label asp-for="Nombre" class="col-sm-4 col-form-label"></label>
+      <div class="col-sm-8">
             <input asp-for="Nombre" class="form-control" />
             <span asp-validation-for="Nombre" class="text-danger"></span>
       </div>
  </div>
 
-    <div class="form-group row">
-    <label asp-for="Descripcion" class="col-sm-2 col-form-label"></label>
-    <div class="col-sm-10">
-        <input asp-for="Descripcion" class="form-control" />
-        <span asp-validation-for="Descripcion" class="text-danger"></span>
-        </div>
-    </div>
+ <div class="form-group row">
+    <label asp-for="Anio" class="col-sm-4 col-form-label"></label>
+      <div class="col-sm-8">
+            <input asp-for="Anio" type="number" class="form-control" />
+            <span asp-validation-for="Anio" class="text-danger"></span>
+      </div>
+ </div>
 
+  
     <div class="form-group row">
-        <label asp-for="TipoDocumentoId" class="col-sm-2 col-form-label"></label>
-        <div class="col-sm-10">
+        <label asp-for="TipoDocumentoId" class="col-sm-4 col-form-label"></label>
+        <div class="col-sm-8">
             <select asp-for="TipoDocumentoId" asp-items="Model.TiposDocumentos" id="TipoDocumentoId" class="form-control"></select>
             <span asp-validation-for="TipoDocumentoId" class="text-warning"></span>
         </div>
      </div>
+
+     <div class="form-group row">
+        <label asp-for="TipoFuenteBibliograficaId" class="col-sm-4 col-form-label"></label>
+        <div class="col-sm-8">
+            <select asp-for="TipoFuenteBibliograficaId" asp-items="Model.TiposFuentesBibliograficas" id="TipoFuenteId" class="form-control"></select>
+            <span asp-validation-for="TipoFuenteBibliograficaId" class="text-warning"></span>
+        </div>
+     </div>
+
+     
     <div class="form-group row">
-        <label asp-for="Titulo" class="col-sm-2 col-form-label"></label>
-        <div class="col-sm-10">
+        <label asp-for="Titulo" class="col-sm-4 col-form-label"></label>
+        <div class="col-sm-8">
             <input asp-for="Titulo" class="form-control" />
             <span asp-validation-for="Titulo" class="text-danger"></span>
         </div>
     </div>
 
+     <div class="form-group row">
+        <label asp-for="Autor" class="col-sm-4 col-form-label"></label>
+        <div class="col-sm-8">
+            <input asp-for="Autor" class="form-control" />
+            <span asp-validation-for="Autor" class="text-danger"></span>
+        </div>
+    </div>
+
     <div class="form-group row">
-        <label asp-for="Ruta" class="col-sm-2 col-form-label"></label>
-        <div class="col-sm-10">
+        <label asp-for="TemaCentral" class="col-sm-4 col-form-label"></label>
+        <div class="col-sm-8">
+            <textarea asp-for="TemaCentral" rows="6"  class="form-control"></textarea>
+            <span asp-validation-for="TemaCentral" class="text-danger"></span>
+        </div>
+    </div>
+
+     <div class="form-group row">
+        <label asp-for="AporteDocumento" class="col-sm-4 col-form-label"></label>
+        <div class="col-sm-8">
+            <textarea asp-for="AporteDocumento" rows="6"  class="form-control"></textarea>
+            <span asp-validation-for="AporteDocumento" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label asp-for="Resumen" class="col-sm-4 col-form-label"></label>
+        <div class="col-sm-8">
+            <input asp-for="Resumen" class="form-control" />
+            <span asp-validation-for="Resumen" class="text-danger"></span>
+        </div>
+    </div>
+
+     <div class="form-group row">
+        <label asp-for="FormatoDocumentoId" class="col-sm-4 col-form-label"></label>
+        <div class="col-sm-8">
+            <select asp-for="FormatoDocumentoId" asp-items="Model.FormatosDocumentos" id="FormatoDocumentoId" class="form-control"></select>
+            <span asp-validation-for="FormatoDocumentoId" class="text-warning"></span>
+        </div>
+     </div>
+
+    <div class="form-group row">
+        <label asp-for="Ruta" class="col-sm-4 col-form-label"></label>
+        <div class="col-sm-8">
             <input asp-for="Ruta" class="form-control" readonly/>
             <span asp-validation-for="Ruta" class="text-danger"></span>
         </div>
     </div>
 
+     <div class="form-group row">
+        <label asp-for="Enlace" class="col-sm-4 col-form-label"></label>
+        <div class="col-sm-8">
+            <input asp-for="Enlace" class="form-control"/>
+            <span asp-validation-for="Enlace" class="text-danger"></span>
+        </div>
+    </div>
+
     <div class="form-group row">
-        <label asp-for="Archivo" class="col-sm-2 col-form-label"></label>
-        <div class="col-sm-10">
+        <label asp-for="Archivo" class="col-sm-4 col-form-label"></label>
+        <div class="col-sm-8">
             <div class="custom-file">
                 <input asp-for="Archivo" accept=".pdf,.mp3,.mp4,.jpg,.png" class="form-control custom-file-input">
                 <label class="custom-file-label">Seleccionar el documento...</label>
@@ -50,24 +109,24 @@
     </div>
 
     <div class="form-group row">
-        <label asp-for="Autor" class="col-sm-2 col-form-label"></label>
-        <div class="col-sm-10">
+        <label asp-for="Autor" class="col-sm-4 col-form-label"></label>
+        <div class="col-sm-8">
             <input asp-for="Autor" class="form-control" />
             <span asp-validation-for="Autor" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group row">
-        <label asp-for="FechaPublicacion" class="col-sm-2 col-form-label"></label>
-        <div class="col-sm-10">
+        <label asp-for="FechaPublicacion" class="col-sm-4 col-form-label"></label>
+        <div class="col-sm-8">
             <input asp-for="FechaPublicacion" type="date" class="form-control" />
             <span asp-validation-for="FechaPublicacion" class="text-danger"></span>
         </div>
     </div>
 
     <div class="form-group row">
-        <label asp-for="Resumen" class="col-sm-2 col-form-label"></label>
-        <div class="col-sm-10">
-            <textarea asp-for="Resumen" rows="10"  class="form-control"></textarea>
-            <span asp-validation-for="Resumen" class="text-danger"></span>
+        <label asp-for="Resultado" class="col-sm-4 col-form-label"></label>
+        <div class="col-sm-8">
+            <textarea asp-for="Resultado" rows="6"  class="form-control"></textarea>
+            <span asp-validation-for="Resultado" class="text-danger"></span>
         </div>
     </div>
