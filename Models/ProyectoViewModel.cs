@@ -18,7 +18,6 @@ namespace AproturWeb.Models
         public IFormFile KML { get; set; }
 
         [MaxLength(1000, ErrorMessage = "La ruta del KML puede tener hasta {1} caracteres!")]
-        [Required(ErrorMessage = "Debe ingresar la Ruta del KML")]
         public string RutaKML { get; set; }
 
         [Required(ErrorMessage = "Se debe ingresar la Longitud de las coordenadas del proyecto")]

@@ -255,6 +255,7 @@ namespace AproturWeb.Migrations
                     TipoFuenteBibliograficaId = table.Column<int>(type: "int", nullable: false),
                     FormatoDocumentoId = table.Column<int>(type: "int", nullable: false),
                     Anio = table.Column<int>(type: "int", nullable: false),
+                    PaisId = table.Column<int>(type: "int", nullable: false),
                     Nombre = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     TemaCentral = table.Column<string>(type: "nvarchar(4000)", maxLength: 4000, nullable: true),
                     AporteDocumento = table.Column<string>(type: "nvarchar(4000)", maxLength: 4000, nullable: true),
@@ -277,6 +278,13 @@ namespace AproturWeb.Migrations
                         column: x => x.FormatoDocumentoId,
                         principalSchema: "Proyectos",
                         principalTable: "FormatoDocumento",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Documento_Pais_PaisId",
+                        column: x => x.PaisId,
+                        principalSchema: "General",
+                        principalTable: "Pais",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
@@ -700,6 +708,12 @@ namespace AproturWeb.Migrations
                 table: "Documento",
                 column: "Nombre",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Documento_PaisId",
+                schema: "Proyectos",
+                table: "Documento",
+                column: "PaisId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Documento_TipoDocumentoId",

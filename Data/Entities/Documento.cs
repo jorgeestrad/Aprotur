@@ -33,6 +33,11 @@ namespace AproturWeb.Data.Entities
         [Display(Name = "Año")]
         public int Anio { get; set; }
 
+        [Display(Name = "País")]
+        public int PaisId { get; set; }
+
+        public Pais Pais { get; set; }
+
         [Display(Name = "Nombre")]
         [Required(ErrorMessage = "Debe ingresar el Nombre del Documento!")]
         [MaxLength(200, ErrorMessage = "El Nombre del Documento puede tener hasta {1} caracteres!")]

@@ -10,6 +10,8 @@ using System.IO;
 using System;
 using System.Threading.Tasks;
 using AproturWeb.Helpers;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GeoPlus.Controllers
 {
@@ -38,6 +40,232 @@ namespace GeoPlus.Controllers
             }
 
             return View(_context.Proyectos.ToList());
+        }
+
+        public IActionResult Search()
+        {
+            try
+            {
+                    BusquedaViewModel viewModel = new BusquedaViewModel
+                    {
+                        TiposDocumentos = GetTiposDocumentos(),
+                        Paises = GetPaises(),
+                        FormatosDocumentos = GetFormatosDocumentos(),
+                        Autor = "",
+                        Proyecto = "",
+                        TemaCentral = "",
+                        TituloDocumento = ""
+                    };
+                    return View(viewModel);
+            }
+            catch (Exception exp)
+            {
+                return NotFound(exp.Message);
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="busquedaVM"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Search(BusquedaViewModel busquedaVM)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    try
+                    {
+                        if (busquedaVM.Proyecto == null &&
+                            busquedaVM.Autor == null &&
+                            busquedaVM.PaisId == 0 &&
+                            busquedaVM.TipoDocumentoId == 0 &&
+                            busquedaVM.TituloDocumento == null &&
+                            busquedaVM.TemaCentral == null)
+                        {
+                            BusquedaViewModel viewModel = new BusquedaViewModel
+                            {
+                                TiposDocumentos = GetTiposDocumentos(),
+                                Paises = GetPaises(),
+                                FormatosDocumentos = GetFormatosDocumentos(),
+                                Autor = "",
+                                Proyecto = "",
+                                TemaCentral = "",
+                                TituloDocumento = ""
+                            };
+                            return View(viewModel);
+                        }
+                        else
+                        {
+                            return RedirectToAction(nameof(ResultSearch), busquedaVM);
+                        } 
+                    }
+                    catch (Exception exp)
+                    {
+                        return NotFound(exp.Message);
+                    }
+                }
+                return View(busquedaVM);
+            }
+            catch (Exception exp)
+            {
+                return NotFound(exp.Message);
+            }
+        }
+
+        public IActionResult ResultSearch(BusquedaViewModel busquedaVM)
+        {
+            try
+            {
+                if (busquedaVM.Proyecto == null &&
+                             busquedaVM.Autor == null &&
+                             busquedaVM.PaisId == 0 &&
+                             busquedaVM.TipoDocumentoId == 0 &&
+                             busquedaVM.TituloDocumento == null &&
+                             busquedaVM.TemaCentral == null)
+                {
+                    BusquedaViewModel viewModel = new BusquedaViewModel
+                    {
+                        TiposDocumentos = GetTiposDocumentos(),
+                        Paises = GetPaises(),
+                        FormatosDocumentos = GetFormatosDocumentos(),
+                        Autor = "",
+                        Proyecto = "",
+                        TemaCentral = "",
+                        TituloDocumento = ""
+                    };
+                    return View(viewModel);
+                }
+                else
+                {
+                    busquedaVM.Documentos = GetDocumentosBusqueda(busquedaVM);
+                    return View(busquedaVM);
+                }
+            }
+            catch (Exception exp)
+            {
+                return NotFound(exp.Message);
+            }
+        }
+
+        private List<AproturWeb.Data.Entities.Documento> GetDocumentosBusqueda(BusquedaViewModel busquedaVM)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(busquedaVM.TituloDocumento)) busquedaVM.TituloDocumento = "#$#$#$#$#$#$";
+                if (string.IsNullOrEmpty(busquedaVM.TemaCentral)) busquedaVM.TemaCentral = "#$#$#$#$#$#$";
+                if (string.IsNullOrEmpty(busquedaVM.Autor)) busquedaVM.Autor = "#$#$#$#$#$#$";
+                var documentos = this._context.Documentos.
+                    Where(f => f.Titulo.ToLower().Trim().Contains(busquedaVM.TituloDocumento.ToLower().Trim()) ||
+                          f.TemaCentral.ToLower().Trim().Contains(busquedaVM.TemaCentral.ToLower().Trim()) ||
+                          f.Autor.ToLower().Trim().Contains(busquedaVM.Autor.ToLower().Trim()) ||
+                          f.PaisId == busquedaVM.PaisId ||
+                          f.FormatoDocumentoId == busquedaVM.FormatoDocumentoId ||
+                          f.TipoDocumentoId == busquedaVM.TipoDocumentoId
+                          ).
+                    Include(i => i.FormatoDocumento).
+                    Select(s => new AproturWeb.Data.Entities.Documento
+                    {
+                        Id = s.Id,
+                        Titulo = s.Titulo,
+                        Anio = s.Anio,
+                        Autor = s.Autor,
+                        FormatoDocumento = s.FormatoDocumento,
+                    }).ToList();
+                return documentos;
+            }
+            catch (Exception exp)
+            {
+               throw new Exception(exp.Message);
+            }
+        }
+
+        private IEnumerable<SelectListItem> GetFormatosDocumentos()
+        {
+            try
+            {
+                var la = from s in this._context.FormatosDocumentos select s;
+
+                var list = la
+                .Select(c => new SelectListItem
+                {
+                    Text = c.Nombre,
+                    Value = c.Id.ToString()
+                }).OrderBy(l => l.Text).ToList();
+
+                list.Insert(0, new SelectListItem
+                {
+                    Text = "Seleccione Formato del Documento",
+                    Value = "0"
+                });
+
+                return list;
+            }
+            catch (Exception exp)
+            {
+                throw exp;
+            }
+        }
+
+        private IEnumerable<SelectListItem> GetPaises()
+        {
+            try
+            {
+                var la = from s in this._context.Paises select s;
+
+                var list = la
+                .Select(c => new SelectListItem
+                {
+                    Text = c.Nombre,
+                    Value = c.Id.ToString()
+                }).OrderBy(l => l.Text).ToList();
+
+                list.Insert(0, new SelectListItem
+                {
+                    Text = "Seleccione el País",
+                    Value = "0"
+                });
+
+                return list;
+            }
+            catch (Exception exp)
+            {
+                throw exp;
+            }
+        }
+
+        /// <summary>
+        /// Retorna el listado de Tipos de Documentos
+        /// </summary>
+        /// <returns></returns>
+        private IEnumerable<SelectListItem> GetTiposDocumentos()
+        {
+            try
+            {
+                var la = from s in this._context.TiposDocumento select s;
+
+                var list = la
+                .Select(c => new SelectListItem
+                {
+                    Text = c.Nombre,
+                    Value = c.Id.ToString()
+                }).OrderBy(l => l.Text).ToList();
+
+                list.Insert(0, new SelectListItem
+                {
+                    Text = "Seleccione el Tipo de Documento",
+                    Value = "0"
+                });
+
+                return list;
+            }
+            catch (Exception exp)
+            {
+                throw exp;
+            }
         }
 
         public IActionResult UserNotEnabled()

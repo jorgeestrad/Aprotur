@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AproturWeb.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220104010933_InitialDb")]
+    [Migration("20220105232440_InitialDb")]
     partial class InitialDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -128,6 +128,9 @@ namespace AproturWeb.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
+                    b.Property<int>("PaisId")
+                        .HasColumnType("int");
+
                     b.Property<byte[]>("Portada")
                         .HasColumnType("varbinary(max)");
 
@@ -169,6 +172,8 @@ namespace AproturWeb.Migrations
 
                     b.HasIndex("Nombre")
                         .IsUnique();
+
+                    b.HasIndex("PaisId");
 
                     b.HasIndex("TipoDocumentoId");
 
@@ -924,6 +929,12 @@ namespace AproturWeb.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("AproturWeb.Data.Entities.Pais", "Pais")
+                        .WithMany("Documentos")
+                        .HasForeignKey("PaisId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("AproturWeb.Data.Entities.TipoDocumento", "TipoDocumento")
                         .WithMany("Documentos")
                         .HasForeignKey("TipoDocumentoId")
@@ -937,6 +948,8 @@ namespace AproturWeb.Migrations
                         .IsRequired();
 
                     b.Navigation("FormatoDocumento");
+
+                    b.Navigation("Pais");
 
                     b.Navigation("TipoDocumento");
 
@@ -1182,6 +1195,8 @@ namespace AproturWeb.Migrations
             modelBuilder.Entity("AproturWeb.Data.Entities.Pais", b =>
                 {
                     b.Navigation("Departamentos");
+
+                    b.Navigation("Documentos");
                 });
 
             modelBuilder.Entity("AproturWeb.Data.Entities.Proyecto", b =>

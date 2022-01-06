@@ -70,7 +70,16 @@ namespace AproturWeb.Data
         {
             if (!_context.Paises.Any())
             {
+                _context.Paises.Add((new Pais { Nombre = "Argentina" }));
+                _context.Paises.Add((new Pais { Nombre = "Bolivia" }));
+                _context.Paises.Add((new Pais { Nombre = "Brasil" }));
+                _context.Paises.Add((new Pais { Nombre = "Chile" }));
                 _context.Paises.Add((new Pais { Nombre = "Colombia" }));
+                _context.Paises.Add((new Pais { Nombre = "Ecuador" }));
+                _context.Paises.Add((new Pais { Nombre = "Paraguay" }));
+                _context.Paises.Add((new Pais { Nombre = "Perú" }));
+                _context.Paises.Add((new Pais { Nombre = "Uruguay" }));
+                _context.Paises.Add((new Pais { Nombre = "Venezuela" }));
                 await _context.SaveChangesAsync();
             }
         }

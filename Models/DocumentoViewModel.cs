@@ -22,7 +22,10 @@ namespace AproturWeb.Models
         [Display(Name = "Tipo de Fuente Bibliográfica")]
         public int TipoFuenteBibliograficaId { get; set; }
 
-     
+        [Required(ErrorMessage = "Se debe seleccionar el País!")]
+        [Display(Name = "País")]
+        public int PaisId { get; set; }
+
         [Required(ErrorMessage = "Se debe seleccionar el Formato del Documento!")]
         [Display(Name = "Formato del Documento")]
         public int FormatoDocumentoId { get; set; }
@@ -61,7 +64,6 @@ namespace AproturWeb.Models
         public IFormFile Archivo { get; set; }
 
         [Display(Name = "Ruta (url) del documento")]
-        [Required(ErrorMessage = "Debe ingresar la ruta del Documento!")]
         [MaxLength(400, ErrorMessage = "La ruta del Documento puede tener hasta {1} caracteres!")]
         public string Ruta { get; set; }
 
@@ -100,6 +102,11 @@ namespace AproturWeb.Models
         /// Tipos de Documentos
         /// </summary>
         public IEnumerable<SelectListItem> FormatosDocumentos { get; set; }
+
+        /// <summary>
+        /// Tipos de Documentos
+        /// </summary>
+        public IEnumerable<SelectListItem> Paises { get; set; }
 
     }
 }

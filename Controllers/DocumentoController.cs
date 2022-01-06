@@ -75,6 +75,7 @@ namespace GeoPlus.Controllers
                 {
                     TiposDocumentos = GetTiposDocumentos(),
                     TiposFuentesBibliograficas = GetFuentesBibligraficas(),
+                    Paises = GetPaises(),
                     FormatosDocumentos = GetFormatosDocumentos(),
                     FechaPublicacion = DateTime.Now,
                     Anio = DateTime.Now.Year,
@@ -84,6 +85,33 @@ namespace GeoPlus.Controllers
             catch (Exception exp)
             {
                 return NotFound(exp.Message);
+            }
+        }
+
+        private IEnumerable<SelectListItem> GetPaises()
+        {
+            try
+            {
+                var la = from s in this._context.Paises select s;
+
+                var list = la
+                .Select(c => new SelectListItem
+                {
+                    Text = c.Nombre,
+                    Value = c.Id.ToString()
+                }).OrderBy(l => l.Text).ToList();
+
+                list.Insert(0, new SelectListItem
+                {
+                    Text = "Seleccione el País",
+                    Value = "0"
+                });
+
+                return list;
+            }
+            catch (Exception exp)
+            {
+                throw exp;
             }
         }
 
@@ -201,6 +229,7 @@ namespace GeoPlus.Controllers
                             TipoFuenteBibliograficaId = modelo.TipoFuenteBibliograficaId,
                             Anio = modelo.Anio,
                             Enlace = modelo.Enlace,
+                            PaisId = modelo.PaisId,
                         };
                         if (modelo.Archivo != null)
                         {
@@ -249,6 +278,7 @@ namespace GeoPlus.Controllers
                 modelo.TiposDocumentos = GetTiposDocumentos();
                 modelo.TiposFuentesBibliograficas = GetFuentesBibligraficas();
                 modelo.FormatosDocumentos = GetFormatosDocumentos();
+                modelo.Paises = GetPaises();
                 return View(modelo);
             }
             catch (Exception exp)

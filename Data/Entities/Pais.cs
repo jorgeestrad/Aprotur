@@ -18,6 +18,8 @@ namespace AproturWeb.Data.Entities
 
         public ICollection<Departamento> Departamentos { get; set; }
 
+        public ICollection<Documento> Documentos { get; set; }
+
         [DisplayName("Número de Departamentos")]
         public int NumeroDepartamentos => Departamentos == null ? 0 : Departamentos.Count;
     }
