@@ -429,7 +429,7 @@ namespace GeoPlus.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<IActionResult> Delete(int? id)
+        public  IActionResult Delete(int? id)
         {
             if (id == null)
             {
@@ -467,7 +467,7 @@ namespace GeoPlus.Controllers
             try
             {
                 _context.Documentos.Remove(documento);
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
                   
             }
             catch 

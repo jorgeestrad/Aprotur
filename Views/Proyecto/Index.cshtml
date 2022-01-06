@@ -40,7 +40,7 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script src="/js/deleteDialog.js"></script>
+    <script src="/aprotur/js/deleteDialog.js"></script>
 
     <script type="text/javascript">
         $(document).ready(function () {
@@ -54,7 +54,7 @@
             });
 
             // Delete item
-            sc_deleteDialog.openModal('deleteItem', true, 'btnYesDelete', '/Proyecto/Delete/', false);
+            sc_deleteDialog.openModal('deleteItem', true, 'btnYesDelete', '/aprotur/Proyecto/Delete/', false);
         });
     </script>
 }
