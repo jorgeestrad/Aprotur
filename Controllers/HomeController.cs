@@ -283,7 +283,7 @@ namespace GeoPlus.Controllers
                     .Where(f => f.Nombre == nombre).FirstOrDefault();
 
                 string uploadsFolder = hostingEnvironment.ContentRootPath;
-                string filePath = $"http://190.147.168.232/GeoPlus/kmz/{rutaKml.RutaKML}";
+                string filePath = $"http://190.147.168.232/Aprotur/kmz/{rutaKml.RutaKML}";
                 rutaKml.RutaKML = filePath;
                 return Ok(rutaKml);
             }

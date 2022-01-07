@@ -67,7 +67,7 @@ namespace AproturWeb.Models
         [MaxLength(400, ErrorMessage = "La ruta del Documento puede tener hasta {1} caracteres!")]
         public string Ruta { get; set; }
 
-        [Display(Name = "Enlace de Acceso")]
+        [Display(Name = "Enlace Sitio Web")]
         [MaxLength(400, ErrorMessage = "El Enlace de acceso puede tener hasta {1} caracteres!")]
         public string Enlace { get; set; }
 

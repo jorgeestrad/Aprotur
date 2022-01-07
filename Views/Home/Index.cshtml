@@ -247,7 +247,7 @@
     * return  {boolean}
    */
     function verDocumento(id, nombre, titulo, ruta, tipodocumento, descripcion, autor) {
-        ruta = 'http://190.147.168.232/GeoPlus/kmz/' + ruta;
+        ruta = 'http://190.147.168.232/Aprotur/kmz/' + ruta;
         var w = 800;
         var h = 600;
         if (tipodocumento === 3 ) 
@@ -409,11 +409,11 @@
                                      if (p === 0)
                                      {
                                          p++;
-                                         cadenaProyectos = cadenaProyectos + "<div class='carousel-item active'><img src='GeoPlus/kmz/"+ docu.ruta + "' class='d-block w-100' alt='" + docu.titulo +"'></div>";
+                                         cadenaProyectos = cadenaProyectos + "<div class='carousel-item active'><img src='Aprotur/kmz/"+ docu.ruta + "' class='d-block w-100' alt='" + docu.titulo +"'></div>";
                                      }
                                      else
                                      {
-                                        cadenaProyectos = cadenaProyectos + "<div class='carousel-item'><img src='GeoPlus/kmz/"+ docu.ruta + "' class='d-block w-100' alt='" + docu.titulo + "'></div>";
+                                        cadenaProyectos = cadenaProyectos + "<div class='carousel-item'><img src='Aprotur/kmz/"+ docu.ruta + "' class='d-block w-100' alt='" + docu.titulo + "'></div>";
                                      }
                                  }
                              
@@ -519,6 +519,25 @@
             //Display the Google map in the div control with the defined Options
             map = new google.maps.Map(document.getElementById("mapa"), mapOptions);
 
+            var url,foldersAndFile,folders,folderpath,protocol,host,ourLocation;
+            url = window.location;
+    
+            foldersAndFile = url.pathname.split("/");
+            folders = foldersAndFile.slice(0,foldersAndFile.length-1);
+            folderpath = folders.join("/");
+    
+            protocol = url.protocol+"//";
+            host = url.host;
+    
+            ourLocation=protocol+host+"/Aprotur/Recursos/AREA_MUNICIPIOS.kmz";
+    
+           
+           var k = new google.maps.KmlLayer({
+                        url: ourLocation,
+                        preserveViewport: true,
+                        map: map
+                    });
+            k.setMap(map);
 
             ////Set Marker on the Map
             //var marker = new google.maps.Marker({

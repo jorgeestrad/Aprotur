@@ -207,6 +207,7 @@ namespace GeoPlus.Controllers
             try
             {
                 string uniqueFileName = "";
+                if (string.IsNullOrEmpty(modelo.Ruta)) modelo.Ruta = "";
                 if (ModelState.IsValid)
                 {
                     try
@@ -311,6 +312,7 @@ namespace GeoPlus.Controllers
                     Anio = s.Anio,
                     AporteDocumento = s.AporteDocumento,
                     FormatoDocumentoId = s.FormatoDocumentoId,
+                    PaisId = s.PaisId,
                     Resultado = s.Resultado,
                     ReferenciaAPA = s.ReferenciaAPA,
                     TemaCentral = s.TemaCentral,
@@ -330,6 +332,7 @@ namespace GeoPlus.Controllers
             documento.TiposDocumentos = GetTiposDocumentos();
             documento.TiposFuentesBibliograficas = GetFuentesBibligraficas();
             documento.FormatosDocumentos = GetFormatosDocumentos();
+            documento.Paises = GetPaises();
             return View(documento);
         }
 
@@ -344,6 +347,7 @@ namespace GeoPlus.Controllers
         public async Task<IActionResult> Edit(int id, DocumentoViewModel modelo)
         {
             string uniqueFileName = "";
+            if (string.IsNullOrEmpty(modelo.Ruta)) modelo.Ruta = "";
 
             if (id != modelo.Id)
             {
@@ -361,6 +365,7 @@ namespace GeoPlus.Controllers
                         Resultado = modelo.Resultado,
                         FechaPublicacion = modelo.FechaPublicacion,
                         TipoDocumentoId = modelo.TipoDocumentoId,
+                        PaisId = modelo.PaisId,
                         Autor = modelo.Autor,
                         Portada = modelo.Portada,
                         Ruta = modelo.Ruta,
@@ -421,6 +426,7 @@ namespace GeoPlus.Controllers
             modelo.TiposDocumentos = GetTiposDocumentos();
             modelo.TiposFuentesBibliograficas = GetFuentesBibligraficas();
             modelo.FormatosDocumentos = GetFormatosDocumentos();
+            modelo.Paises = GetPaises();
             return View(modelo);
         }
 
