@@ -66,8 +66,8 @@
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.10" />
     <PackageReference Include="EntityFramework" Version="6.4.4" />
-    <PackageReference Include="DevExtreme.AspNet.Core" Version="19.1.11" />
-    <PackageReference Include="DevExtreme.AspNet.Data" Version="2.5.1" />
+    <PackageReference Include="DevExtreme.AspNet.Core" Version="21.2.4" />
+    <PackageReference Include="DevExtreme.AspNet.Data" Version="2.8.2" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="wwwroot\images\gallery\" />

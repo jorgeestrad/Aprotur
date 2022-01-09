@@ -6,10 +6,10 @@
 <div>
     @if (Model.DocumentosProyectos != null && Model.DocumentosProyectos.Count > 0)
     {
-            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Editar</a>
+            <a asp-action="Edit" asp-route-id=@Model.Id class="btn btn-warning">Editar</a>
     }
   
-     <a asp-action="VincularProyecto" asp-route-id="@Model.Id" class="btn btn-info">Vincular Proyecto</a>
+     <a asp-action="VincularProyecto" asp-route-id=@Model.Id class="btn btn-info">Vincular Proyecto</a>
    
     <a asp-action="Index" class="btn btn-success">Retornar al Listado de Documentos</a>
 </div>
@@ -24,15 +24,13 @@ else
         <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-headingt">
-                    <h3 class="panel-title">Proyectos</h3>
+                    <h5 class="panel-title">Proyectos Vinculados con el Documento</h5>
                 </div>
                 <div class="panel-body">
                     <table class="table table-hover table-responsive table-striped" style="width:100%" id="MyTable">
                         <thead>
                             <tr>
-                                <th>
-                                   Proyectos
-                                </th>
+                                
                                 <th></th>
                             </tr>
                         </thead>

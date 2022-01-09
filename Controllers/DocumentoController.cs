@@ -517,6 +517,7 @@ namespace GeoPlus.Controllers
                 .Where(c => c.Id == id)
                 .Select(s => new Documento
                 {
+                    Id = s.Id,
                     Nombre = s.Nombre,
                     Resultado = s.Resultado,
                     FechaPublicacion = s.FechaPublicacion,

@@ -3,16 +3,12 @@
 @{ ViewData["Title"] = "Home Page"; }
 
 <div class="row offset-1">
-    <div id="mapa" class="col-md-8">
-
-    </div>
     <div class="col-md-3">
         <div class="card" style="width:100%">
             <div class="card-body" style="width:100%">
-                <h5 class="card-title">Proyectos</h5>
-                <h6 class="card-subtitle mb-2 text-muted">Listado de proyectos</h6>
+               <h6 class="card-subtitle mb-2 text-muted">Listado de proyectos</h6>
                 <div id="lproyectos" style="height:400px">
-                    <table class="display table-success table-striped" style="width:100%; font-size:smaller; height:auto" id="MyTable">
+                    <table class="display table-success table-striped" style="width:100%; font-size:smaller; height:auto; background-color:#007bff" id="MyTable">
                         <thead>
                             <tr>
                                 <th></th>
@@ -42,6 +38,8 @@
         </div>
         <div id="loadIndicatorContainer"></div>
     </div>
+     <div id="mapa" class="col-md-8">
+    </div>
 </div>
 
 <div id="PopupImagen">
@@ -50,25 +48,7 @@
     </div>
 </div>
 
-<div id="popupComentario">
-    <div id="tabpanel-container-comentario">
-        <div class="row">
-           <div class="col-sm-12" id="txtComentario"></div>
-        </div>
-        <hr />
-        <button type="button" onclick="comentar();" class="btn btn-warning">Enviar</button>
-    </div>
-</div>
 
-<div id="popupResponder">
-    <div id="tabpanel-container-responder">
-        <div class="row">
-           <div class="col-sm-12" id="txtResponder"></div>
-        </div>
-        <hr />
-        <button type="button" onclick="responderComentario();" class="btn btn-warning">Enviar</button>
-    </div>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
@@ -120,7 +100,7 @@
             "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
         },});
 
-       var tableComentarios = $('#MyTableComentarios').DataTable({
+       var tableBaseDocumetal = $('#TableBaseDocumental').DataTable({
             language: {
             url: '//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json'
         },});
@@ -152,89 +132,8 @@
         value: "",
         height: 140}).dxTextArea("instance");
 
-    $("#popupComentario").dxPopup({
-                         showTitle: true,
-                         title: "Comentar",
-                         width: 600,
-                         height: 300,
-                         resizeEnabled: true,
-                         dragEnabled: true,
-                         position: "center",});
-   
-    const popupComentario = $("#popupComentario").dxPopup("instance");
+        
     
-    $("#popupResponder").dxPopup({
-                         showTitle: true,
-                         title: "Reponder",
-                         width: 600,
-                         height: 300,
-                         resizeEnabled: true,
-                         dragEnabled: true,
-                         position: "center",});
-   
-    const popupResponder = $("#popupResponder").dxPopup("instance");
-    function responder(idComentario){
-        comentarioId = idComentario;
-         $("#txtResponder").val('');
-        popupResponder.show();
-    }
-
-    function responderComentario(){
-        var _respuesta = txtResponder.option("value");
-        const datos = { comentarioId: comentarioId,respuestaDada: _respuesta}
-         $.ajax({
-           type: 'POST',
-           url: '@Url.Action("AgregarRespuestaComentario","Comentario")',
-           dataType: 'json',
-           contentType: 'application/json',
-           data: JSON.stringify(datos),
-           success: function (resultado) {
-               if (!resultado.isSuccess)
-               {
-                  alert(resultado.message);
-                  popupResponder.hide();
-               }
-               else{
-                   alert('Comentario enviado de manera correcta!');
-                   popupResponder.hide();
-               }
-           },
-           error: function (ex) {
-               alert('Se presentó un evento no esperado!' + ' - ' + ex);
-               popupResponder.hide();
-           }
-        }); 
-    }
-
-    function comentar(){
-      var _comentario = txtComentario.option("value");
-      var _municipioId = 1;
-      const datos = { proyectoId: proyectoId,comentarioDado: _comentario}
-      $.ajax({
-           type: 'POST',
-           url: '@Url.Action("AgregarComentario","Comentario")',
-           dataType: 'json',
-           contentType: 'application/json',
-           data: JSON.stringify(datos),
-           success: function (resultado) {
-               if (!resultado.isSuccess)
-               {
-                  alert(resultado.message);
-                  popupComentario.hide();
-               }
-               else{
-                   alert('Comentario enviado de manera correcta!');
-                   popupComentario.hide();
-                    $("#txtComentario").val('');
-               }
-           },
-           error: function (ex) {
-               alert('Se presentó un evento no esperado!' + ' - ' + ex);
-               popupComentario.hide();
-           }
-        });   
-      }
-
     /**
     * Muestra el documento y su información básica
     * param  id {int} Identifica el documento
@@ -347,37 +246,14 @@
             var cadenaAudios = "";
             var cadenaVideos = "";
             var cadenaProyectos = "";
-            var cadenaComentarios = "";
+            var cadenaBaseDocumental = "";
             var viewPdfs = "";
             var viewFotos = "";
             var viewAudios = "";
             var viewVideos = "";
             var viewProyectos = "";
-            var viewComentarios = "";
-            $.ajax({
-                type: 'GET',
-                url: '@Url.Action("GetComentariosProyecto","Comentario")',
-                dataType: 'json',
-                MaxJsonLength: 99999999,
-                data: { id: id },
-                success: function (comentarios) {
-                   viewComentarios = "<div><button type='button' class='btn btn-success' onclick = 'popupComentario.show();' >Comentar</button><div style='overflow-y: scroll'><table class='hover row-border' style='width:98%;height:460px;font-size:medium' id='MyTableComentarios'><thead><tr><th style='width:90%'></th><th></th></tr></thead><tbody>";
-                   for (var j = 0; j < comentarios.result.$values.length; j++) {
-                      var comentarioId = comentarios.result.$values[j].idComentario;
-                      cadenaComentarios = cadenaComentarios + "<tr><td><div><div class='row'> -      -" + comentarios.result.$values[j].comentarioDado + "</div></div></td><td id=" + comentarioId + "><button type='button' class='btn btn-warning' onclick = 'responder(" + comentarioId + ");' >Responder</button></td></tr>";
-                      for (var p = 0; p < comentarios.result.$values[j].respuestasEnviadas.$values.length; p++) {
-                        var respuestaId = comentarios.result.$values[j].respuestasEnviadas.$values[p].id;
-                        cadenaComentarios = cadenaComentarios + "<tr><td><div><div class='row'><p style='color: red;'> ------ " + comentarios.result.$values[j].respuestasEnviadas.$values[p].respuesta + "</p></div></div></td><td></td></tr>";
-                      }
-                   }
-
-
-                },
-                error: function (ex) {
-                    loadIndicator.option("visible", false);
-                    alert('Se presentó un evento no esperado!' + ' - ' + ex);
-                }
-              });
+            var viewBaseDocumental = "";
+            
             $.ajax({
                 type: 'GET',
                 url: '@Url.Action("GetDocumentosProyecto")',
@@ -390,6 +266,8 @@
                      viewAudios = "<div><table class='hover row-border' style='width:98%; font-size:medium' id='MyTableAudios'><thead><tr><th style='width:90%'>Audios</th><th></th></tr></thead><tbody>";
                      viewVideos = "<div><table class='hover row-border' style='width:98%; font-size:medium' id='MyTableVideos'><thead><tr><th style='width:90%'>Videos</th><th></th></tr></thead><tbody>";
                      viewProyectos = "<div id='carouselExampleControls' class='carousel slide' data-bs-ride='carousel'><div class='carousel-inner'>";
+                     viewBaseDocumental = "<div><table class='hover row-border' style='width:98%; font-size:medium' id='MyTableBaseDocumental'><thead><tr><th style='width:90%'>Base Documental</th><th></th></tr></thead><tbody>";
+               
                      var p = 0;
                      $.each(documentos.$values, function (i, docu) {
                          if (typeof docu.nombre !== 'undefined') {
@@ -416,6 +294,9 @@
                                         cadenaProyectos = cadenaProyectos + "<div class='carousel-item'><img src='Aprotur/kmz/"+ docu.ruta + "' class='d-block w-100' alt='" + docu.titulo + "'></div>";
                                      }
                                  }
+                                 if (docu.tipoDocumentoId === 15) {
+                                     cadenaBaseDocumental = cadenaBaseDocumental + "<tr><td>" + docu.nombre + "</td><td><a href='javascript:verDocumento(" + docu.id + ",\"" + docu.nombre + "\",\"" + docu.titulo + "\",\"" + docu.ruta + "\"," + docu.tipoDocumentoId + ",\"" + docu.descripcion + "\",\"" + docu.autor + "\")' class='card - link'>Ver ...</a></td></tr>";
+                                 }
                              
                          }
                      });
@@ -424,7 +305,7 @@
                      viewFotos = viewFotos + cadenaFotos + "</tbody></table></div>";
                      viewAudios = viewAudios + cadenaAudios + "</tbody></table></div>";
                      viewVideos = viewVideos + cadenaVideos + "</tbody></table></div>";
-                     viewComentarios = viewComentarios + cadenaComentarios + "</tbody></table></div></div>";
+                     viewBaseDocumental = viewBaseDocumental + cadenaBaseDocumental + "</tbody></table></div>";
                      viewProyectos = viewProyectos + cadenaProyectos + "</div><button class='carousel-control-prev' type='button' data-bs-target='#carouselExampleControls' data-bs-slide='prev'><span class='carousel-control-prev-icon' aria-hidden='true'></span><span class='visually-hidden'>Previous</span></button><button class='carousel-control-next' type='button' data-bs-target='#carouselExampleControls' data-bs-slide='next'><span class='carousel-control-next-icon' aria-hidden='true'></span><span class='visually-hidden'>Next</span></button></div>";
                      
                      var tabPanel = $("#tabpanel-container").dxTabPanel({
@@ -471,11 +352,11 @@
                                  }
                              }, 
                                  {
-                                 title: "Comentarios",
+                                 title: "Base Documental",
                                  icon: "message",
                                  template: function (itemData, itemIndex, element) {
-                                     const textAreaDivComentarios = $(viewComentarios);
-                                      textAreaDivComentarios.appendTo(element);
+                                     const textAreaDivBaseDocumental = $(viewBaseDocumental);
+                                      textAreaDivBaseDocumental.appendTo(element);
                                  }
                              }],
                          onSelectionChanged: function (e) {
