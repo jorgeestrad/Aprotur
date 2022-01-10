@@ -246,5 +246,172 @@ namespace GeoPlus.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
+        /// <summary>
+        /// Consulta el listado de países
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult Paises()
+        {
+            return View(_context.Paises.Select(s => new Pais
+            {
+                Id = s.Id,
+                Nombre = s.Nombre,
+            }).ToList());
+        }
+
+        /// <summary>
+        /// Permite crear un Pais
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult CreatePais()
+        {
+            return View(new PaisViewModel { Nombre = ""});
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreatePais(PaisViewModel modelo)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    Pais pais = new Pais
+                    {
+                        Nombre = modelo.Nombre,
+                    };
+                   
+                    _context.Add(pais);
+
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Paises));
+                }
+                catch (DbUpdateException dbUpdateException)
+                {
+                    if (dbUpdateException.InnerException.Message.Contains("duplicate"))
+                    {
+                        ModelState.AddModelError(string.Empty, "Ya existe este País.");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, dbUpdateException.InnerException.Message);
+                    }
+                }
+                catch
+                {
+                    ModelState.AddModelError("Nombre", "Ya existe este País.");
+                    return View(modelo);
+                }
+            }
+
+            return View(modelo);
+        }
+
+        /// <summary>
+        /// Permite editar un País
+        /// </summary>
+        /// <param name="id">Identifica el proyecto</param>
+        /// <returns></returns>
+        public IActionResult EditPais(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var paisViewModel = _context.Paises.Select(s => new PaisViewModel
+            {
+                Id = s.Id,
+                Nombre = s.Nombre,
+            }).Where(f => f.Id == id.Value).FirstOrDefault();
+
+            if (paisViewModel == null)
+            {
+                return NotFound();
+            }
+
+            return View(paisViewModel);
+        }
+
+        /// <summary>
+        /// Almacena los cambios dados por el usuario
+        /// </summary>
+        /// <param name="id">Identifica el país</param>
+        /// <param name="modelo">Objeto de Tipo Pais</param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditPais(int id, PaisViewModel modelo)
+        {
+            if (id != modelo.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+
+                    Pais pais = _context.Paises.Find(id);
+
+                    pais.Nombre = modelo.Nombre;
+
+
+                    _context.Update(pais);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Paises));
+                }
+                catch (DbUpdateException dbUpdateException)
+                {
+                    if (dbUpdateException.InnerException.Message.Contains("duplicate"))
+                    {
+                        ModelState.AddModelError(string.Empty, "Ya existe este país.");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, dbUpdateException.InnerException.Message);
+                    }
+                }
+                catch (Exception exception)
+                {
+                    ModelState.AddModelError(string.Empty, exception.Message);
+                }
+            }
+            return View(modelo);
+        }
+
+        /// <summary>
+        /// Permite eliminar un país
+        /// </summary>
+        /// <param name="id">Identifica el país</param>
+        /// <returns></returns>
+        public async Task<IActionResult> DeletePais(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            Pais pais = _context.Paises
+                .Select(x => new Pais
+                {
+                    Id = x.Id,
+                    Nombre = x.Nombre,
+                })
+                .Where(x => x.Id == id.Value)
+                .FirstOrDefault();
+
+            if (pais == null)
+            {
+                return NotFound();
+            }
+
+            _context.Paises.Remove(pais);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Paises));
+        }
+
     }
 }

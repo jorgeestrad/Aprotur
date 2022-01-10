@@ -63,7 +63,14 @@
                                 @Html.DisplayFor(modelItem => item.FormatoDocumento.Nombre)
                             </td>
                             <td  id="@item.Id" style="width:10%">
-                                  <button data-id="@item.Id" class="btn fa-warning"><i class="fa fa-download"></i></button>
+                                @if (item.FormatoDocumento.Id_Local != 1)
+                                {
+                                    <a href='javascript:verDocumento(@item.Id,"@item.Nombre","@item.Titulo","@item.Ruta",@item.FormatoDocumento.Id_Local,@item.Anio,"@item.Autor")' class="fa fa-download"></a>
+                                }
+                                else
+                                {
+                                    <a href='javascript:verDocumento(@item.Id,"@item.Nombre","@item.Titulo","@item.Enlace",@item.FormatoDocumento.Id_Local,@item.Anio,"@item.Autor")' class="fa fa-download"></a>
+                                }
                             </td>
                         </tr>
                         }
@@ -74,7 +81,7 @@
         }
         else
         {
-            <h5>No se encontraron documentos bajo los criterios de búsqueda dados!</h5>
+            <h4>No se encontraron documentos bajo los criterios de búsqueda dados!</h4>
         }
 
     </div>
@@ -85,6 +92,63 @@
     <script src="/js/deleteDialog.js"></script>
 
     <script type="text/javascript">
+
+        /**
+    * Muestra el documento y su información básica
+    * param  id {int} Identifica el documento
+    * param  nombre {string} Nombre del documento
+    * param  titulo {string} Título del documento
+    * param  ruta {string} Ruta del documento
+    * param  tipodocumento {int} Identifica el tipo de documento
+    * param  descripcion {string} Descripcion del documento
+    * param  autor {string} Autor del documento
+    * return  {boolean}
+   */
+    function verDocumento(id, nombre, titulo, ruta, tipodocumento, descripcion, autor) {
+        
+        if (tipodocumento > 1) ruta = 'http://190.147.168.232/Aprotur/kmz/' + ruta;
+        var w = 800;
+        var h = 600;
+        if (tipodocumento === 3 ) 
+         {
+            w = 300;
+            h = 200;
+         }
+        var dualScreenLeft = window.screenLeft != undefined ? window.screenLeft : window.screenX;
+        var dualScreenTop = window.screenTop != undefined ? window.screenTop : window.screenY;
+
+        var width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
+        var height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
+
+        var left = ((width / 2) - (w / 2)) + dualScreenLeft;
+        var top = ((height / 2) - (h / 2)) + dualScreenTop;
+        var title = "";
+
+        if (tipodocumento === 5) {
+            title = 'Pdf';
+        }
+        if (tipodocumento === 4) {
+           title = 'Imágen';
+        }
+        if (tipodocumento === 3) {
+            title = 'Audio';
+        }
+        if (tipodocumento === 2) {
+            title = 'Vídeo';
+        }
+
+        if (tipodocumento === 1) {
+            title = 'Base Documental';
+        }
+         var newWindow = window.open(ruta, title, 'scrollbars=yes,resizable=1,status=yes, width=' + w + ', height=' + h + ', top=' + top + ', left=' + left);
+
+        // Puts focus on the newWindow
+        if (window.focus) {
+            newWindow.focus();
+        }
+    }
+
+
         $(document).ready(function () {
 
             $('#MyTable').DataTable({

@@ -170,9 +170,13 @@ namespace GeoPlus.Controllers
                     Select(s => new AproturWeb.Data.Entities.Documento
                     {
                         Id = s.Id,
+                        Nombre = s.Nombre,
                         Titulo = s.Titulo,
+                        Ruta = s.Ruta,
+                        FormatoDocumentoId = s.FormatoDocumentoId,
                         Anio = s.Anio,
                         Autor = s.Autor,
+                        Enlace = s.Enlace,
                         FormatoDocumento = s.FormatoDocumento,
                     }).ToList();
                 return documentos;
@@ -299,7 +303,7 @@ namespace GeoPlus.Controllers
             try
             {
                 var documentos = _context.DocumentoProyectos
-                    .Include(i => i.Documento)
+                    .Include(i => i.Documento).ThenInclude(i => i.FormatoDocumento)
                     .Where(f => f.ProyectoId == id)
                     .Select(s => new DocumentoViewModel
                     {
@@ -314,7 +318,10 @@ namespace GeoPlus.Controllers
                         Nombre = s.Documento.Nombre,
                         Ruta = s.Documento.Ruta,
                         TipoDocumentoId = s.Documento.TipoDocumentoId,
+                        FormatoDocumentoId = s.Documento.FormatoDocumento.Id_Local,
                         Titulo = s.Documento.Titulo,
+                        Enlace = s.Documento.Enlace,
+                      
                     });
                 return Ok(documentos);
             }

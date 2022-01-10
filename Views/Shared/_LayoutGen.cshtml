@@ -68,17 +68,22 @@
                         <li class="nav-item active">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home <span class="sr-only">(current)</span></a>
                         </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Opciones
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" asp-area="" asp-controller="Materia" asp-action="Index">Descriptores</a>
-                                <a class="dropdown-item" asp-area="" asp-controller="Proyecto" asp-action="Index">Proyectos</a>
-                                <a class="dropdown-item" asp-area="" asp-controller="Documento" asp-action="Index">Documentos</a>
+                     @if (this.User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" asp-area="" asp-controller="Home" asp-action="Index" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Opciones
+                                </a>
 
-                            </div>
-                        </li>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" asp-area="" asp-controller="Materia" asp-action="Index">Descriptores</a>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Proyecto" asp-action="Index">Proyectos</a>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Documento" asp-action="Index">Documentos</a>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Proyecto" asp-action="Paises">Países</a>
+                                </div>
+
+                            </li>
+                        }
                     </ul>
                      <ul class="navbar-nav mr-auto">
                         @if (this.User.Identity.IsAuthenticated)
@@ -98,6 +103,7 @@
                         }
                     </ul>
                     <form class="form-inline my-2 my-lg-0">
+                        <a class="nav-link" href="https://www.inaturalist.org/" style="color:white"  target="_blank">iNaturalist ...</a>
                         <button class="btn btn-outline-dark my-2 my-sm-0" asp-action="Search" asp-controller="Home" type="submit">Búsqueda Avanzada</button>
                     </form>
                 </div>

@@ -19,6 +19,8 @@ namespace AproturWeb.Data.Entities
         [MaxLength(5, ErrorMessage = "El Nombre del la extensión del Formato del Documento puede tener hasta {1} caracteres!")]
         public string Extension { get; set; }
 
+        public int Id_Local { get; set; }
+
         public ICollection<Documento> Documentos { get; set; }
     }
 }
