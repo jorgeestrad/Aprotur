@@ -63,7 +63,6 @@
                                 @Html.DisplayFor(modelItem => item.FormatoDocumento.Nombre)
                             </td>
                             <td  id="@item.Id" style="width:10%">
-                                  <a asp-action="Edit" asp-controller="Documento" asp-route-id="@item.Id" class="btn btn-warning" data-toggle="tooltip" title= "Editar"><i class="fa fa-edit"></i></a>
                                   <button data-id="@item.Id" class="btn fa-warning"><i class="fa fa-download"></i></button>
                             </td>
                         </tr>

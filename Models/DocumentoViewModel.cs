@@ -14,27 +14,31 @@ namespace AproturWeb.Models
 
 
         [Required(ErrorMessage = "Se debe seleccionar el Tipo de Documento!")]
-        [Display(Name = "Tipo de Documento")]
+        [Display(Name = "Tipo de Documento *")]
+        [Range(1,int.MaxValue,ErrorMessage ="Seleccione el Tipo de Documento")]
         public int TipoDocumentoId { get; set; }
 
 
         [Required(ErrorMessage = "Se debe seleccionar el Tipo de Fuente Bibliográfica!")]
-        [Display(Name = "Tipo de Fuente Bibliográfica")]
+        [Display(Name = "Tipo de Fuente Bibliográfica  *")]
+        [Range(1, int.MaxValue, ErrorMessage = "Seleccione el Tipo de Fuente Bibliográfica!")]
         public int TipoFuenteBibliograficaId { get; set; }
 
         [Required(ErrorMessage = "Se debe seleccionar el País!")]
-        [Display(Name = "País")]
+        [Range(1, int.MaxValue, ErrorMessage = "Seleccione el País")]
+        [Display(Name = "País  *")]
         public int PaisId { get; set; }
 
         [Required(ErrorMessage = "Se debe seleccionar el Formato del Documento!")]
-        [Display(Name = "Formato del Documento")]
+        [Range(1, int.MaxValue, ErrorMessage = "Seleccione el Formato del Documento")]
+        [Display(Name = "Formato del Documento  *")]
         public int FormatoDocumentoId { get; set; }
 
       
         [Display(Name = "Año")]
         public int Anio { get; set; }
 
-        [Display(Name = "Nombre")]
+        [Display(Name = "Nombre  *")]
         [Required(ErrorMessage = "Debe ingresar el Nombre del Documento!")]
         [MaxLength(200, ErrorMessage = "El Nombre del Documento puede tener hasta {1} caracteres!")]
         public string Nombre { get; set; }
@@ -47,7 +51,7 @@ namespace AproturWeb.Models
         [MaxLength(4000, ErrorMessage = "El Aporte al Documento puede tener hasta {1} caracteres!")]
         public string AporteDocumento { get; set; }
 
-        [Display(Name = "Título")]
+        [Display(Name = "Título  *")]
         [Required(ErrorMessage = "Debe ingresar el Título del Documento!")]
         [MaxLength(200, ErrorMessage = "El Título del Documento puede tener hasta {1} caracteres!")]
         public string Titulo { get; set; }
@@ -71,7 +75,7 @@ namespace AproturWeb.Models
         [MaxLength(400, ErrorMessage = "El Enlace de acceso puede tener hasta {1} caracteres!")]
         public string Enlace { get; set; }
 
-        [Display(Name = "Autor")]
+        [Display(Name = "Autor  *")]
         [Required(ErrorMessage = "Debe ingresar el Nombre del autor o creador del Documento!")]
         [MaxLength(100, ErrorMessage = "El Nombre del Autor del Documento puede tener hasta {1} caracteres!")]
         public string Autor { get; set; }
