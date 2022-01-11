@@ -40,8 +40,6 @@ namespace GeoPlus.Controllers
             }).ToList());
         }
 
-
-
         /// <summary>
         /// Permite crear un Proyecto
         /// </summary>
@@ -413,5 +411,338 @@ namespace GeoPlus.Controllers
             return RedirectToAction(nameof(Paises));
         }
 
+        
+        /// <summary>
+        /// Consulta el listado de Tipos de Fuentes Bibliográficas
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult TiposFuenteBibliograficas()
+        {
+            return View(_context.TiposFuenteBibliograficas.Select(s => new TipoFuenteBibliografica
+            {
+                Id = s.Id,
+                Nombre = s.Nombre,
+            }).OrderBy(o => o.Nombre).ToList());
+        }
+
+        /// <summary>
+        /// Permite crear un Tipo de Fuente Bibliografica
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult CreateFuenteBibliografica()
+        {
+            return View(new TipoFuenteBibliograficaViewModel { Nombre = "" });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateFuenteBibliografica(TipoFuenteBibliograficaViewModel modelo)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    TipoFuenteBibliografica tipoFteB = new TipoFuenteBibliografica
+                    {
+                        Nombre = modelo.Nombre,
+                    };
+
+                    _context.Add(tipoFteB);
+
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(TiposFuenteBibliograficas));
+                }
+                catch (DbUpdateException dbUpdateException)
+                {
+                    if (dbUpdateException.InnerException.Message.Contains("duplicate"))
+                    {
+                        ModelState.AddModelError(string.Empty, "Ya existe este Tipo de Fuente Bibliográfica.");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, dbUpdateException.InnerException.Message);
+                    }
+                }
+                catch
+                {
+                    ModelState.AddModelError("Nombre", "Ya existe este Tipo de Fuente Bibliográfica.");
+                    return View(modelo);
+                }
+            }
+
+            return View(modelo);
+        }
+
+        /// <summary>
+        /// Permite editar una Fuente Bibliográfica
+        /// </summary>
+        /// <param name="id">Identifica el el Tipo de Fuente Bibliográfica</param>
+        /// <returns></returns>
+        public IActionResult EditFuenteBibliografica(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var viewModel = _context.TiposFuenteBibliograficas.Select(s => new TipoFuenteBibliograficaViewModel
+            {
+                Id = s.Id,
+                Nombre = s.Nombre,
+            }).Where(f => f.Id == id.Value).FirstOrDefault();
+
+            if (viewModel == null)
+            {
+                return NotFound();
+            }
+
+            return View(viewModel);
+        }
+
+        /// <summary>
+        /// Almacena los cambios dados por el usuario
+        /// </summary>
+        /// <param name="id">Identifica el Tipo de Fuente Bibliográfica</param>
+        /// <param name="modelo">Objeto de Tipo Pais</param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditFuenteBibliografica(int id, TipoFuenteBibliograficaViewModel modelo)
+        {
+            if (id != modelo.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+
+                    TipoFuenteBibliografica tipoFte = _context.TiposFuenteBibliograficas.Find(id);
+
+                    tipoFte.Nombre = modelo.Nombre;
+
+
+                    _context.Update(tipoFte);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(TiposFuenteBibliograficas));
+                }
+                catch (DbUpdateException dbUpdateException)
+                {
+                    if (dbUpdateException.InnerException.Message.Contains("duplicate"))
+                    {
+                        ModelState.AddModelError(string.Empty, "Ya existe este Tipo de Fuente Bibliográfica.");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, dbUpdateException.InnerException.Message);
+                    }
+                }
+                catch (Exception exception)
+                {
+                    ModelState.AddModelError(string.Empty, exception.Message);
+                }
+            }
+            return View(modelo);
+        }
+
+        /// <summary>
+        /// Permite eliminar un Tipo de Fuente Bibliográfica
+        /// </summary>
+        /// <param name="id">Identifica el Tipo de Fuente Bibliográfica</param>
+        /// <returns></returns>
+        public async Task<IActionResult> DeleteFuenteBibliografica(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            TipoFuenteBibliografica tipoFte = _context.TiposFuenteBibliograficas
+                .Select(x => new TipoFuenteBibliografica
+                {
+                    Id = x.Id,
+                    Nombre = x.Nombre,
+                })
+                .Where(x => x.Id == id.Value)
+                .FirstOrDefault();
+
+            if (tipoFte == null)
+            {
+                return NotFound();
+            }
+
+            _context.TiposFuenteBibliograficas.Remove(tipoFte);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(TiposFuenteBibliograficas));
+        }
+
+        /// <summary>
+        /// Consulta el listado de Tipos de Documentos
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult TiposDocumentos()
+        {
+            return View(_context.TiposDocumento.Select(s => new TipoDocumento
+            {
+                Id = s.Id,
+                Nombre = s.Nombre,
+            }).OrderBy(o => o.Nombre).ToList());
+        }
+
+        /// <summary>
+        /// Permite crear un Tipo de Documento
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult CreateTipoDocumento()
+        {
+            return View(new TipoDocumentoViewModel { Nombre = "" });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateTipoDocumento(TipoDocumentoViewModel modelo)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    TipoDocumento tipoDocumento = new TipoDocumento
+                    {
+                        Nombre = modelo.Nombre,
+                    };
+
+                    _context.Add(tipoDocumento);
+
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(TiposDocumentos));
+                }
+                catch (DbUpdateException dbUpdateException)
+                {
+                    if (dbUpdateException.InnerException.Message.Contains("duplicate"))
+                    {
+                        ModelState.AddModelError(string.Empty, "Ya existe este Tipo de Documento.");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, dbUpdateException.InnerException.Message);
+                    }
+                }
+                catch
+                {
+                    ModelState.AddModelError("Nombre", "Ya existe este Tipo de Documento.");
+                    return View(modelo);
+                }
+            }
+
+            return View(modelo);
+        }
+
+        /// <summary>
+        /// Permite editar un Tipo de Documento
+        /// </summary>
+        /// <param name="id">Identifica el el Tipo de Documento</param>
+        /// <returns></returns>
+        public IActionResult EditTipoDocumento(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var viewModel = _context.TiposDocumento.Select(s => new TipoDocumentoViewModel
+            {
+                Id = s.Id,
+                Nombre = s.Nombre,
+            }).Where(f => f.Id == id.Value).FirstOrDefault();
+
+            if (viewModel == null)
+            {
+                return NotFound();
+            }
+
+            return View(viewModel);
+        }
+
+        /// <summary>
+        /// Almacena los cambios dados por el usuario
+        /// </summary>
+        /// <param name="id">Identifica el Tipo de Documento</param>
+        /// <param name="modelo">Objeto de Tipo TipoDocumentoViewModel</param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditTipoDocumento(int id, TipoDocumentoViewModel modelo)
+        {
+            if (id != modelo.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+
+                    TipoDocumento tipoDocumento = _context.TiposDocumento.Find(id);
+
+                    tipoDocumento.Nombre = modelo.Nombre;
+
+
+                    _context.Update(tipoDocumento);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(TiposDocumentos));
+                }
+                catch (DbUpdateException dbUpdateException)
+                {
+                    if (dbUpdateException.InnerException.Message.Contains("duplicate"))
+                    {
+                        ModelState.AddModelError(string.Empty, "Ya existe este Tipo de Documento.");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, dbUpdateException.InnerException.Message);
+                    }
+                }
+                catch (Exception exception)
+                {
+                    ModelState.AddModelError(string.Empty, exception.Message);
+                }
+            }
+            return View(modelo);
+        }
+        
+        
+        /// <summary>
+        /// Permite eliminar un Tipo de Documento
+        /// </summary>
+        /// <param name="id">Identifica el Tipo de Documento</param>
+        /// <returns></returns>
+        public async Task<IActionResult> DeleteTipoDocumento(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            TipoDocumento tipoDocumento = _context.TiposDocumento
+                .Select(x => new TipoDocumento
+                {
+                    Id = x.Id,
+                    Nombre = x.Nombre,
+                })
+                .Where(x => x.Id == id.Value)
+                .FirstOrDefault();
+
+            if (tipoDocumento == null)
+            {
+                return NotFound();
+            }
+
+            _context.TiposDocumento.Remove(tipoDocumento);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(TiposDocumentos));
+        }
     }
 }

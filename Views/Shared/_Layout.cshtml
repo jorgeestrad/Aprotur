@@ -53,12 +53,12 @@
         <div class="pos-f-t">
             <div class="collapse" id="navbarToggleExternalContent">
                 <div class="bg-primary p-4">
-                    <h4 class="text-white">Collapsed content</h4>
+                    <h4 class="text-black">Collapsed content</h4>
                     <span class="text-muted">Toggleable via the navbar brand.</span>
                 </div>
             </div>
-            <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-                <a class="navbar-brand" href="#">APROTUR</a>
+            <nav class="navbar navbar-expand-lg navbar-dark bg-transparent">
+                <a class="navbar-brand" style="color:black" href="#">APROTUR</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -66,23 +66,24 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item active">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home <span class="sr-only">(current)</span></a>
+                            <a class="nav-link" asp-area="" style="color:black" asp-controller="Home" asp-action="Index">Home <span class="sr-only">(current)</span></a>
                         </li>
 
                         @if (this.User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" asp-area="" asp-controller="Home" asp-action="Index" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <a class="nav-link dropdown-toggle" asp-area="" style="color:black" asp-controller="Home" asp-action="Index" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Opciones
                                 </a>
 
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" asp-area="" asp-controller="Materia" asp-action="Index">Descriptores</a>
-                                    <a class="dropdown-item" asp-area="" asp-controller="Proyecto" asp-action="Index">Proyectos</a>
-                                    <a class="dropdown-item" asp-area="" asp-controller="Documento" asp-action="Index">Documentos</a>
-                                    <a class="dropdown-item" asp-area="" asp-controller="Proyecto" asp-action="Paises">Países</a>
-                                </div>
-
+                                    <a class="dropdown-item" style="color:black" asp-area="" asp-controller="Materia" asp-action="Index">Descriptores</a>
+                                    <a class="dropdown-item" style="color:black" asp-area="" asp-controller="Proyecto" asp-action="Index">Proyectos</a>
+                                    <a class="dropdown-item" style="color:black" asp-area="" asp-controller="Documento" asp-action="Index">Documentos</a>
+                                    <a class="dropdown-item" style="color:black" asp-area="" asp-controller="Proyecto" asp-action="Paises">Países</a>
+                                    <a class="dropdown-item" style="color:black" asp-area="" asp-controller="Proyecto" asp-action="TiposFuenteBibliograficas">Tipo de Fuente Bibliográfica</a>
+                                    <a class="dropdown-item" style="color:black" asp-area="" asp-controller="Proyecto" asp-action="TiposDocumentos">Tipo de Documento</a>
+                                 </div>
                             </li>
                         }
                     </ul>
@@ -90,22 +91,22 @@
                         @if (this.User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item active">
-                                <a class="nav-link" asp-area="" asp-controller="Account" asp-action="ChangeUser">@this.User.Identity.Name</a>
+                                <a class="nav-link" asp-area="" style="color:black" asp-controller="Account" asp-action="ChangeUser">@this.User.Identity.Name</a>
                             </li>
                             <li class="nav-item active">
-                                <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
+                                <a class="nav-link" asp-area="" style="color:black" asp-controller="Account" asp-action="Logout">Logout</a>
                             </li>
                         }
                         else
                         {
                              <li class="nav-item active">
-                                <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Login">Login <span class="sr-only">(current)</span></a>
+                                <a class="nav-link" asp-area="" style="color:black" asp-controller="Account" asp-action="Login">Login <span class="sr-only">(current)</span></a>
                             </li>
                         }
                     </ul>
                    
                     <form class="form-inline my-2 my-lg-0">
-                       <a class="nav-link" href="https://www.inaturalist.org/" style="color:white"  target="_blank">iNaturalist ...</a>
+                       <a class="btn btn-outline-dark my-2 my-sm-0" style="color:black" href="https://www.inaturalist.org/"  target="_blank">BIOBLITZ</a>
                        <button class="btn btn-outline-dark my-2 my-sm-0" asp-action="Search" asp-controller="Home" type="submit">Búsqueda Avanzada</button>
                     </form>
                 </div>
