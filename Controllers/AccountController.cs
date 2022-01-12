@@ -10,6 +10,8 @@
     using System.Security.Claims;
     using Microsoft.AspNetCore.Identity;
     using System;
+    using AproturWeb.Data;
+    using Microsoft.EntityFrameworkCore;
 
     /// <summary>
     /// Adminitración de las cuentas de usaurios
@@ -21,7 +23,8 @@
         private readonly IMailHelper mailHelper;
         private User user { get; set; }
         private PermisosPorUsuario permission;
-      
+        private readonly DataContext _context;
+
         /// <summary>
         /// Constructor de la Clase
         /// </summary>
@@ -31,12 +34,14 @@
         /// <param name="countryRepository"></param>
         /// <param name="userTypeRepository"></param>
         /// <param name="localizer"></param>
+        /// <param name="context"></param>
         public AccountController(IUserHelper userHelper,
-                                 IMailHelper mailHelper)
+                                 IMailHelper mailHelper,
+                                 DataContext context)
         {
            this.userHelper = userHelper;
            this.mailHelper = mailHelper;
-           
+           this._context = context;
         }
 
         /// <summary>
@@ -194,6 +199,115 @@
             
             return this.View(model);
         }
+
+
+        /// Consulta el listado de usuarios
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult UserList()
+        {
+            try
+            {
+                var list = _context.Users
+                    .Select(i => new User
+                    {
+                        Id = i.Id,
+                        Apellidos = i.Apellidos,
+                        Nombres = i.Nombres,
+                        Address = i.Address,
+                        Email = i.Email,
+                    })
+                    .ToList();
+                return View(list);
+            }
+            catch (Exception exp)
+            {
+                return NotFound(exp.Message);
+            }
+        }
+
+        /// <summary>
+        /// Permite editar un Usuario
+        /// </summary>
+        /// <param name="id">Identifica el Usuario</param>
+        /// <returns></returns>
+        public IActionResult EditUser(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var user = _context.Users
+                .Select(s => new User
+                {
+                    Id = s.Id,
+                    Apellidos = s.Apellidos,
+                    Nombres = s.Nombres,
+                     Address= s.Address,
+                      Documento = s.Documento,
+                       
+                  
+                })
+                .Where(f => f.Id == id).FirstOrDefault();
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+            
+            return View(user);
+        }
+
+        /// <summary>
+        /// Almacena los cambios dados por el usuario
+        /// </summary>
+        /// <param name="id">Identifica el usuario</param>
+        /// <param name="modelo"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(string id, User modelo)
+        {
+            string uniqueFileName = "";
+            if (id != modelo.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    
+
+                    
+
+                    //_context.Update(documento);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (DbUpdateException dbUpdateException)
+                {
+                    if (dbUpdateException.InnerException.Message.Contains("duplicate"))
+                    {
+                        ModelState.AddModelError(string.Empty, "Ya existe este documento.");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, dbUpdateException.InnerException.Message);
+                    }
+                }
+                catch (Exception exception)
+                {
+                    ModelState.AddModelError(string.Empty, exception.Message);
+                }
+            }
+         
+            return View(modelo);
+        }
+
+
 
 
         ///// <summary>
