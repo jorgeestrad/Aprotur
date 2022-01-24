@@ -266,41 +266,30 @@
                 MaxJsonLength: 99999999,
                 data: { id: id },
                  success: function (documentos) {
-                     viewPdfs = "<div><table class='hover row-border' style='width:98%; font-size:medium' id='MyTablePdfs'><thead><tr><th style='width:90%'>Documentos</th><th></th></tr></thead><tbody>";
-                     viewFotos = "<div><table class='hover row-border' style='width:98%; font-size:medium' id='MyTableFotos'><thead><tr><th style='width:90%'>Fotos</th><th></th></tr></thead><tbody>";
-                     viewAudios = "<div><table class='hover row-border' style='width:98%; font-size:medium' id='MyTableAudios'><thead><tr><th style='width:90%'>Audios</th><th></th></tr></thead><tbody>";
-                     viewVideos = "<div><table class='hover row-border' style='width:98%; font-size:medium' id='MyTableVideos'><thead><tr><th style='width:90%'>Videos</th><th></th></tr></thead><tbody>";
+                     viewPdfs = "<div style='overflow-y:scroll; height:100%'><table class='hover row-border' style='width:98%; font-size:medium' id='MyTablePdfs'><thead><tr><th style='width:90%'>Documentos</th><th></th></tr></thead><tbody>";
+                     viewFotos = "<div style='overflow-y:scroll; height:100%'><table class='hover row-border' style='width:98%; font-size:medium' id='MyTableFotos'><thead><tr><th style='width:90%'>Fotos</th><th></th></tr></thead><tbody>";
+                     viewAudios = "<div style='overflow-y:scroll; height:100%'><table class='hover row-border' style='width:98%; font-size:medium' id='MyTableAudios'><thead><tr><th style='width:90%'>Audios</th><th></th></tr></thead><tbody>";
+                     viewVideos = "<div style='overflow-y:scroll; height:100%'><table class='hover row-border' style='width:98%; font-size:medium' id='MyTableVideos'><thead><tr><th style='width:90%'>Videos</th><th></th></tr></thead><tbody>";
                      viewProyectos = "<div id='carouselExampleControls' class='carousel slide' data-bs-ride='carousel'><div class='carousel-inner'>";
-                     viewBaseDocumental = "<div><table class='hover row-border' style='width:98%; font-size:medium' id='MyTableBaseDocumental'><thead><tr><th style='width:20%'>Título</th><th style='width:20%'>Autor</th><th style='width:40%'>Referencia APA</th><th></th></tr></thead><tbody>";
+                     viewBaseDocumental = "<div style='overflow-y:scroll; height:100%'><table class='hover row-border' style='width:98%; font-size:medium' id='MyTableBaseDocumental'><thead><tr><th style='width:20%'>Título</th><th style='width:20%'>Autor</th><th style='width:40%'>Referencia APA</th><th></th></tr></thead><tbody>";
                
                      var p = 0;
                      $.each(documentos.$values, function (i, docu) {
                          if (typeof docu.nombre !== 'undefined') {
                                  if (docu.formatoDocumentoId === 5) {
-                                     cadenaPdfs = cadenaPdfs + "<tr><td>" + docu.nombre + "</td><td><a href='javascript:verDocumento(" + docu.id + ",\"" + docu.nombre + "\",\"" + docu.titulo + "\",\"" + docu.ruta + "\"," + docu.formatoDocumentoId + ",\"" + docu.descripcion + "\",\"" + docu.autor + "\")' class='card - link'>Ver ...</a></td></tr>";
+                                     cadenaPdfs = cadenaPdfs + "<tr style='border-bottom:1pt solid gray;'><td>" + docu.nombre + "</td><td><a href='javascript:verDocumento(" + docu.id + ",\"" + docu.nombre + "\",\"" + docu.titulo + "\",\"" + docu.ruta + "\"," + docu.formatoDocumentoId + ",\"" + docu.descripcion + "\",\"" + docu.autor + "\")' class='card - link'>Ver ...</a></td></tr>";
                                  }
                                  if (docu.formatoDocumentoId === 4) {
-                                     cadenaFotos = cadenaFotos + "<tr><td>" + docu.nombre + "</td><td><a href='javascript:verDocumento(" + docu.id + ",\"" + docu.nombre + "\",\"" + docu.titulo + "\",\"" + docu.ruta + "\"," + docu.formatoDocumentoId + ",\"" + docu.descripcion + "\",\"" + docu.autor + "\")' class='card - link'>Ver ...</a></td></tr>";
+                                     cadenaFotos = cadenaFotos + "<tr style='border-bottom:1pt solid gray;'><td>" + docu.nombre + "</td><td><a href='javascript:verDocumento(" + docu.id + ",\"" + docu.nombre + "\",\"" + docu.titulo + "\",\"" + docu.ruta + "\"," + docu.formatoDocumentoId + ",\"" + docu.descripcion + "\",\"" + docu.autor + "\")' class='card - link'>Ver ...</a></td></tr>";
                                  }
                                  if (docu.formatoDocumentoId === 3) {
-                                     cadenaAudios = cadenaAudios + "<tr><td>" + docu.nombre + "</td><td><a href='javascript:verDocumento(" + docu.id + ",\"" + docu.nombre + "\",\"" + docu.titulo + "\",\"" + docu.ruta + "\"," + docu.formatoDocumentoId + ",\"" + docu.descripcion + "\",\"" + docu.autor + "\")' class='card - link'>Escuchar ...</a></td></tr>";
+                                     cadenaAudios = cadenaAudios + "<tr style='border-bottom:1pt solid gray;'><td>" + docu.nombre + "</td><td><a href='javascript:verDocumento(" + docu.id + ",\"" + docu.nombre + "\",\"" + docu.titulo + "\",\"" + docu.ruta + "\"," + docu.formatoDocumentoId + ",\"" + docu.descripcion + "\",\"" + docu.autor + "\")' class='card - link'>Escuchar ...</a></td></tr>";
                                  }
                                  if (docu.formatoDocumentoId === 2) {
-                                     cadenaVideos = cadenaVideos + "<tr><td>" + docu.nombre + "</td><td><a href='javascript:verDocumento(" + docu.id + ",\"" + docu.nombre + "\",\"" + docu.titulo + "\",\"" + docu.ruta + "\"," + docu.formatoDocumentoId + ",\"" + docu.descripcion + "\",\"" + docu.autor + "\")' class='card - link'>Ver ...</a></td></tr>";
+                                     cadenaVideos = cadenaVideos + "<tr style='border-bottom:1pt solid gray;'><td>" + docu.nombre + "</td><td><a href='javascript:verDocumento(" + docu.id + ",\"" + docu.nombre + "\",\"" + docu.titulo + "\",\"" + docu.ruta + "\"," + docu.formatoDocumentoId + ",\"" + docu.descripcion + "\",\"" + docu.autor + "\")' class='card - link'>Ver ...</a></td></tr>";
                                  }
-                                 //if (docu.formatoDocumentoId === 1) {
-                                 //    if (p === 0)
-                                 //    {
-                                 //        p++;
-                                 //        cadenaProyectos = cadenaProyectos + "<div class='carousel-item active'><img src='Aprotur/kmz/"+ docu.ruta + "' class='d-block w-100' alt='" + docu.titulo +"'></div>";
-                                 //    }
-                                 //    else
-                                 //    {
-                                 //       cadenaProyectos = cadenaProyectos + "<div class='carousel-item'><img src='Aprotur/kmz/"+ docu.ruta + "' class='d-block w-100' alt='" + docu.titulo + "'></div>";
-                                 //    }
-                                 //}
                                  if (docu.formatoDocumentoId === 1) {
-                                     cadenaBaseDocumental = cadenaBaseDocumental + "<tr><td>" + docu.titulo + "</td><td>" + docu.autor + "</td><td>" + docu.referenciaAPA + "</td><td><a href='javascript:verDocumento(" + docu.id + ",\"" + docu.nombre + "\",\"" + docu.titulo + "\",\"" + docu.enlace + "\"," + docu.formatoDocumentoId + ",\"" + docu.descripcion + "\",\"" + docu.autor + "\")' class='card - link'>Ver ...</a></td></tr>";
+                                     cadenaBaseDocumental = cadenaBaseDocumental + "<tr style='border-bottom:1pt solid gray;'><td>" + docu.titulo + "</td><td>" + docu.autor + "</td><td>" + docu.referenciaAPA + "</td><td><a href='javascript:verDocumento(" + docu.id + ",\"" + docu.nombre + "\",\"" + docu.titulo + "\",\"" + docu.enlace + "\"," + docu.formatoDocumentoId + ",\"" + docu.descripcion + "\",\"" + docu.autor + "\")' class='card - link'>Ver ...</a></td></tr>";
                                  }
                              
                          }
@@ -318,6 +307,7 @@
                          selectedIndex: 0,
                          loop: false,
                          animationEnabled: true,
+                         scrollingEnabled: true,
                          swipeEnabled: true,
                          items: [
                              {
@@ -334,30 +324,23 @@
                                  const textAreaDivFotos = $(viewFotos);
                                  textAreaDivFotos.appendTo(element);
                              }
-                         }, {
-                             title: "Audios",
-                             icon: "music",
-                             template: function (itemData, itemIndex, element) {
-                                 const textAreaDivAudios = $(viewAudios);
-                                 textAreaDivAudios.appendTo(element);
-                             }
-                             }, {
-                                 title: "Videos",
-                                 icon: "video",
-                                  template: function (itemData, itemIndex, element) {
-                                      const textAreaDivVideos = $(viewVideos);
-                                      textAreaDivVideos.appendTo(element);
-                                 }
-                             }, 
-                             //{
-                             //    title: "Proyectos",
-                             //    icon: "event",
-                             //    template: function (itemData, itemIndex, element) {
-                             //         const textAreaDivProyectos = $(viewProyectos);
-                             //         textAreaDivProyectos.appendTo(element);
-                             //    }
-                             //}, 
-                                 {
+                         },
+                         //{
+                         //    title: "Audios",
+                         //    icon: "music",
+                         //    template: function (itemData, itemIndex, element) {
+                         //        const textAreaDivAudios = $(viewAudios);
+                         //        textAreaDivAudios.appendTo(element);
+                         //    }
+                         //    }, {
+                         //        title: "Videos",
+                         //        icon: "video",
+                         //         template: function (itemData, itemIndex, element) {
+                         //             const textAreaDivVideos = $(viewVideos);
+                         //             textAreaDivVideos.appendTo(element);
+                         //        }
+                         //    }, 
+                             {
                                  title: "Base Documental",
                                  icon: "message",
                                  template: function (itemData, itemIndex, element) {

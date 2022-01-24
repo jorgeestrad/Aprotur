@@ -308,8 +308,6 @@
         }
 
 
-
-
         ///// <summary>
         ///// Verifica el Correo electrónico
         ///// </summary>
