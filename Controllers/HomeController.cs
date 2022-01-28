@@ -51,6 +51,7 @@ namespace GeoPlus.Controllers
                         TiposDocumentos = GetTiposDocumentos(),
                         Paises = GetPaises(),
                         FormatosDocumentos = GetFormatosDocumentos(),
+                        Materias = GetMaterias(),
                         Autor = "",
                         Proyecto = "",
                         TemaCentral = "",
@@ -82,7 +83,9 @@ namespace GeoPlus.Controllers
                         if (busquedaVM.Proyecto == null &&
                             busquedaVM.Autor == null &&
                             busquedaVM.PaisId == 0 &&
+                            busquedaVM.MateriaId == 0 &&
                             busquedaVM.TipoDocumentoId == 0 &&
+                            busquedaVM.FormatoDocumentoId == 0 &&
                             busquedaVM.TituloDocumento == null &&
                             busquedaVM.TemaCentral == null)
                         {
@@ -91,6 +94,7 @@ namespace GeoPlus.Controllers
                                 TiposDocumentos = GetTiposDocumentos(),
                                 Paises = GetPaises(),
                                 FormatosDocumentos = GetFormatosDocumentos(),
+                                Materias = GetMaterias(),
                                 Autor = "",
                                 Proyecto = "",
                                 TemaCentral = "",
@@ -116,6 +120,33 @@ namespace GeoPlus.Controllers
             }
         }
 
+        private IEnumerable<SelectListItem> GetMaterias()
+        {
+            try
+            {
+                var la = from s in this._context.Materias select s;
+
+                var list = la
+                .Select(c => new SelectListItem
+                {
+                    Text = c.Nombre,
+                    Value = c.Id.ToString()
+                }).OrderBy(l => l.Text).ToList();
+
+                list.Insert(0, new SelectListItem
+                {
+                    Text = "Seleccione el Descriptor",
+                    Value = "0"
+                });
+
+                return list;
+            }
+            catch (Exception exp)
+            {
+                throw exp;
+            }
+        }
+
         public IActionResult ResultSearch(BusquedaViewModel busquedaVM)
         {
             try
@@ -123,7 +154,9 @@ namespace GeoPlus.Controllers
                 if (busquedaVM.Proyecto == null &&
                              busquedaVM.Autor == null &&
                              busquedaVM.PaisId == 0 &&
+                             busquedaVM.MateriaId == 0 && 
                              busquedaVM.TipoDocumentoId == 0 &&
+                             busquedaVM.FormatoDocumentoId == 0 &&
                              busquedaVM.TituloDocumento == null &&
                              busquedaVM.TemaCentral == null)
                 {
@@ -131,6 +164,7 @@ namespace GeoPlus.Controllers
                     {
                         TiposDocumentos = GetTiposDocumentos(),
                         Paises = GetPaises(),
+                        Materias = GetMaterias(),
                         FormatosDocumentos = GetFormatosDocumentos(),
                         Autor = "",
                         Proyecto = "",
@@ -167,6 +201,7 @@ namespace GeoPlus.Controllers
                           f.TipoDocumentoId == busquedaVM.TipoDocumentoId
                           ).
                     Include(i => i.FormatoDocumento).
+                    Include(i => i.MateriaDocumentos).
                     Select(s => new AproturWeb.Data.Entities.Documento
                     {
                         Id = s.Id,
@@ -178,7 +213,62 @@ namespace GeoPlus.Controllers
                         Autor = s.Autor,
                         Enlace = s.Enlace,
                         FormatoDocumento = s.FormatoDocumento,
+                        MateriaDocumentos = s.MateriaDocumentos,
                     }).ToList();
+
+                if (busquedaVM.MateriaId > 0)
+                {
+                    if (documentos != null && documentos.Count > 0)
+                    {
+
+                        var docuMat = this._context.MateriaDocumentos
+                            .Include(i => i.Documento)
+                            .Where(f => f.MateriaId == busquedaVM.MateriaId)
+                            .Select(s => s.Documento).Intersect(documentos)
+                            .Select(s => new AproturWeb.Data.Entities.Documento
+                            {
+                                Id = s.Id,
+                                Nombre = s.Nombre,
+                                Titulo = s.Titulo,
+                                Ruta = s.Ruta,
+                                FormatoDocumentoId = s.FormatoDocumentoId,
+                                Anio = s.Anio,
+                                Autor = s.Autor,
+                                Enlace = s.Enlace,
+                                FormatoDocumento = s.FormatoDocumento,
+                                MateriaDocumentos = s.MateriaDocumentos,
+                            }).ToList();
+                        documentos = docuMat;
+                    }
+                    else
+                    {
+
+                        var docuMat = this._context.MateriaDocumentos
+                           .Include(i => i.Documento)
+                           .Where(f => f.MateriaId == busquedaVM.MateriaId)
+                           .Select(s => s.Documento)
+                           .Select(s => new AproturWeb.Data.Entities.Documento
+                           {
+                               Id = s.Id,
+                               Nombre = s.Nombre,
+                               Titulo = s.Titulo,
+                               Ruta = s.Ruta,
+                               FormatoDocumentoId = s.FormatoDocumentoId,
+                               Anio = s.Anio,
+                               Autor = s.Autor,
+                               Enlace = s.Enlace,
+                               FormatoDocumento = s.FormatoDocumento,
+                               MateriaDocumentos = s.MateriaDocumentos,
+                           }).ToList();
+
+                        documentos = docuMat;
+                    }
+
+                }
+
+
+
+
                 return documentos;
             }
             catch (Exception exp)
@@ -342,7 +432,7 @@ namespace GeoPlus.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-        
+
       
     }
 }

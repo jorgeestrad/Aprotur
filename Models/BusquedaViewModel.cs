@@ -20,6 +20,8 @@
         public string TemaCentral { get; set; }
         [Display(Name = "Autor")]
         public string Autor { get; set; }
+        [Display(Name = "Descriptor")]
+        public int MateriaId { get; set; }
 
         /// <summary>
         /// Tipos de Documentos
@@ -34,6 +36,14 @@
         /// </summary>
         public IEnumerable<SelectListItem> Paises { get; set; }
 
+        /// <summary>
+        /// Materias
+        /// </summary>
+        public IEnumerable<SelectListItem> Materias { get; set; }
+
+        /// <summary>
+        /// Documentos
+        /// </summary>
         public List<Documento> Documentos { get; set; }
 
     }
