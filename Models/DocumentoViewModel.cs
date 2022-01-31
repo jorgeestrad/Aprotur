@@ -84,6 +84,9 @@ namespace AproturWeb.Models
         [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd hh:mm}")]
         public DateTime FechaPublicacion { get; set; }
 
+        [Display(Name = "Fecha de Publicación")]
+        public string FechaPublicacionS { get; set; }
+
         [Display(Name = "Resumen del documento")]
         [MaxLength(4000, ErrorMessage = "El Resumen del Documento puede tener hasta {1} caracteres!")]
         public string Resumen { get; set; }

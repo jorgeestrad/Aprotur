@@ -462,6 +462,7 @@ namespace GeoPlus.Controllers
                         TipoFuenteBibliograficaId = s.TipoFuenteBibliograficaId,
                         TipoDocumentoId = s.TipoDocumentoId,
                         FechaPublicacion = s.FechaPublicacion,
+                        FechaPublicacionS = s.FechaPublicacion.ToString("MM/dd/yyyy HH:mm:ss"),
                         Nombre = s.Nombre,
                         Resumen = s.Resumen,
                         Enlace = s.Enlace,

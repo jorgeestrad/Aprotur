@@ -88,25 +88,60 @@
     </div>
 </div>
 
-<div class="modal fade" id="showDetailsDialog">
-    <div class="modal-dialog modal-lg">
+<div class="modal" id="showDetailsDialog">
+    <div class="modal-dialog modal-lg" style="width:1250px;">
         <div class="modal-content">
-            <div class="modal-header modal-lg">
-                <button type="button" class="close" data-dismiss="modal"><i class="fa fa-window-close"></i></button>
-                <h4 class="modal-title">Información del Documento</h4>
+            <div class="modal-header">
+               <h4>Información del Documento</h4>
             </div>
             <div class="modal-body">
                 <div class="row">
-                      <div class="col-md-2">
+                      <div class="col-md-3">
                           Título :
                       </div>
-                       <div class="col-md-10">
-                          Título :
+                       <div class="col-md-9">
+                           <textarea name="textarea" id="titulo" rows="4" cols="70" readonly="readonly"></textarea>
+                      </div>
+                      <div class="col-md-3">
+                          Nombre :
+                      </div>
+                       <div class="col-md-9">
+                           <textarea name="textarea" id="nombre" rows="4" cols="70" readonly="readonly"></textarea>
+                       </div>
+                      <div class="col-md-3">
+                          Autor :
+                      </div>
+                       <div class="col-md-9">
+                           <input type="text" id="autor" name="autor" style="width:537px"  readonly="readonly">
+                      </div>
+                      <div class="col-md-3">
+                          Referencia APA :
+                      </div>
+                       <div class="col-md-9">
+                           <input type="text" id="referenciaAPA" name="referenciaAPA" style="width:537px" readonly="readonly">
+                      </div>
+                      <div class="col-md-3">
+                          Tema Central :
+                      </div>
+                      <div class="col-md-9">
+                           <textarea name="textarea" id="temaCentral" rows="4" cols="70" readonly="readonly"></textarea>
+                      </div>
+                      <div class="col-md-3">
+                          Fecha Publicación :
+                      </div>
+                       <div class="col-md-9">
+                           <input type="text" id="fechaPublicacionS" name="fechaPublicacionS"  readonly="readonly">
+                      </div>
+                      <div class="col-md-3">
+                          Resúmen :
+                      </div>
+                       <div class="col-md-9">
+                         <textarea name="textarea" id="resumen" rows="4" cols="70" readonly="readonly"></textarea>
                       </div>
                 </div>
             </div>
             <div class="modal-footer">
-              
+               <button type="button" class="close" data-dismiss="modal"><i class="fa fa-window-close"></i></button>
             </div>
         </div>
     </div>
@@ -117,9 +152,7 @@
     <script src="/js/deleteDialog.js"></script>
 
     <script type="text/javascript">
-
-
-    
+   
        $('a[id*=btnShowDetails]').click(function () {
             id = $(this).parent()[0].id;
 
@@ -130,8 +163,13 @@
                 MaxJsonLength: 99999999,
                 data: { id: id },
                 success: function (documento) {
-                    alert(documento.id);
-                  
+                    $('#titulo').val(documento.titulo);
+                    $('#nombre').val(documento.nombre);
+                    $('#autor').val(documento.autor);
+                    $('#referenciaAPA').val(documento.referenciaAPA);
+                    $('#temaCentral').val(documento.temaCentral);
+                    $('#fechaPublicacionS').val(documento.fechaPublicacionS);
+                    $('#resumen').val(documento.resumen);
                 },
                 error: function (ex) {
                     alert('Se presentó un evento no esperado!' + ' - ' + ex);
