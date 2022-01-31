@@ -65,12 +65,13 @@
                             <td  id="@item.Id" style="width:10%">
                                 @if (item.FormatoDocumento.Id_Local != 1)
                                 {
-                                    <a href='javascript:verDocumento(@item.Id,"@item.Nombre","@item.Titulo","@item.Ruta",@item.FormatoDocumento.Id_Local,@item.Anio,"@item.Autor")' class="fa fa-download"></a>
+                                    <a href='javascript:verDocumento(@item.Id,"@item.Nombre","@item.Titulo","@item.Ruta",@item.FormatoDocumento.Id_Local,@item.Anio,"@item.Autor")' class="btn btn-info fa fa-download"></a>
                                 }
                                 else
                                 {
-                                    <a href='javascript:verDocumento(@item.Id,"@item.Nombre","@item.Titulo","@item.Enlace",@item.FormatoDocumento.Id_Local,@item.Anio,"@item.Autor")' class="fa fa-download"></a>
+                                    <a  href='javascript:verDocumento(@item.Id,"@item.Nombre","@item.Titulo","@item.Enlace",@item.FormatoDocumento.Id_Local,@item.Anio,"@item.Autor")' class="btn btn-info fa fa-download"></a>
                                 }
+                                <a asp-action="ShowDetails" asp-route-id="@item.Id" class="btn btn-info" id="btnShowDetails"><i class="fa fa-edit"></i></a>
                             </td>
                         </tr>
                         }
@@ -87,11 +88,62 @@
     </div>
 </div>
 
+<div class="modal fade" id="showDetailsDialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header modal-lg">
+                <button type="button" class="close" data-dismiss="modal"><i class="fa fa-window-close"></i></button>
+                <h4 class="modal-title">Información del Documento</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                      <div class="col-md-2">
+                          Título :
+                      </div>
+                       <div class="col-md-10">
+                          Título :
+                      </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+              
+            </div>
+        </div>
+    </div>
+</div>
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script src="/js/deleteDialog.js"></script>
 
     <script type="text/javascript">
+
+
+    
+       $('a[id*=btnShowDetails]').click(function () {
+            id = $(this).parent()[0].id;
+
+             $.ajax({
+                type: 'GET',
+                url: '@Url.Action("GetDocumento")',
+                dataType: 'json',
+                MaxJsonLength: 99999999,
+                data: { id: id },
+                success: function (documento) {
+                    alert(documento.id);
+                  
+                },
+                error: function (ex) {
+                    alert('Se presentó un evento no esperado!' + ' - ' + ex);
+                }
+            });
+
+
+
+            $("#showDetailsDialog").modal('show');
+            return false;
+       });
+
 
         /**
     * Muestra el documento y su información básica
