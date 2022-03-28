@@ -27,6 +27,18 @@
     <link href="~/Components/fontawesome/css/fontawesome.css" rel="stylesheet" />
     <link href="~/Components/fontawesome/css/all.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <script type="text/javascript">
+     function switchMode()
+     {
+        if ( $("#btnsw").text() === "Repositorio"){
+          $("#btnsw").html("VOV");
+        }
+        else{
+          $("#btnsw").html("Repositorio");
+        }
+     }
+
+</script>
 </head>
 @{
     var email = string.Empty;
@@ -107,7 +119,8 @@
                     </ul>
                    
                     <form class="form-inline my-2 my-lg-0">
-                       <a class="btn btn-outline-dark my-2 my-sm-0"  href="https://www.inaturalist.org/"  target="_blank">BIOBLITZ</a>
+                        <button type="button" id="btnsw" class="btn btn-outline-primary" onclick="switchMode()">Repositorio</button>
+                        <a class="btn btn-outline-dark my-2 my-sm-0"  href="https://www.inaturalist.org/"  target="_blank">BIOBLITZ</a>
                        <button class="btn btn-outline-dark my-2 my-sm-0" asp-action="Search" asp-controller="Home" type="submit">Búsqueda Avanzada</button>
                     </form>
                 </div>
@@ -150,3 +163,4 @@
         @RenderSection("Scripts", required: false)
 </body>
 </html>
+

@@ -34,5 +34,7 @@ namespace AproturWeb.Data.Entities
 
         public ICollection<Comentario> Comentarios { get; set; }
 
+        public ICollection<GaleriaImagenesProyecto> GaleriaImagenesProyectos { get; set; }
+
     }
 }

@@ -124,18 +124,19 @@ namespace GeoPlus.Controllers
                 return NotFound();
             }
 
-             var proyectoViewModel = _context.Proyectos.Select(s => new ProyectoViewModel { 
+            var proyectoViewModel = _context.Proyectos.Select(s => new ProyectoViewModel
+            {
                 Id = s.Id,
                 RutaKML = s.RutaKML,
                 Nombre = s.Nombre,
                 TipoGeograficoId = s.TipoGeograficoId,
             }).Where(f => f.Id == id.Value).FirstOrDefault();
-          
+
             if (proyectoViewModel == null)
             {
                 return NotFound();
             }
-            
+
             return View(proyectoViewModel);
         }
 
@@ -264,7 +265,7 @@ namespace GeoPlus.Controllers
         /// <returns></returns>
         public IActionResult CreatePais()
         {
-            return View(new PaisViewModel { Nombre = ""});
+            return View(new PaisViewModel { Nombre = "" });
         }
 
         [HttpPost]
@@ -279,7 +280,7 @@ namespace GeoPlus.Controllers
                     {
                         Nombre = modelo.Nombre,
                     };
-                   
+
                     _context.Add(pais);
 
                     await _context.SaveChangesAsync();
@@ -411,7 +412,7 @@ namespace GeoPlus.Controllers
             return RedirectToAction(nameof(Paises));
         }
 
-        
+
         /// <summary>
         /// Consulta el listado de Tipos de Fuentes Bibliográficas
         /// </summary>
@@ -712,8 +713,8 @@ namespace GeoPlus.Controllers
             }
             return View(modelo);
         }
-        
-        
+
+
         /// <summary>
         /// Permite eliminar un Tipo de Documento
         /// </summary>
@@ -743,6 +744,120 @@ namespace GeoPlus.Controllers
             _context.TiposDocumento.Remove(tipoDocumento);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(TiposDocumentos));
+        }
+
+        /// <summary>
+        /// Lista las fotos de la galería vinculadas con el proyecto
+        /// </summary>
+        /// <param name="id">Identifica el proyecto</param>
+        /// <returns></returns>
+        public IActionResult GaleriaProyecto(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var proyecto = this.ObtenerProyectosConFotos(id.Value);
+            if (proyecto == null)
+            {
+                return NotFound();
+            }
+            return View(proyecto);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id">Identifica el proyecto</param>
+        /// <returns></returns>
+        private Proyecto ObtenerProyectosConFotos(int id)
+        {
+            try
+            {
+                var proyecto = this._context.Proyectos
+                .Where(c => c.Id == id)
+                .Select(s => new Proyecto
+                {
+                    Id = s.Id,
+                    Nombre = s.Nombre,
+                })
+                .FirstOrDefault();
+
+                proyecto.GaleriaImagenesProyectos = this._context.GaleriaImagenesProyectos.
+                    Where(f => f.ProyectoId == id)
+                    .Select(s =>  new GaleriaImagenesProyecto
+                    {
+                        Id = s.Id,
+                        ProyectoId = s.ProyectoId,
+                        Descripcion = s.Descripcion,
+                    })
+                    .ToList();
+
+
+                return proyecto;
+            }
+            catch (Exception exp)
+            {
+                throw exp;
+            }
+        }
+
+        /// <summary>
+        /// Permite vincular una Foto a la Galeria de fotos del proyecto
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult VincularFoto()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> VincularFoto(GaleriaViewModel modelo)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    GaleriaImagenesProyecto galeriaProyecto = new GaleriaImagenesProyecto
+                    {
+                        Descripcion = modelo.Descripcion,
+                        ProyectoId = modelo.ProyectoId,
+                    };
+                    if (modelo.Foto != null)
+                    {
+                        using (var ms = new MemoryStream())
+                        {
+                            modelo.Foto.CopyTo(ms);
+                            var fileBytes = ms.ToArray();
+                            galeriaProyecto.Foto = fileBytes;
+                            
+                        }
+                    }
+                    _context.Add(galeriaProyecto);
+
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (DbUpdateException dbUpdateException)
+                {
+                    if (dbUpdateException.InnerException.Message.Contains("duplicate"))
+                    {
+                        ModelState.AddModelError(string.Empty, "Ya existe este foto vinculad a la galería.");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, dbUpdateException.InnerException.Message);
+                    }
+                }
+                catch (Exception exception)
+                {
+                    ModelState.AddModelError(string.Empty, exception.Message);
+                }
+            }
+
+            return View(modelo);
         }
     }
 }

@@ -1,0 +1,109 @@
+﻿@model AproturWeb.Data.Entities.Proyecto
+
+<div>
+    <h4> @Html.DisplayFor(model => model.Nombre)</h4>
+</div>
+<div>
+    @if (Model.GaleriaImagenesProyectos != null && Model.GaleriaImagenesProyectos.Count > 0)
+    {
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Editar</a>
+    }
+  
+     <a asp-action="VincularFoto" asp-route-id="@Model.Id" class="btn btn-info">Vincular Foto</a>
+   
+    <a asp-action="Index" class="btn btn-success">Retornar al Listado de Proyectos</a>
+</div>
+
+@if (Model.GaleriaImagenesProyectos == null || Model.GaleriaImagenesProyectos.Count == 0)
+{
+    <h5>No existen fotos vinculadas al proyecto seleccionado!</h5>
+}
+else
+{
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-headingt">
+                    <h3 class="panel-title">Fotos de la galería</h3>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-hover table-responsive table-striped" style="width:100%" id="MyTable">
+                        <thead>
+                            <tr>
+                                <th>
+                                   Descriptores
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.GaleriaImagenesProyectos)
+                            {
+                                <tr>
+                                    <td style="width: 80%">
+                                        @Html.DisplayFor(modelItem => item.Descripcion)
+                                    </td>
+                                    <td id="@item.Id" style="width: 10%">
+                                       <a asp-action="DesvincularFoto" asp-route-id="@item.Id" class="btn btn-danger" id="btnDelete"><i class="fa fa-trash"></i></a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div id="deleteDialog" class="modal fade" data-backdrop="false">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><i class="fa fa-window-close"></i></button>
+                <h4 class="modal-title">Desvincular</h4>
+            </div>
+            <div class="modal-body">
+                <p>Está seguro de desvincular la Foto?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" id="btnYesDelete">Si</button>
+                <button type="button" class="btn btn-success" id="btnNoDelete">No</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script type="text/javascript">
+        var localization = getCookie('.AspNetCore.Culture');
+
+        $('#MyTable').DataTable({
+            language: {
+                url: localization
+            },
+            responsive: true
+        });
+
+
+        $(document).ready(function () {
+            $('#MyTable').DataTable();
+            var id = 0;
+            $('a[id*=btnDelete]').click(function () {
+                id = $(this).parent()[0].id;
+                $("#deleteDialog").modal('show');
+                return false;
+            });
+            $("#btnNoDelete").click(function () {
+                $("#deleteDialog").modal('hide');
+                return false;
+            });
+            $("#btnYesDelete").click(function () {
+                 window.location.href = "@Url.Action("DesvincularFoto", "Proyecto")" + "/" + id;
+            });
+        });
+    </script>
+}
+

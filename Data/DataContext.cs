@@ -31,6 +31,7 @@ namespace AproturWeb.Data
         public DbSet<PermisosPorRol> PermisosPorRoles { get; set; }
         public DbSet<Comentario> Comentarios { get; set; }
         public DbSet<RespuestaComentario> RespuestaComentarios { get; set; }
+        public DbSet<GaleriaImagenesProyecto> GaleriaImagenesProyectos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
