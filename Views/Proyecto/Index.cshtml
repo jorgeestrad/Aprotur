@@ -21,10 +21,10 @@
                         @foreach (var item in Model)
                         {
                             <tr>
-                                <td style="width:80%">
+                                <td style="width:75%">
                                     @Html.DisplayFor(modelItem => item.Nombre)
                                 </td>
-                                <td id="@item.Id" style="width:400px">
+                                <td id="@item.Id" style="width:600px">
                                     <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">Editar</a>
                                     <a asp-action="GaleriaProyecto" class="btn btn-success" asp-route-id="@item.Id" data-toggle="tooltip" title="Gelería de fotos relacionadas"><i class="fa fa-list"> </i></a>
                                     <button data-id="@item.Id" class="btn btn-danger deleteItem" data-toggle="modal" data-target="#deleteDialog">Borrar</button>

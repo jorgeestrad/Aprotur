@@ -805,11 +805,15 @@ namespace GeoPlus.Controllers
 
         /// <summary>
         /// Permite vincular una Foto a la Galeria de fotos del proyecto
+        ///<param name="id">Identifica el proyecto</param>
         /// </summary>
         /// <returns></returns>
-        public IActionResult VincularFoto()
+        public IActionResult VincularFoto(int id)
         {
-            return View();
+            return View(new GaleriaViewModel
+            {
+                ProyectoId=id,
+            });
         }
 
         [HttpPost]
@@ -838,7 +842,7 @@ namespace GeoPlus.Controllers
                     _context.Add(galeriaProyecto);
 
                     await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction(nameof(GaleriaProyecto),new {id= modelo.ProyectoId});
                 }
                 catch (DbUpdateException dbUpdateException)
                 {
@@ -858,6 +862,32 @@ namespace GeoPlus.Controllers
             }
 
             return View(modelo);
+        }
+
+        /// <summary>
+        /// Permite eliminar una foto de la galería
+        /// </summary>
+        /// <param name="id">Identifica la foto de la galería</param>
+        /// <returns></returns>
+        public async Task<IActionResult> DesvincularFoto(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+               GaleriaImagenesProyecto galeriaFoto = _context.GaleriaImagenesProyectos
+                 .Where(x => x.Id == id.Value)
+                .FirstOrDefault();
+
+            if (galeriaFoto == null)
+            {
+                return NotFound();
+            }
+
+            _context.GaleriaImagenesProyectos.Remove(galeriaFoto);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(GaleriaProyecto), new { id = galeriaFoto.ProyectoId });
         }
     }
 }
