@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using AproturWeb.Helpers;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using AproturWeb.Data.Entities;
 
 namespace GeoPlus.Controllers
 {
@@ -420,7 +421,30 @@ namespace GeoPlus.Controllers
                 return NotFound(exp.Message);
             }
         }
-    
+
+
+        
+        [HttpGet("GetGalleryProyecto")]
+        public IActionResult GetGalleryProyecto(int id)
+        {
+            try
+            {
+                var fotos = _context.GaleriaImagenesProyectos
+                    .Where(f => f.ProyectoId == id)
+                    .Select(s => new GaleriaImagenesProyecto
+                    {
+                        Id = s.Id,
+                        Descripcion = s.Descripcion,
+                        Foto = s.Foto,
+                    });
+                return Ok(fotos);
+            }
+            catch (Exception exp)
+            {
+                return NotFound(exp.Message);
+            }
+        }
+
 
         public IActionResult Privacy()
         {

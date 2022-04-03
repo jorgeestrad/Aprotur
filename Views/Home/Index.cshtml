@@ -38,7 +38,10 @@
         </div>
         <div id="loadIndicatorContainer"></div>
     </div>
-     <div id="mapa" class="col-md-8">
+    <div id="mapa" class="col-md-6">
+    </div>
+    <div id="divvoc" class="col-md-2">
+        <h5>Galería</h5>
     </div>
 </div>
 
@@ -375,6 +378,32 @@
                     alert('Se presentó un evento no esperado!' + ' - ' + ex);
                 }
             });
+
+            if ( $("#btnsw").text() === "Repositorio"){
+
+              $.ajax({
+                type: 'GET',
+                url: '@Url.Action("GetGalleryProyecto")',
+                dataType: 'json',
+                MaxJsonLength: 99999999,
+                data: { id: id },
+                 success: function (fotos) {
+                       var container = document.getElementById('divvoc');
+
+                       $.each(fotos.$values, function (i, foto) {
+                         if (typeof foto.descripcion !== 'undefined') {
+                           var img = document.createElement('img');
+                           img.src = "data:image/png;base64," + foto.foto;
+                           container.appendChild(img); 
+                         }
+                     });
+                 },
+                error: function (ex) {
+                    loadIndicator.option("visible", false);
+                    alert('Se presentó un evento no esperado!' + ' - ' + ex);
+                }
+              });
+            }
         }
 
         function DisplayGoogleMap() {
