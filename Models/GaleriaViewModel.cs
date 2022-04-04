@@ -6,6 +6,9 @@ namespace AproturWeb.Models
     {
         public int Id { get; set; }
 
+        [Required(ErrorMessage = "Debe ingresar el nombre de la foto!")]
+        public string Nombre { get; set; }
+
         [Required(ErrorMessage = "Debe ingresar la descripción de la foto!")]
         public string Descripcion { get; set; }
 

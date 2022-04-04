@@ -40,8 +40,11 @@
     </div>
     <div id="mapa" class="col-md-6">
     </div>
-    <div id="divvoc" class="col-md-2">
-        <h5>Galería</h5>
+    
+    <div id="divvoc"class="col-md-3">
+        <h6>Galería</h6>
+        <div id="divvocc" class="col-md-12" style="width:100%;height: 400px;overflow-y: scroll;">
+        </div>
     </div>
 </div>
 
@@ -62,6 +65,11 @@
     var comentarioId = 0;
     var lista = [];
     var listaN = [];
+
+    
+    var loadIndicator = $("#loadIndicatorContainer").dxLoadIndicator({
+            visible: false,
+    }).dxLoadIndicator("instance");
   
     var table = $('#MyTable').DataTable({
         "paging": false,
@@ -195,11 +203,6 @@
     $(document).ready(function () {
         DisplayGoogleMap();
 
-        const loadIndicator = $("#loadIndicatorContainer").dxLoadIndicator({
-            visible: false,
-       
-        }).dxLoadIndicator("instance");
-
         table.on('select', function (e, dt, type, indexes) {
             loadIndicator.option("visible", true);
             var rowData = table.rows(indexes).data().toArray();
@@ -247,7 +250,10 @@
             loadIndicator.option("visible", false);
         });
 
-        function placeMarker(lat, lng, map, nombre, id) {
+      
+
+        function placeMarker(lat, lng, map, nombre, id) 
+        {
            loadIndicator.option("visible", true);
             var cadenaPdfs = "";
             var cadenaFotos = "";
@@ -262,148 +268,164 @@
             var viewProyectos = "";
             var viewBaseDocumental = "";
             
-            $.ajax({
-                type: 'GET',
-                url: '@Url.Action("GetDocumentosProyecto")',
-                dataType: 'json',
-                MaxJsonLength: 99999999,
-                data: { id: id },
-                 success: function (documentos) {
-                     viewPdfs = "<div style='overflow-y:scroll; height:100%'><table class='hover row-border' style='width:98%; font-size:medium' id='MyTablePdfs'><thead><tr><th style='width:90%'>Documentos</th><th></th></tr></thead><tbody>";
-                     viewFotos = "<div style='overflow-y:scroll; height:100%'><table class='hover row-border' style='width:98%; font-size:medium' id='MyTableFotos'><thead><tr><th style='width:90%'>Fotos</th><th></th></tr></thead><tbody>";
-                     viewAudios = "<div style='overflow-y:scroll; height:100%'><table class='hover row-border' style='width:98%; font-size:medium' id='MyTableAudios'><thead><tr><th style='width:90%'>Audios</th><th></th></tr></thead><tbody>";
-                     viewVideos = "<div style='overflow-y:scroll; height:100%'><table class='hover row-border' style='width:98%; font-size:medium' id='MyTableVideos'><thead><tr><th style='width:90%'>Videos</th><th></th></tr></thead><tbody>";
-                     viewProyectos = "<div id='carouselExampleControls' class='carousel slide' data-bs-ride='carousel'><div class='carousel-inner'>";
-                     viewBaseDocumental = "<div style='overflow-y:scroll; height:100%'><table class='hover row-border' style='width:98%; font-size:medium' id='MyTableBaseDocumental'><thead><tr><th style='width:20%'>Título</th><th style='width:20%'>Autor</th><th style='width:40%'>Referencia APA</th><th></th></tr></thead><tbody>";
-               
-                     var p = 0;
-                     $.each(documentos.$values, function (i, docu) {
-                         if (typeof docu.nombre !== 'undefined') {
-                                 if (docu.formatoDocumentoId === 5) {
-                                     cadenaPdfs = cadenaPdfs + "<tr style='border-bottom:1pt solid gray;'><td>" + docu.nombre + "</td><td><a href='javascript:verDocumento(" + docu.id + ",\"" + docu.nombre + "\",\"" + docu.titulo + "\",\"" + docu.ruta + "\"," + docu.formatoDocumentoId + ",\"" + docu.descripcion + "\",\"" + docu.autor + "\")' class='card - link'>Ver ...</a></td></tr>";
-                                 }
-                                 if (docu.formatoDocumentoId === 4) {
-                                     cadenaFotos = cadenaFotos + "<tr style='border-bottom:1pt solid gray;'><td>" + docu.nombre + "</td><td><a href='javascript:verDocumento(" + docu.id + ",\"" + docu.nombre + "\",\"" + docu.titulo + "\",\"" + docu.ruta + "\"," + docu.formatoDocumentoId + ",\"" + docu.descripcion + "\",\"" + docu.autor + "\")' class='card - link'>Ver ...</a></td></tr>";
-                                 }
-                                 if (docu.formatoDocumentoId === 3) {
-                                     cadenaAudios = cadenaAudios + "<tr style='border-bottom:1pt solid gray;'><td>" + docu.nombre + "</td><td><a href='javascript:verDocumento(" + docu.id + ",\"" + docu.nombre + "\",\"" + docu.titulo + "\",\"" + docu.ruta + "\"," + docu.formatoDocumentoId + ",\"" + docu.descripcion + "\",\"" + docu.autor + "\")' class='card - link'>Escuchar ...</a></td></tr>";
-                                 }
-                                 if (docu.formatoDocumentoId === 2) {
-                                     cadenaVideos = cadenaVideos + "<tr style='border-bottom:1pt solid gray;'><td>" + docu.nombre + "</td><td><a href='javascript:verDocumento(" + docu.id + ",\"" + docu.nombre + "\",\"" + docu.titulo + "\",\"" + docu.ruta + "\"," + docu.formatoDocumentoId + ",\"" + docu.descripcion + "\",\"" + docu.autor + "\")' class='card - link'>Ver ...</a></td></tr>";
-                                 }
-                                 if (docu.formatoDocumentoId === 1) {
-                                     cadenaBaseDocumental = cadenaBaseDocumental + "<tr style='border-bottom:1pt solid gray;'><td>" + docu.titulo + "</td><td>" + docu.autor + "</td><td>" + docu.referenciaAPA + "</td><td><a href='javascript:verDocumento(" + docu.id + ",\"" + docu.nombre + "\",\"" + docu.titulo + "\",\"" + docu.enlace + "\"," + docu.formatoDocumentoId + ",\"" + docu.descripcion + "\",\"" + docu.autor + "\")' class='card - link'>Ver ...</a></td></tr>";
-                                 }
-                             
-                         }
-                     });
-
-                     viewPdfs = viewPdfs + cadenaPdfs + "</tbody></table></div>";
-                     viewFotos = viewFotos + cadenaFotos + "</tbody></table></div>";
-                     viewAudios = viewAudios + cadenaAudios + "</tbody></table></div>";
-                     viewVideos = viewVideos + cadenaVideos + "</tbody></table></div>";
-                     viewBaseDocumental = viewBaseDocumental + cadenaBaseDocumental + "</tbody></table></div>";
-                     viewProyectos = viewProyectos + cadenaProyectos + "</div><button class='carousel-control-prev' type='button' data-bs-target='#carouselExampleControls' data-bs-slide='prev'><span class='carousel-control-prev-icon' aria-hidden='true'></span><span class='visually-hidden'>Previous</span></button><button class='carousel-control-next' type='button' data-bs-target='#carouselExampleControls' data-bs-slide='next'><span class='carousel-control-next-icon' aria-hidden='true'></span><span class='visually-hidden'>Next</span></button></div>";
-                     
-                     var tabPanel = $("#tabpanel-container").dxTabPanel({
-                         height:'98%',
-                         selectedIndex: 0,
-                         loop: false,
-                         animationEnabled: true,
-                         scrollingEnabled: true,
-                         swipeEnabled: true,
-                         items: [
-                             {
-                             title: "PDFs",
-                             icon: "exportpdf",
-                             template: function (itemData, itemIndex, element) {
-                                 const textAreaDivPdfs = $(viewPdfs);
-                                 textAreaDivPdfs.appendTo(element);
-                             }
-                         }, {
-                             title: "Fotos",
-                             icon: "photo",
-                             template: function (itemData, itemIndex, element) {
-                                 const textAreaDivFotos = $(viewFotos);
-                                 textAreaDivFotos.appendTo(element);
-                             }
-                         },
-                         //{
-                         //    title: "Audios",
-                         //    icon: "music",
-                         //    template: function (itemData, itemIndex, element) {
-                         //        const textAreaDivAudios = $(viewAudios);
-                         //        textAreaDivAudios.appendTo(element);
-                         //    }
-                         //    }, {
-                         //        title: "Videos",
-                         //        icon: "video",
-                         //         template: function (itemData, itemIndex, element) {
-                         //             const textAreaDivVideos = $(viewVideos);
-                         //             textAreaDivVideos.appendTo(element);
-                         //        }
-                         //    }, 
-                             {
-                                 title: "Base Documental",
-                                 icon: "message",
-                                 template: function (itemData, itemIndex, element) {
-                                     const textAreaDivBaseDocumental = $(viewBaseDocumental);
-                                      textAreaDivBaseDocumental.appendTo(element);
-                                 }
-                             }],
-                         onSelectionChanged: function (e) {
-
-                         }
-                     }).dxTabPanel("instance");
-
-                     $("#popup").dxPopup({
-                         showTitle: true,
-                         title: "Ducumentos Áreas Protegidas",
-                         width: 1100,
-                         height: 700,
-                         resizeEnabled: true,
-                         dragEnabled: true,
-                         position: "center",
-                     });
-
-                     const popupText = "<p>Hola Mundo</p>";
-                     const popup = $("#popup").dxPopup("instance");
-
-                     loadIndicator.option("visible", false);
-
-                    popup.show();
-                 },
-                error: function (ex) {
-                    loadIndicator.option("visible", false);
-                    alert('Se presentó un evento no esperado!' + ' - ' + ex);
-                }
-            });
-
-            if ( $("#btnsw").text() === "Repositorio"){
-
-              $.ajax({
+            if ( $("#btnsw").text() === "Repositorio")
+            {
+                $("#divvocc").empty();
+                loadIndicator.option("visible", true);
+                var container = document.getElementById('divvocc');
+                var ht = document.createElement('h6');
+                            var tt = document.createTextNode(nombre);
+                            ht.appendChild(tt);
+                            container.appendChild(ht);
+                $.ajax({
                 type: 'GET',
                 url: '@Url.Action("GetGalleryProyecto")',
                 dataType: 'json',
                 MaxJsonLength: 99999999,
                 data: { id: id },
-                 success: function (fotos) {
-                       var container = document.getElementById('divvoc');
+                    success: function (fotos) {
+                       
+                        $.each(fotos.$values, function (i, foto) {
+                            if (typeof foto.descripcion !== 'undefined') {
+                            var img = document.createElement('img');
+                            img.src = "data:image/png;base64," + foto.foto;
+                            if(img && img.style) {
+                                img.style.height = '100px';
+                                img.style.width = '200px';
+                            }
+                            container.appendChild(img); 
+                            var h = document.createElement('h6');
+                            var t = document.createTextNode(foto.nombre);
+                            h.appendChild(t);
+                            container.appendChild(h);
 
-                       $.each(fotos.$values, function (i, foto) {
-                         if (typeof foto.descripcion !== 'undefined') {
-                           var img = document.createElement('img');
-                           img.src = "data:image/png;base64," + foto.foto;
-                           container.appendChild(img); 
-                         }
-                     });
-                 },
-                error: function (ex) {
+                            //var leftDiv = document.createElement("div"); //Create left div
+                            //leftDiv.id = "left"; //Assign div id
+                            //leftDiv.setAttribute("style", "float:left; width:66.5%; line-height: 26px; text-align:left; font-size:12pt; padding-left:8px; height:26px;"); //Set div attributes
+                            //leftDiv.style.background =  "#FF0000";
+                            //a = document.createElement('a');
+
+                            //a.href =  img; // Insted of calling setAttribute 
+                            //a.innerHTML = "Link" // <a>INNER_TEXT</a>
+                            //leftDiv.appendChild(a); // Append the link to the div
+                            //container.appendChild(leftDiv);
+                     
+                            }
+                        });
+                        loadIndicator.option("visible", false);
+                    },
+                    error: function (ex) {
                     loadIndicator.option("visible", false);
                     alert('Se presentó un evento no esperado!' + ' - ' + ex);
                 }
-              });
+                });
             }
+            else
+            {
+                $.ajax(
+                {
+                        type: 'GET',
+                        url: '@Url.Action("GetDocumentosProyecto")',
+                        dataType: 'json',
+                        MaxJsonLength: 99999999,
+                        data: { id: id },
+                         success: function (documentos) 
+                         {
+                             viewPdfs = "<div style='overflow-y:scroll; height:100%'><table class='hover row-border' style='width:98%; font-size:medium' id='MyTablePdfs'><thead><tr><th style='width:90%'>Documentos</th><th></th></tr></thead><tbody>";
+                             viewFotos = "<div style='overflow-y:scroll; height:100%'><table class='hover row-border' style='width:98%; font-size:medium' id='MyTableFotos'><thead><tr><th style='width:90%'>Fotos</th><th></th></tr></thead><tbody>";
+                             viewAudios = "<div style='overflow-y:scroll; height:100%'><table class='hover row-border' style='width:98%; font-size:medium' id='MyTableAudios'><thead><tr><th style='width:90%'>Audios</th><th></th></tr></thead><tbody>";
+                             viewVideos = "<div style='overflow-y:scroll; height:100%'><table class='hover row-border' style='width:98%; font-size:medium' id='MyTableVideos'><thead><tr><th style='width:90%'>Videos</th><th></th></tr></thead><tbody>";
+                             viewProyectos = "<div id='carouselExampleControls' class='carousel slide' data-bs-ride='carousel'><div class='carousel-inner'>";
+                             viewBaseDocumental = "<div style='overflow-y:scroll; height:100%'><table class='hover row-border' style='width:98%; font-size:medium' id='MyTableBaseDocumental'><thead><tr><th style='width:20%'>Título</th><th style='width:20%'>Autor</th><th style='width:40%'>Referencia APA</th><th></th></tr></thead><tbody>";
+               
+                             var p = 0;
+                             $.each(documentos.$values, function (i, docu)
+                             {
+                                 if (typeof docu.nombre !== 'undefined') 
+                                 {
+                                         if (docu.formatoDocumentoId === 5) {
+                                             cadenaPdfs = cadenaPdfs + "<tr style='border-bottom:1pt solid gray;'><td>" + docu.nombre + "</td><td><a href='javascript:verDocumento(" + docu.id + ",\"" + docu.nombre + "\",\"" + docu.titulo + "\",\"" + docu.ruta + "\"," + docu.formatoDocumentoId + ",\"" + docu.descripcion + "\",\"" + docu.autor + "\")' class='card - link'>Ver ...</a></td></tr>";
+                                         }
+                                         if (docu.formatoDocumentoId === 4) {
+                                             cadenaFotos = cadenaFotos + "<tr style='border-bottom:1pt solid gray;'><td>" + docu.nombre + "</td><td><a href='javascript:verDocumento(" + docu.id + ",\"" + docu.nombre + "\",\"" + docu.titulo + "\",\"" + docu.ruta + "\"," + docu.formatoDocumentoId + ",\"" + docu.descripcion + "\",\"" + docu.autor + "\")' class='card - link'>Ver ...</a></td></tr>";
+                                         }
+                                         if (docu.formatoDocumentoId === 3) {
+                                             cadenaAudios = cadenaAudios + "<tr style='border-bottom:1pt solid gray;'><td>" + docu.nombre + "</td><td><a href='javascript:verDocumento(" + docu.id + ",\"" + docu.nombre + "\",\"" + docu.titulo + "\",\"" + docu.ruta + "\"," + docu.formatoDocumentoId + ",\"" + docu.descripcion + "\",\"" + docu.autor + "\")' class='card - link'>Escuchar ...</a></td></tr>";
+                                         }
+                                         if (docu.formatoDocumentoId === 2) {
+                                             cadenaVideos = cadenaVideos + "<tr style='border-bottom:1pt solid gray;'><td>" + docu.nombre + "</td><td><a href='javascript:verDocumento(" + docu.id + ",\"" + docu.nombre + "\",\"" + docu.titulo + "\",\"" + docu.ruta + "\"," + docu.formatoDocumentoId + ",\"" + docu.descripcion + "\",\"" + docu.autor + "\")' class='card - link'>Ver ...</a></td></tr>";
+                                         }
+                                         if (docu.formatoDocumentoId === 1) {
+                                             cadenaBaseDocumental = cadenaBaseDocumental + "<tr style='border-bottom:1pt solid gray;'><td>" + docu.titulo + "</td><td>" + docu.autor + "</td><td>" + docu.referenciaAPA + "</td><td><a href='javascript:verDocumento(" + docu.id + ",\"" + docu.nombre + "\",\"" + docu.titulo + "\",\"" + docu.enlace + "\"," + docu.formatoDocumentoId + ",\"" + docu.descripcion + "\",\"" + docu.autor + "\")' class='card - link'>Ver ...</a></td></tr>";
+                                         }
+                             
+                                 }
+                             });
+
+                             viewPdfs = viewPdfs + cadenaPdfs + "</tbody></table></div>";
+                             viewFotos = viewFotos + cadenaFotos + "</tbody></table></div>";
+                             viewAudios = viewAudios + cadenaAudios + "</tbody></table></div>";
+                             viewVideos = viewVideos + cadenaVideos + "</tbody></table></div>";
+                             viewBaseDocumental = viewBaseDocumental + cadenaBaseDocumental + "</tbody></table></div>";
+                             viewProyectos = viewProyectos + cadenaProyectos + "</div><button class='carousel-control-prev' type='button' data-bs-target='#carouselExampleControls' data-bs-slide='prev'><span class='carousel-control-prev-icon' aria-hidden='true'></span><span class='visually-hidden'>Previous</span></button><button class='carousel-control-next' type='button' data-bs-target='#carouselExampleControls' data-bs-slide='next'><span class='carousel-control-next-icon' aria-hidden='true'></span><span class='visually-hidden'>Next</span></button></div>";
+                     
+                             var tabPanel = $("#tabpanel-container").dxTabPanel({
+                                 height:'98%',
+                                 selectedIndex: 0,
+                                 loop: false,
+                                 animationEnabled: true,
+                                 scrollingEnabled: true,
+                                 swipeEnabled: true,
+                                 items: [
+                                     {
+                                     title: "PDFs",
+                                     icon: "exportpdf",
+                                     template: function (itemData, itemIndex, element) {
+                                         const textAreaDivPdfs = $(viewPdfs);
+                                         textAreaDivPdfs.appendTo(element);
+                                     }
+                                 }, {
+                                     title: "Fotos",
+                                     icon: "photo",
+                                     template: function (itemData, itemIndex, element) {
+                                         const textAreaDivFotos = $(viewFotos);
+                                         textAreaDivFotos.appendTo(element);
+                                     }
+                                 },
+                                 {
+                                         title: "Base Documental",
+                                         icon: "message",
+                                         template: function (itemData, itemIndex, element) {
+                                             const textAreaDivBaseDocumental = $(viewBaseDocumental);
+                                              textAreaDivBaseDocumental.appendTo(element);
+                                         }
+                                     }],
+                                 onSelectionChanged: function (e) {
+
+                                 }
+                             }).dxTabPanel("instance");
+
+                             $("#popup").dxPopup({
+                                 showTitle: true,
+                                 title: "Ducumentos Áreas Protegidas",
+                                 width: 1100,
+                                 height: 700,
+                                 resizeEnabled: true,
+                                 dragEnabled: true,
+                                 position: "center",
+                             });
+
+                             const popup = $("#popup").dxPopup("instance");
+                             popup.show();
+                             loadIndicator.option("visible", false);
+                         },
+                         error: function (ex) 
+                         {
+                            loadIndicator.option("visible", false);
+                            alert('Se presentó un evento no esperado!' + ' - ' + ex);
+                         }
+                });
+           }
         }
 
         function DisplayGoogleMap() {

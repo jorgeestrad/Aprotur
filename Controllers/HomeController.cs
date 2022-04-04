@@ -435,6 +435,7 @@ namespace GeoPlus.Controllers
                     {
                         Id = s.Id,
                         Descripcion = s.Descripcion,
+                        Nombre = s.Nombre,
                         Foto = s.Foto,
                     });
                 return Ok(fotos);

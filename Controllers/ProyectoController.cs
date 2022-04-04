@@ -791,6 +791,7 @@ namespace GeoPlus.Controllers
                         Id = s.Id,
                         ProyectoId = s.ProyectoId,
                         Descripcion = s.Descripcion,
+                        Nombre = s.Nombre,
                     })
                     .ToList();
 
@@ -826,6 +827,7 @@ namespace GeoPlus.Controllers
                 {
                     GaleriaImagenesProyecto galeriaProyecto = new GaleriaImagenesProyecto
                     {
+                        Nombre = modelo.Nombre,
                         Descripcion = modelo.Descripcion,
                         ProyectoId = modelo.ProyectoId,
                     };

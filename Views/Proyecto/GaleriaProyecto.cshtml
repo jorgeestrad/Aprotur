@@ -40,7 +40,10 @@ else
                             @foreach (var item in Model.GaleriaImagenesProyectos)
                             {
                                 <tr>
-                                    <td style="width: 80%">
+                                    <td style="width: 30%">
+                                        @Html.DisplayFor(modelItem => item.Nombre)
+                                    </td>
+                                    <td style="width: 50%">
                                         @Html.DisplayFor(modelItem => item.Descripcion)
                                     </td>
                                     <td id="@item.Id" style="width: 10%">

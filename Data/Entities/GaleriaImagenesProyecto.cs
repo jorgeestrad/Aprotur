@@ -15,6 +15,11 @@ namespace AproturWeb.Data.Entities
 
         public Proyecto Proyecto { get; set; }
 
+        [Required]
+        [Display(Name = "Nombre")]
+        [MaxLength(70)]
+        public string Nombre { get; set; }
+
         [Display(Name = "Descripción")]
         public string Descripcion { get; set; }
 
