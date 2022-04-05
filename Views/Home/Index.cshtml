@@ -290,6 +290,7 @@
                             var img = document.createElement('img');
                             img.src = "data:image/png;base64," + foto.foto;
                             if(img && img.style) {
+                                img.id = "img" + foto.id;
                                 img.style.height = '100px';
                                 img.style.width = '200px';
                             }
@@ -299,17 +300,34 @@
                             h.appendChild(t);
                             container.appendChild(h);
 
-                            //var leftDiv = document.createElement("div"); //Create left div
-                            //leftDiv.id = "left"; //Assign div id
-                            //leftDiv.setAttribute("style", "float:left; width:66.5%; line-height: 26px; text-align:left; font-size:12pt; padding-left:8px; height:26px;"); //Set div attributes
-                            //leftDiv.style.background =  "#FF0000";
-                            //a = document.createElement('a');
+                        
 
-                            //a.href =  img; // Insted of calling setAttribute 
-                            //a.innerHTML = "Link" // <a>INNER_TEXT</a>
-                            //leftDiv.appendChild(a); // Append the link to the div
-                            //container.appendChild(leftDiv);
-                     
+                            var leftDiv = document.createElement("div"); //Create left div
+                            leftDiv.id = "left"+ foto.id; 
+                            container.appendChild(leftDiv);
+                            
+                            var _htmls = "<img width='350' src='data:image/png;base64," + foto.foto + "'><br/><b>"+foto.nombre+"</b><br/>"+ foto.descripcion;
+                           
+                            $(() => 
+                            {
+                              $('#left' + foto.id).dxTooltip(
+                                {
+                                    target: '#img' + foto.id,
+                                    showEvent: 'mouseenter',
+                                    hideEvent: 'mouseleave',
+                                    closeOnOutsideClick: false,
+                                    position: 'right',
+                                    contentTemplate(data)
+                                    {
+                                      data.html(_htmls);
+                                    },
+                               });
+                              });
+
+
+
+
+
                             }
                         });
                         loadIndicator.option("visible", false);
@@ -336,7 +354,7 @@
                              viewAudios = "<div style='overflow-y:scroll; height:100%'><table class='hover row-border' style='width:98%; font-size:medium' id='MyTableAudios'><thead><tr><th style='width:90%'>Audios</th><th></th></tr></thead><tbody>";
                              viewVideos = "<div style='overflow-y:scroll; height:100%'><table class='hover row-border' style='width:98%; font-size:medium' id='MyTableVideos'><thead><tr><th style='width:90%'>Videos</th><th></th></tr></thead><tbody>";
                              viewProyectos = "<div id='carouselExampleControls' class='carousel slide' data-bs-ride='carousel'><div class='carousel-inner'>";
-                             viewBaseDocumental = "<div style='overflow-y:scroll; height:100%'><table class='hover row-border' style='width:98%; font-size:medium' id='MyTableBaseDocumental'><thead><tr><th style='width:20%'>Título</th><th style='width:20%'>Autor</th><th style='width:40%'>Referencia APA</th><th></th></tr></thead><tbody>";
+                             viewBaseDocumental = "<div style='overflow-y:scroll; height:100%'><table class='hover row-border' style='width:98%; font-size:medium' id='MyTableBaseDocumental'><thead><tr><th style='width:20%'>Título</th><th style='width:20%'>Autor</th><th style='width:25%'>Aporte Documento</th><th style='width:30%'>Resumen</th><th></th></tr></thead><tbody>";
                
                              var p = 0;
                              $.each(documentos.$values, function (i, docu)
@@ -356,7 +374,7 @@
                                              cadenaVideos = cadenaVideos + "<tr style='border-bottom:1pt solid gray;'><td>" + docu.nombre + "</td><td><a href='javascript:verDocumento(" + docu.id + ",\"" + docu.nombre + "\",\"" + docu.titulo + "\",\"" + docu.ruta + "\"," + docu.formatoDocumentoId + ",\"" + docu.descripcion + "\",\"" + docu.autor + "\")' class='card - link'>Ver ...</a></td></tr>";
                                          }
                                          if (docu.formatoDocumentoId === 1) {
-                                             cadenaBaseDocumental = cadenaBaseDocumental + "<tr style='border-bottom:1pt solid gray;'><td>" + docu.titulo + "</td><td>" + docu.autor + "</td><td>" + docu.referenciaAPA + "</td><td><a href='javascript:verDocumento(" + docu.id + ",\"" + docu.nombre + "\",\"" + docu.titulo + "\",\"" + docu.enlace + "\"," + docu.formatoDocumentoId + ",\"" + docu.descripcion + "\",\"" + docu.autor + "\")' class='card - link'>Ver ...</a></td></tr>";
+                                             cadenaBaseDocumental = cadenaBaseDocumental + "<tr style='border-bottom:1pt solid gray;'><td style='color: black;font-weight:bold;'>" + docu.titulo + "</td><td style='font-style: italic;'>" + docu.autor + "</td><td>" + docu.aporteDocumento + "</td><td>" + docu.resumen + "</td><td><a href='javascript:verDocumento(" + docu.id + ",\"" + docu.nombre + "\",\"" + docu.titulo + "\",\"" + docu.enlace + "\"," + docu.formatoDocumentoId + ",\"" + docu.descripcion + "\",\"" + docu.autor + "\")' class='card - link'>Ver ...</a></td></tr>";
                                          }
                              
                                  }
@@ -378,7 +396,7 @@
                                  swipeEnabled: true,
                                  items: [
                                      {
-                                     title: "PDFs",
+                                     title: "Internos",
                                      icon: "exportpdf",
                                      template: function (itemData, itemIndex, element) {
                                          const textAreaDivPdfs = $(viewPdfs);
@@ -393,7 +411,7 @@
                                      }
                                  },
                                  {
-                                         title: "Base Documental",
+                                         title: "Externos",
                                          icon: "message",
                                          template: function (itemData, itemIndex, element) {
                                              const textAreaDivBaseDocumental = $(viewBaseDocumental);
