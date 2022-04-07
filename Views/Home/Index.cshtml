@@ -2,6 +2,11 @@
 
 @{ ViewData["Title"] = "Home Page"; }
 
+<div class="d-flex justify-content-center">
+    <div class="spinner-border text-success"  style="display: none" id = "spinner" role="status">
+    <span class="sr-only">Loading...</span>
+    </div>
+</div>
 <div class="row offset-1">
     <div class="col-md-3">
         <div class="card" style="width:100%">
@@ -36,7 +41,6 @@
             <div id="tabpanel-container">
             </div>
         </div>
-        <div id="loadIndicatorContainer"></div>
     </div>
     <div id="mapa" class="col-md-6">
     </div>
@@ -67,10 +71,7 @@
     var listaN = [];
 
     
-    var loadIndicator = $("#loadIndicatorContainer").dxLoadIndicator({
-            visible: false,
-    }).dxLoadIndicator("instance");
-  
+     
     var table = $('#MyTable').DataTable({
         "paging": false,
         "info": false,
@@ -201,10 +202,14 @@
     }
 
     $(document).ready(function () {
+
+        const spin = document.getElementById('spinner');
         DisplayGoogleMap();
 
         table.on('select', function (e, dt, type, indexes) {
-            loadIndicator.option("visible", true);
+
+            spin.style.display = 'block';
+
             var rowData = table.rows(indexes).data().toArray();
             var nombre = rowData[0][1];
             $.ajax({
@@ -222,6 +227,8 @@
                         map: map
                     });
 
+                    map.setZoom(map.getZoom() + 4);
+
                     lista[i].addListener('click', function (kmlEvent) {
                         var content = kmlEvent.featureData.infoWindowHtml;
                        placeMarker(kmlEvent.latLng.lat(), kmlEvent.latLng.lng(), map, kmlEvent.featureData.name,proyecto.id);
@@ -230,15 +237,17 @@
                     lista[i].setMap(map);
                     listaN[i] = nombre;
 
-                    loadIndicator.option("visible", false);
+                    spin.style.display = 'none';
+
+                    
                 },
                 error: function (ex) {
-                    loadIndicator.option("visible", false);
+                     spin.style.display = 'none';
                     alert('Se presentó un evento no esperado!' + ' - ' + ex);
                 }
             });
         }).on('deselect', function (e, dt, type, indexes) {
-            loadIndicator.option("visible", true);
+            spin.style.display = 'block';
             var j = indexes[0];
             var rowData = table.rows(j).data().toArray();
             var proyectoSel = rowData[0][1];
@@ -247,14 +256,15 @@
                     lista[i].setMap(null);
                 }
             }
-            loadIndicator.option("visible", false);
+            spin.style.display = 'none';
         });
 
       
 
         function placeMarker(lat, lng, map, nombre, id) 
         {
-           loadIndicator.option("visible", true);
+            const spin = document.getElementById('spinner');
+            spin.style.display = 'block';
             var cadenaPdfs = "";
             var cadenaFotos = "";
             var cadenaAudios = "";
@@ -271,7 +281,8 @@
             if ( $("#btnsw").text() === "Repositorio")
             {
                 $("#divvocc").empty();
-                loadIndicator.option("visible", true);
+                spin.style.display = 'block';
+            
                 var container = document.getElementById('divvocc');
                 var ht = document.createElement('h6');
                             var tt = document.createTextNode(nombre);
@@ -306,7 +317,7 @@
                             leftDiv.id = "left"+ foto.id; 
                             container.appendChild(leftDiv);
                             
-                            var _htmls = "<img width='350' src='data:image/png;base64," + foto.foto + "'><br/><b>"+foto.nombre+"</b><br/>"+ foto.descripcion;
+                            var _htmls = "<img width='550' src='data:image/png;base64," + foto.foto + "'><br/><b>"+foto.nombre+"</b><br/>"+ foto.descripcion;
                            
                             $(() => 
                             {
@@ -330,10 +341,10 @@
 
                             }
                         });
-                        loadIndicator.option("visible", false);
+                        spin.style.display = 'none';
                     },
                     error: function (ex) {
-                    loadIndicator.option("visible", false);
+                    spin.style.display = 'none';
                     alert('Se presentó un evento no esperado!' + ' - ' + ex);
                 }
                 });
@@ -435,11 +446,13 @@
 
                              const popup = $("#popup").dxPopup("instance");
                              popup.show();
-                             loadIndicator.option("visible", false);
+
+                             spin.style.display = 'none';
+
                          },
                          error: function (ex) 
                          {
-                            loadIndicator.option("visible", false);
+                            spin.style.display = 'none';
                             alert('Se presentó un evento no esperado!' + ' - ' + ex);
                          }
                 });

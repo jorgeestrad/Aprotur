@@ -241,7 +241,14 @@ namespace GeoPlus.Controllers
                 return NotFound();
             }
 
+            var a = _context.DocumentoProyectos.Where(f => f.ProyectoId == proyecto.Id).ToList();
+            if (a != null)_context.RemoveRange(a);
+            var b = _context.Comentarios.Where(f => f.ProyectoId == proyecto.Id).ToList();
+            if (b != null)_context.RemoveRange(b);
+            var c = _context.GaleriaImagenesProyectos.Where(f => f.ProyectoId == proyecto.Id).ToList();
+            if (c != null)_context.RemoveRange(c);
             _context.Proyectos.Remove(proyecto);
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
