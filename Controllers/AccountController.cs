@@ -239,15 +239,16 @@
             }
 
             var user = _context.Users
-                .Select(s => new User
+                .Select(s => new UserViewModel
                 {
                     Id = s.Id,
-                    Apellidos = s.Apellidos,
-                    Nombres = s.Nombres,
-                     Address= s.Address,
-                      Documento = s.Documento,
-                       
-                  
+                    LastName = s.Apellidos,
+                    FirstName = s.Nombres,
+                    Address= s.Address,
+                    Document = s.Documento,
+                    TipoDocumentoId = 1,
+                    Email = s.Email,
+                 
                 })
                 .Where(f => f.Id == id).FirstOrDefault();
 
@@ -267,9 +268,8 @@
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, User modelo)
+        public async Task<IActionResult> EditUser(string id, UserViewModel modelo)
         {
-            string uniqueFileName = "";
             if (id != modelo.Id)
             {
                 return NotFound();
@@ -279,13 +279,16 @@
             {
                 try
                 {
-                    
+                    var user = this._context.Users.Where(u => u.Id == modelo.Id).FirstOrDefault();
 
+                    user.Apellidos = modelo.LastName;
+                    user.Nombres = modelo.FirstName;
+                    user.Address = modelo.Address;
+                    user.Documento = modelo.Document;
                     
-
-                    //_context.Update(documento);
+                    _context.Update(user);
                     await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction(nameof(UserList));
                 }
                 catch (DbUpdateException dbUpdateException)
                 {
@@ -305,6 +308,33 @@
             }
          
             return View(modelo);
+        }
+
+
+        /// <summary>
+        /// Permite eliminar un país
+        /// </summary>
+        /// <param name="id">Identifica el usuario</param>
+        /// <returns></returns>
+        public async Task<IActionResult> DeleteUser(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            User user = _context.Users
+                .Where(x => x.Id == id)
+                .FirstOrDefault();
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(UserList));
         }
 
 

@@ -41,6 +41,7 @@
                                 </td>
                                 <td  id="@item.Id" style="width:20%">
                                     <a asp-action="EditUser" asp-route-id="@item.Id" class="btn btn-warning" data-toggle="tooltip" title= "Editar"><i class="fa fa-edit"></i></a>
+                                    <button data-id="@item.Id" class="btn btn-danger deleteItem" data-toggle="modal" data-target="#deleteDialog">Borrar</button>
                                 </td>
                             </tr>
                         }
@@ -51,10 +52,11 @@
     </div>
 </div>
 
+<partial name="_DeleteDialog" />
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-   
+    <script src="/js/deleteDialog.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
 
@@ -64,7 +66,10 @@
                 },
                 responsive: true
             });
-        
+
+         // Delete item
+            sc_deleteDialog.openModal('deleteItem', true, 'btnYesDelete', '/Account/DeleteUser/', false);
+
         });
     </script>
 }

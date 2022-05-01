@@ -66,6 +66,11 @@ namespace GeoPlus.Controllers
             }
         }
 
+        public IActionResult Bioblitz()
+        {
+            return View();
+        }
+
         /// <summary>
         /// 
         /// </summary>

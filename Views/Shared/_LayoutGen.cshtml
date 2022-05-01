@@ -122,7 +122,8 @@
                     </ul>
                     <form class="form-inline my-2 my-lg-0">
                         <button type="button" id="btnsw" class="btn btn-outline-primary" onclick="switchMode()">Repositorio</button>
-                        <a class="btn btn-outline-dark my-2 my-sm-0" href="https://www.inaturalist.org/"   target="_blank">BIOBLITZ</a>
+                        <button type="submit" id="btnbioblitz" class="btn btn-outline-dark my-2 my-sm-0" asp-action="Bioblitz" asp-controller="Home">BIOBLITZ</button>
+                        @*<a class="btn btn-outline-dark my-2 my-sm-0" href="https://colombia.inaturalist.org/projects/bioblitz-de-las-areas-protegidas-del-valle-de-aburra"   target="_blank">BIOBLITZ</a>*@
                         <button class="btn btn-outline-dark my-2 my-sm-0" asp-action="Search" asp-controller="Home" type="submit">Búsqueda Avanzada</button>
                     </form>
                 </div>
