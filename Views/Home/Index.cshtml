@@ -227,6 +227,8 @@
                         map: map
                     });
 
+                    placeMarker(6.217, -75.567, map, proyecto.nombre,proyecto.id);
+
                     map.setZoom(map.getZoom() + 4);
 
                     lista[i].addListener('click', function (kmlEvent) {
@@ -334,11 +336,6 @@
                                     },
                                });
                               });
-
-
-
-
-
                             }
                         });
                         spin.style.display = 'none';
@@ -414,7 +411,7 @@
                                          textAreaDivPdfs.appendTo(element);
                                      }
                                  }, {
-                                     title: "Fotos",
+                                     title: "Cartografía",
                                      icon: "photo",
                                      template: function (itemData, itemIndex, element) {
                                          const textAreaDivFotos = $(viewFotos);
