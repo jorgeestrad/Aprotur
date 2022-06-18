@@ -193,6 +193,8 @@ namespace GeoPlus.Controllers
                         }
                     }
                     proyecto.Nombre = modelo.Nombre;
+                    proyecto.Longitud = modelo.Longitud;
+                    proyecto.Latitud = modelo.Latitud;
 
 
 
