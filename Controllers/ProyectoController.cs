@@ -36,6 +36,8 @@ namespace GeoPlus.Controllers
                 Id = s.Id,
                 Nombre = s.Nombre,
                 RutaKML = s.RutaKML,
+                Longitud = s.Longitud,
+                Latitud = s.Latitud,
                 TipoGeograficoId = s.TipoGeograficoId
             }).ToList());
         }
@@ -63,6 +65,8 @@ namespace GeoPlus.Controllers
                         RutaKML = uniqueFileName,
                         Nombre = modelo.Nombre,
                         TipoGeograficoId = modelo.TipoGeograficoId,
+                        Longitud = modelo.Longitud,
+                        Latitud= modelo.Latitud,
                     };
                     if (modelo.KML != null)
                     {
@@ -130,6 +134,8 @@ namespace GeoPlus.Controllers
                 RutaKML = s.RutaKML,
                 Nombre = s.Nombre,
                 TipoGeograficoId = s.TipoGeograficoId,
+                Longitud = s.Longitud,
+                Latitud = s.Latitud,
             }).Where(f => f.Id == id.Value).FirstOrDefault();
 
             if (proyectoViewModel == null)
@@ -232,6 +238,8 @@ namespace GeoPlus.Controllers
                     Nombre = x.Nombre,
                     RutaKML = x.RutaKML,
                     TipoGeograficoId = x.TipoGeograficoId,
+                    Longitud = x.Longitud,
+                    Latitud = x.Latitud,
                 })
                 .Where(x => x.Id == id.Value)
                 .FirstOrDefault();

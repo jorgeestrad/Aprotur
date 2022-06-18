@@ -63,7 +63,7 @@
                                 @Html.DisplayFor(modelItem => item.FormatoDocumento.Nombre)
                             </td>
                             <td  id="@item.Id" style="width:10%">
-                                @if (item.FormatoDocumento.Id_Local != 1)
+                                @if (item.FormatoDocumento.Id_Local != 1 && item.FormatoDocumento.Id_Local !=  6)
                                 {
                                     <a href='javascript:verDocumento(@item.Id,"@item.Nombre","@item.Titulo","@item.Ruta",@item.FormatoDocumento.Id_Local,@item.Anio,"@item.Autor")' class="btn btn-info fa fa-download"></a>
                                 }
@@ -196,7 +196,7 @@
    */
     function verDocumento(id, nombre, titulo, ruta, tipodocumento, descripcion, autor) {
         
-        if (tipodocumento > 1) ruta = 'http://3.19.150.196/Aprotur/kmz/' + ruta;
+        if (tipodocumento > 1 && tipodocumento != 6) ruta = 'http://3.19.150.196/Aprotur/kmz/' + ruta;
         var w = 800;
         var h = 600;
         if (tipodocumento === 3 ) 
@@ -214,6 +214,10 @@
         var top = ((height / 2) - (h / 2)) + dualScreenTop;
         var title = "";
 
+       if (tipodocumento === 6) {
+            title = 'Tableros';
+        }
+
         if (tipodocumento === 5) {
             title = 'Pdf';
         }
@@ -230,7 +234,8 @@
         if (tipodocumento === 1) {
             title = 'Base Documental';
         }
-         var newWindow = window.open(ruta, title, 'scrollbars=yes,resizable=1,status=yes, width=' + w + ', height=' + h + ', top=' + top + ', left=' + left);
+
+        var newWindow = window.open(ruta, title, 'scrollbars=yes,resizable=1,status=yes, width=' + w + ', height=' + h + ', top=' + top + ', left=' + left);
 
         // Puts focus on the newWindow
         if (window.focus) {

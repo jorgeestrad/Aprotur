@@ -20,11 +20,12 @@ namespace AproturWeb.Models
         [MaxLength(1000, ErrorMessage = "La ruta del KML puede tener hasta {1} caracteres!")]
         public string RutaKML { get; set; }
 
+
         [Required(ErrorMessage = "Se debe ingresar la Longitud de las coordenadas del proyecto")]
-        public double Longitud { get; set; }
+        public double? Longitud { get; set; }
 
         [Required(ErrorMessage = "Se debe ingresar la Latitud de las coordenadas del proyecto")]
-        public double Latitud { get; set; }
+        public double? Latitud { get; set; }
 
         public int TipoGeograficoId { get; set; }
 

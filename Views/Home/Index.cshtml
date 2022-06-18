@@ -42,15 +42,9 @@
             </div>
         </div>
     </div>
-    <div id="mapa" class="col-md-6">
+    <div id="mapa" class="col-md-8">
     </div>
-    
-    <div id="divvoc"class="col-md-3">
-        <h6>Galería</h6>
-        <div id="divvocc" class="col-md-12" style="width:100%;height: 400px;overflow-y: scroll;">
-        </div>
-    </div>
-</div>
+ </div>
 
 <div id="PopupImagen">
     <div class="form-horizontal">
@@ -232,9 +226,9 @@
                         map: map
                     });
 
-                    placeMarker(6.217, -75.567, map, proyecto.nombre,proyecto.id);
+                    placeMarker(proyecto.latitud, proyecto.longitud, map, proyecto.nombre,proyecto.id);
 
-                    map.setZoom(map.getZoom() + 4);
+                    map.setZoom(14);
 
                     lista[i].addListener('click', function (kmlEvent) {
                         var content = kmlEvent.featureData.infoWindowHtml;
@@ -287,74 +281,9 @@
             var viewBaseDocumental = "";
             var viewTableros = "";
 
-            if ( $("#btnsw").text() === "Repositorio")
-            {
-                $("#divvocc").empty();
-                spin.style.display = 'block';
+            map.setCenter(new google.maps.LatLng(lat,lng));
+
             
-                var container = document.getElementById('divvocc');
-                var ht = document.createElement('h6');
-                            var tt = document.createTextNode(nombre);
-                            ht.appendChild(tt);
-                            container.appendChild(ht);
-                $.ajax({
-                type: 'GET',
-                url: '@Url.Action("GetGalleryProyecto")',
-                dataType: 'json',
-                MaxJsonLength: 99999999,
-                data: { id: id },
-                    success: function (fotos) {
-                       
-                        $.each(fotos.$values, function (i, foto) {
-                            if (typeof foto.descripcion !== 'undefined') {
-                            var img = document.createElement('img');
-                            img.src = "data:image/png;base64," + foto.foto;
-                            if(img && img.style) {
-                                img.id = "img" + foto.id;
-                                img.style.height = '100px';
-                                img.style.width = '200px';
-                            }
-                            container.appendChild(img); 
-                            var h = document.createElement('h6');
-                            var t = document.createTextNode(foto.nombre);
-                            h.appendChild(t);
-                            container.appendChild(h);
-
-                        
-
-                            var leftDiv = document.createElement("div"); //Create left div
-                            leftDiv.id = "left"+ foto.id; 
-                            container.appendChild(leftDiv);
-                            
-                            var _htmls = "<img width='550' src='data:image/png;base64," + foto.foto + "'><br/><b>"+foto.nombre+"</b><br/>"+ foto.descripcion;
-                           
-                            $(() => 
-                            {
-                              $('#left' + foto.id).dxTooltip(
-                                {
-                                    target: '#img' + foto.id,
-                                    showEvent: 'mouseenter',
-                                    hideEvent: 'mouseleave',
-                                    closeOnOutsideClick: false,
-                                    position: 'right',
-                                    contentTemplate(data)
-                                    {
-                                      data.html(_htmls);
-                                    },
-                               });
-                              });
-                            }
-                        });
-                        spin.style.display = 'none';
-                    },
-                    error: function (ex) {
-                    spin.style.display = 'none';
-                    alert('Se presentó un evento no esperado!' + ' - ' + ex);
-                }
-                });
-            }
-            else
-            {
                 $.ajax(
                 {
                         type: 'GET',
@@ -364,37 +293,62 @@
                         data: { id: id },
                          success: function (documentos) 
                          {
-                             viewPdfs = "<div style='overflow-y:scroll; height:100%'><table class='hover row-border' style='width:98%; font-size:medium' id='MyTablePdfs'><thead><tr><th style='width:90%'>Documentos</th><th></th></tr></thead><tbody>";
-                             viewFotos = "<div style='overflow-y:scroll; height:100%'><table class='hover row-border' style='width:98%; font-size:medium' id='MyTableFotos'><thead><tr><th style='width:90%'>Fotos</th><th></th></tr></thead><tbody>";
-                             viewAudios = "<div style='overflow-y:scroll; height:100%'><table class='hover row-border' style='width:98%; font-size:medium' id='MyTableAudios'><thead><tr><th style='width:90%'>Audios</th><th></th></tr></thead><tbody>";
-                             viewVideos = "<div style='overflow-y:scroll; height:100%'><table class='hover row-border' style='width:98%; font-size:medium' id='MyTableVideos'><thead><tr><th style='width:90%'>Videos</th><th></th></tr></thead><tbody>";
+                             viewPdfs = "<div style='overflow-y:scroll; height:100%'><table class='hover row-border' style='width:98%; font-size:medium' id='MyTablePdfs'><thead><tr style='color: #fff; background: #1F618D;'><th style='width:90%'>Listado de Documentos</th><th></th></tr></thead><tbody>";
+                             viewFotos = "<div style='overflow-y:scroll; height:100%'><table class='hover row-border' style='width:98%; font-size:medium' id='MyTableFotos'><thead><tr style='color: #fff; background: #1F618D;'><th style='width:90%'>Fotos</th><th></th></tr></thead><tbody>";
+                             viewAudios = "<div style='overflow-y:scroll; height:100%'><table class='hover row-border' style='width:98%; font-size:medium' id='MyTableAudios'><thead><tr style='color: #fff; background: #1F618D;'><th style='width:90%'>Audios</th><th></th></tr></thead><tbody>";
+                             viewVideos = "<div style='overflow-y:scroll; height:100%'><table class='hover row-border' style='width:98%; font-size:medium' id='MyTableVideos'><thead><tr style='color: #fff; background: #1F618D;'><th style='width:90%'>Videos</th><th></th></tr></thead><tbody>";
                              viewProyectos = "<div id='carouselExampleControls' class='carousel slide' data-bs-ride='carousel'><div class='carousel-inner'>";
-                             viewBaseDocumental = "<div style='overflow-y:scroll; height:100%'><table class='hover row-border' style='width:98%; font-size:medium' id='MyTableBaseDocumental'><thead><tr><th style='width:20%'>Título</th><th style='width:20%'>Autor</th><th style='width:25%'>Aporte Documento</th><th style='width:30%'>Resumen</th><th></th></tr></thead><tbody>";
-                             viewTableros = "<div style='overflow-y:scroll; height:100%'><table class='hover row-border' style='width:98%; font-size:medium' id='MyTableTableros'><thead><tr><th style='width:90%'>Tableros</th><th></th></tr></thead><tbody>";
+                             viewBaseDocumental = "<div style='overflow-y:scroll; height:100%'><table class='hover row-border' style='width:98%; font-size:medium' id='MyTableBaseDocumental'><thead><tr style='color: #fff; background: #1F618D;'><th style='width:20%'>Título</th><th style='width:20%'>Autor</th><th style='width:25%'>Aporte Documento</th><th style='width:30%'>Resumen</th><th></th></tr></thead><tbody>";
+                             viewTableros = "<div style='overflow-y:scroll; height:100%'><table class='hover row-border' style='width:98%; font-size:medium' id='MyTableTableros'><thead><tr style='color: #fff; background: #1F618D;'><th style='width:90%'>Tableros</th><th></th></tr></thead><tbody>";
                           
                              var p = 0;
+                             var rowPar = true;
                              $.each(documentos.$values, function (i, docu)
                              {
                                  if (typeof docu.nombre !== 'undefined') 
                                  {
+                                     if (rowPar === true) {
                                          if (docu.formatoDocumentoId === 6) {
-                                               cadenaTableros = cadenaTableros + "<tr style='border-bottom:1pt solid gray;'><td>" + docu.nombre + "</td><td><a href='javascript:verDocumento(" + docu.id + ",\"" + docu.nombre + "\",\"" + docu.titulo + "\",\"" + docu.enlace + "\"," + docu.formatoDocumentoId + ",\"" + docu.descripcion + "\",\"" + docu.autor + "\")' class='card - link'>Ver ...</a></td></tr>";
+                                             cadenaTableros = cadenaTableros + "<tr style='border-bottom:1pt solid gray;color: #black; background: #AED6F1;'><td>" + docu.nombre + "</td><td><a href='javascript:verDocumento(" + docu.id + ",\"" + docu.nombre + "\",\"" + docu.titulo + "\",\"" + docu.enlace + "\"," + docu.formatoDocumentoId + ",\"" + docu.descripcion + "\",\"" + docu.autor + "\")' class='icon-block'><i class='fab fa-sistrix'></i></a></td></tr>";
                                          }
                                          if (docu.formatoDocumentoId === 5) {
-                                             cadenaPdfs = cadenaPdfs + "<tr style='border-bottom:1pt solid gray;'><td>" + docu.nombre + "</td><td><a href='javascript:verDocumento(" + docu.id + ",\"" + docu.nombre + "\",\"" + docu.titulo + "\",\"" + docu.ruta + "\"," + docu.formatoDocumentoId + ",\"" + docu.descripcion + "\",\"" + docu.autor + "\")' class='card - link'>Ver ...</a></td></tr>";
+                                             cadenaPdfs = cadenaPdfs + "<tr style='border-bottom:1pt solid gray;color: #black; background: #AED6F1;'><td>" + docu.nombre + "</td><td><a href='javascript:verDocumento(" + docu.id + ",\"" + docu.nombre + "\",\"" + docu.titulo + "\",\"" + docu.ruta + "\"," + docu.formatoDocumentoId + ",\"" + docu.descripcion + "\",\"" + docu.autor + "\")' class='icon-block'><i class='fab fa-sistrix'></i></a></td></tr>";
                                          }
                                          if (docu.formatoDocumentoId === 4) {
-                                             cadenaFotos = cadenaFotos + "<tr style='border-bottom:1pt solid gray;'><td>" + docu.nombre + "</td><td><a href='javascript:verDocumento(" + docu.id + ",\"" + docu.nombre + "\",\"" + docu.titulo + "\",\"" + docu.ruta + "\"," + docu.formatoDocumentoId + ",\"" + docu.descripcion + "\",\"" + docu.autor + "\")' class='card - link'>Ver ...</a></td></tr>";
+                                             cadenaFotos = cadenaFotos + "<tr style='border-bottom:1pt solid gray;color: #black; background: #AED6F1;'><td>" + docu.nombre + "</td><td><a href='javascript:verDocumento(" + docu.id + ",\"" + docu.nombre + "\",\"" + docu.titulo + "\",\"" + docu.ruta + "\"," + docu.formatoDocumentoId + ",\"" + docu.descripcion + "\",\"" + docu.autor + "\")' class='icon-block'><i class='fab fa-sistrix'></i></a></td></tr>";
                                          }
                                          if (docu.formatoDocumentoId === 3) {
-                                             cadenaAudios = cadenaAudios + "<tr style='border-bottom:1pt solid gray;'><td>" + docu.nombre + "</td><td><a href='javascript:verDocumento(" + docu.id + ",\"" + docu.nombre + "\",\"" + docu.titulo + "\",\"" + docu.ruta + "\"," + docu.formatoDocumentoId + ",\"" + docu.descripcion + "\",\"" + docu.autor + "\")' class='card - link'>Escuchar ...</a></td></tr>";
+                                             cadenaAudios = cadenaAudios + "<tr style='border-bottom:1pt solid gray;color: #black; background: #AED6F1;'><td>" + docu.nombre + "</td><td><a href='javascript:verDocumento(" + docu.id + ",\"" + docu.nombre + "\",\"" + docu.titulo + "\",\"" + docu.ruta + "\"," + docu.formatoDocumentoId + ",\"" + docu.descripcion + "\",\"" + docu.autor + "\")' class='icon-block'><i class='icon-home icon-4x'></i><span>Escuchar</span></a></td></tr>";
                                          }
                                          if (docu.formatoDocumentoId === 2) {
-                                             cadenaVideos = cadenaVideos + "<tr style='border-bottom:1pt solid gray;'><td>" + docu.nombre + "</td><td><a href='javascript:verDocumento(" + docu.id + ",\"" + docu.nombre + "\",\"" + docu.titulo + "\",\"" + docu.ruta + "\"," + docu.formatoDocumentoId + ",\"" + docu.descripcion + "\",\"" + docu.autor + "\")' class='card - link'>Ver ...</a></td></tr>";
+                                             cadenaVideos = cadenaVideos + "<tr style='border-bottom:1pt solid gray;color: #black; background: #AED6F1;'><td>" + docu.nombre + "</td><td><a href='javascript:verDocumento(" + docu.id + ",\"" + docu.nombre + "\",\"" + docu.titulo + "\",\"" + docu.ruta + "\"," + docu.formatoDocumentoId + ",\"" + docu.descripcion + "\",\"" + docu.autor + "\")' class='icon-block'><i class='fab fa-sistrix'></i></a></td></tr>";
                                          }
                                          if (docu.formatoDocumentoId === 1) {
-                                             cadenaBaseDocumental = cadenaBaseDocumental + "<tr style='border-bottom:1pt solid gray;'><td style='color: black;font-weight:bold;'>" + docu.titulo + "</td><td style='font-style: italic;'>" + docu.autor + "</td><td>" + docu.aporteDocumento + "</td><td>" + docu.resumen + "</td><td><a href='javascript:verDocumento(" + docu.id + ",\"" + docu.nombre + "\",\"" + docu.titulo + "\",\"" + docu.enlace + "\"," + docu.formatoDocumentoId + ",\"" + docu.descripcion + "\",\"" + docu.autor + "\")' class='card - link'>Ver ...</a></td></tr>";
+                                             cadenaBaseDocumental = cadenaBaseDocumental + "<tr style='border-bottom:1pt solid gray;'><td style='font-weight:bold;color: #black; background: #AED6F1;'>" + docu.titulo + "</td><td style='font-style: italic;color: #black; background: #AED6F1;'>" + docu.autor + "</td><td style='font-style: italic;color: #black; background: #AED6F1;'>" + docu.aporteDocumento + "</td><td style='font-style: italic;color: #black; background: #AED6F1;'>" + docu.resumen + "</td><td style='font-style: italic;color: #black; background: #AED6F1;'><a href='javascript:verDocumento(" + docu.id + ",\"" + docu.nombre + "\",\"" + docu.titulo + "\",\"" + docu.enlace + "\"," + docu.formatoDocumentoId + ",\"" + docu.descripcion + "\",\"" + docu.autor + "\")' class='icon-block'><i class='fab fa-sistrix'></i></a></td></tr>";
                                          }
+                                         rowPar = false;
+                                     }
+                                     else {
+                                         if (docu.formatoDocumentoId === 6) {
+                                             cadenaTableros = cadenaTableros + "<tr style='border-bottom:1pt solid gray;color: #black; background: #E5E8E8;'><td>" + docu.nombre + "</td><td style='font-style: italic;color: #black; background: #E5E8E8;'><a href='javascript:verDocumento(" + docu.id + ",\"" + docu.nombre + "\",\"" + docu.titulo + "\",\"" + docu.enlace + "\"," + docu.formatoDocumentoId + ",\"" + docu.descripcion + "\",\"" + docu.autor + "\")' class='icon-block'><i class='fab fa-sistrix'></i></a></td></tr>";
+                                         }
+                                         if (docu.formatoDocumentoId === 5) {
+                                             cadenaPdfs = cadenaPdfs + "<tr style='border-bottom:1pt solid gray;color: #black; background: #E5E8E8;'><td>" + docu.nombre + "</td><td style='font-style: italic;color: #black; background: #E5E8E8;'><a href='javascript:verDocumento(" + docu.id + ",\"" + docu.nombre + "\",\"" + docu.titulo + "\",\"" + docu.ruta + "\"," + docu.formatoDocumentoId + ",\"" + docu.descripcion + "\",\"" + docu.autor + "\")' class='icon-block'><i class='fab fa-sistrix'></i></a></td></tr>";
+                                         }
+                                         if (docu.formatoDocumentoId === 4) {
+                                             cadenaFotos = cadenaFotos + "<tr style='border-bottom:1pt solid gray;color: #black; background: #E5E8E8;'><td>" + docu.nombre + "</td><td style='font-style: italic;color: #black; background: #E5E8E8;'><a href='javascript:verDocumento(" + docu.id + ",\"" + docu.nombre + "\",\"" + docu.titulo + "\",\"" + docu.ruta + "\"," + docu.formatoDocumentoId + ",\"" + docu.descripcion + "\",\"" + docu.autor + "\")' class='icon-block'><i class='fab fa-sistrix'></i></a></td></tr>";
+                                         }
+                                         if (docu.formatoDocumentoId === 3) {
+                                             cadenaAudios = cadenaAudios + "<tr style='border-bottom:1pt solid gray;color: #black; background: #E5E8E8;'><td>" + docu.nombre + "</td><td style='font-style: italic;color: #black; background: #E5E8E8;'><a href='javascript:verDocumento(" + docu.id + ",\"" + docu.nombre + "\",\"" + docu.titulo + "\",\"" + docu.ruta + "\"," + docu.formatoDocumentoId + ",\"" + docu.descripcion + "\",\"" + docu.autor + "\")' class='icon-block'><i class='icon-home icon-4x'></i><span>Escuchar</span></a></td></tr>";
+                                         }
+                                         if (docu.formatoDocumentoId === 2) {
+                                             cadenaVideos = cadenaVideos + "<tr style='border-bottom:1pt solid gray;color: #black; background: #E5E8E8;'><td>" + docu.nombre + "</td><td style='font-style: italic;color: #black; background: #E5E8E8;'><a href='javascript:verDocumento(" + docu.id + ",\"" + docu.nombre + "\",\"" + docu.titulo + "\",\"" + docu.ruta + "\"," + docu.formatoDocumentoId + ",\"" + docu.descripcion + "\",\"" + docu.autor + "\")' class='icon-block'><i class='fab fa-sistrix'></i></a></td></tr>";
+                                         }
+                                         if (docu.formatoDocumentoId === 1) {
+                                             cadenaBaseDocumental = cadenaBaseDocumental + "<tr style='border-bottom:1pt solid gray;color: #black; background: #E5E8E8;'><td style='font-weight:bold;color: #black; background: #E5E8E8;'>" + docu.titulo + "</td><td style='font-style: italic;color: #black; background: #E5E8E8;'>" + docu.autor + "</td><td style='font-style: italic;color: #black; background: #E5E8E8;'>" + docu.aporteDocumento + "</td><td style='font-style: italic;color: #black; background: #E5E8E8;'>" + docu.resumen + "</td><td style='font-style: italic;color: #black; background: #E5E8E8;'><a href='javascript:verDocumento(" + docu.id + ",\"" + docu.nombre + "\",\"" + docu.titulo + "\",\"" + docu.enlace + "\"," + docu.formatoDocumentoId + ",\"" + docu.descripcion + "\",\"" + docu.autor + "\")' class='icon-block'><i class='fab fa-sistrix'></i></a></td></tr>";
+                                         }
+                                         rowPar = true;
+                                     }
                                  }
                              });
 
@@ -415,7 +369,7 @@
                                  swipeEnabled: true,
                                  items: [
                                      {
-                                     title: "Internos",
+                                     title: "Documentos Internos",
                                      icon: "exportpdf",
                                      template: function (itemData, itemIndex, element) {
                                          const textAreaDivPdfs = $(viewPdfs);
@@ -430,7 +384,7 @@
                                      }
                                  },
                                  {
-                                         title: "Externos",
+                                         title: "Documentos Externos",
                                          icon: "message",
                                          template: function (itemData, itemIndex, element) {
                                              const textAreaDivBaseDocumental = $(viewBaseDocumental);
@@ -472,7 +426,7 @@
                             alert('Se presentó un evento no esperado!' + ' - ' + ex);
                          }
                 });
-           }
+           
         }
 
         function DisplayGoogleMap() {

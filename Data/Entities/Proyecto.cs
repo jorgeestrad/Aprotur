@@ -23,6 +23,11 @@ namespace AproturWeb.Data.Entities
         [Required(ErrorMessage = "Debe ingresar la Ruta del KML")]
         public string RutaKML { get; set; }
 
+        [Display(Name = "Longitud")]
+        public double? Longitud { get; set; }
+
+        [Display(Name = "Latitud")]
+        public double? Latitud { get; set; }
        
         public int TipoGeograficoId { get; set; }
 
