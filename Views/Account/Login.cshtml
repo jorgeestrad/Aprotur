@@ -35,7 +35,10 @@
                 <div class="form-group col-md-10 col-md-offset-1">
                     <hr />
                     <input type="submit" value="Login" class="btn btn-success" />
-                    <a asp-action="Register" class="btn btn-primary">Registrarse</a>
+                      @if (Model.IsSuperUser)
+                      {
+                            <a asp-action="Register" class="btn btn-primary">Registrarse</a>
+                      }
                     <a asp-action="RecoverPassword" class="btn btn-link">Olvidé mi contraseña</a>
                 </div>
                 

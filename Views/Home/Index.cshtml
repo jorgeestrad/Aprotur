@@ -281,8 +281,10 @@
             var viewBaseDocumental = "";
             var viewTableros = "";
 
-            map.setCenter(new google.maps.LatLng(lat,lng));
-
+           
+            if (lat !== null && lng !== null ) {
+                    map.setCenter(new google.maps.LatLng(lat,lng));
+            }
             
                 $.ajax(
                 {

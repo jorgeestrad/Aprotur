@@ -17,5 +17,7 @@ namespace AproturWeb.Models
 
         [Display(Name = "Recordarme")]
         public bool RememberMe { get; set; }
+
+        public bool IsSuperUser { get; set; }
     }
 }
