@@ -401,6 +401,7 @@ namespace GeoPlus.Controllers
                 var documentos = _context.DocumentoProyectos
                     .Include(i => i.Documento).ThenInclude(i => i.FormatoDocumento)
                     .Where(f => f.ProyectoId == id)
+                    .OrderBy(o => o.Documento.Nombre)
                     .Select(s => new DocumentoViewModel
                     {
                         Id = s.Documento.Id,
