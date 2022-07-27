@@ -63,7 +63,6 @@
                 </div>
             </div>
             <nav class="navbar navbar-expand-lg navbar-dark bg-transparent">
-                <a class="navbar-brand" style="color:black" href="#">APROTUR</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -71,12 +70,13 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item active">
-                            <a class="nav-link" asp-area="" style="color:black" asp-controller="Home" asp-action="Index">Home <span class="sr-only">(current)</span></a>
+                            <a class="nav-link" asp-area="" style="color:black" asp-controller="Home" asp-action="Index">Inicio <span class="sr-only">(current)</span></a>
                         </li>
-                     @if (this.User.Identity.IsAuthenticated)
+
+                        @if (this.User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" style="color:black" asp-area="" asp-controller="Home" asp-action="Index" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <a class="nav-link dropdown-toggle" asp-area="" style="color:black" asp-controller="Home" asp-action="Index" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Opciones
                                 </a>
 
@@ -88,11 +88,40 @@
                                     <a class="dropdown-item" style="color:black" asp-area="" asp-controller="Proyecto" asp-action="TiposFuenteBibliograficas">Tipo de Fuente Bibliográfica</a>
                                     <a class="dropdown-item" style="color:black" asp-area="" asp-controller="Proyecto" asp-action="TiposDocumentos">Tipo de Documento</a>
                                     <a class="dropdown-item" style="color:black" asp-area="" asp-controller="Account" asp-action="UserList">Usuarios</a>
-                                 </div>
+                                </div>
                             </li>
                         }
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" asp-area="" style="color:black" asp-controller="Home" asp-action="Index" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Mapas Interativos
+                            </a>
+
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" style="color:black" asp-area="" asp-controller="Home" asp-action="AreasProtegidas">Mapa Interactivo</a>
+                                <a class="dropdown-item" style="color:black" asp-area="" asp-controller="Home" asp-action="AreasProtegidas">Áreas Protegidas</a>
+                            </div>
+                        </li>
+
+                       
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" asp-area="" style="color:black" asp-controller="Home" asp-action="Index" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Repositorio Documental
+                            </a>
+
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" style="color:black" asp-area="" asp-controller="Documento" asp-route-id="5" asp-action="GetDocumentosPorTipo">Documentos</a>
+                                <a class="dropdown-item" style="color:black" asp-area="" asp-controller="Documento" asp-route-id="3" asp-action="GetDocumentosPorTipo">Mapas</a>
+                                <a class="dropdown-item" style="color:black" asp-area="" asp-controller="Documento" asp-route-id="1" asp-action="GetDocumentosPorTipo">Base Documental</a>
+                            </div>
+                        </li>
+
+                        <li class="nav-item active">
+                            <a class="nav-link" asp-area="" style="color:black" asp-controller="Documento" asp-route-id="6" asp-action="GetDocumentosPorTipo">Tableros</a>
+                        </li>
+
                     </ul>
-                     <ul class="navbar-nav mr-auto">
+                    <ul class="navbar-nav mr-auto">
                         @if (this.User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item active">
@@ -109,9 +138,10 @@
                             </li>
                         }
                     </ul>
+
                     <form class="form-inline my-2 my-lg-0">
                         <button type="submit" id="btnbioblitz" class="btn btn-outline-dark my-2 my-sm-0" asp-action="Bioblitz" asp-controller="Home">BIOBLITZ</button>
-                        @*<a class="btn btn-outline-dark my-2 my-sm-0" href="https://colombia.inaturalist.org/projects/bioblitz-de-las-areas-protegidas-del-valle-de-aburra"   target="_blank">BIOBLITZ</a>*@
+                        @*<a class="btn btn-outline-dark my-2 my-sm-0"  href="https://colombia.inaturalist.org/projects/bioblitz-de-las-areas-protegidas-del-valle-de-aburra"  target="_blank">BIOBLITZ</a>*@
                         <button class="btn btn-outline-dark my-2 my-sm-0" asp-action="Search" asp-controller="Home" type="submit">Búsqueda Avanzada</button>
                     </form>
                 </div>
@@ -121,37 +151,31 @@
             <div class="col-md-10 offset-1">
                 <img src="~/images/bannerrepos.jpg" style="width:100%" />
             </div>
-          </div>
+        </div>
         <br />
     </header>
-    <main>
-        <div class="row">
-            <div class="col-md-10 offset-1">
+    <div class="row">
+        <div class="col-md-12">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
+    </div>
+    <!-- Footer -->
+    <div class="row">
+        <div class="col-md-10 offset-1">
+            <div id="footer">
+                <!-- Copyright -->
                 <div>
-                    <div class="row">
-                        <div class="col-md-8 offset-2">
-                            @RenderBody()
-                        </div>
-                    </div>
+                    © 2022 Copyright:
+                    <a href="https://metropol.gov.co/"> - Área Metropolitana del Valle de Aburrá</a>
                 </div>
-                <br />
-                <br />
-                <br />
-               <!-- Footer -->
-                <div id="footer">
-                    <!-- Copyright -->
-                    <div>
-                        © 2022 Copyright:
-                       <a href="https://metropol.gov.co/"> - Área Metropolitana del Valle de Aburrá</a>
-                    </div>
-                    <!-- Copyright -->
-                </div>
-                <!-- Footer -->
+                <!-- Copyright -->
             </div>
         </div>
-    </main>
-
-    @*<script src="~/lib/jquery/dist/jquery.min.js"></script>*@
+    </div>
+    <!-- Footer -->
+    @*<script src="~/lib/jquery/dist/jquery.js"></script>*@
     <script src="~/js/jquery.dataTables.js"></script>
     <script src="~/js/select.dataTables.js"></script>
     <script src="~/Components/fontawesome/js/fontawesome.js"></script>

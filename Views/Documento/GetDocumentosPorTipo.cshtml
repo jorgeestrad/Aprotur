@@ -1,0 +1,275 @@
+﻿@model IQueryable<AproturWeb.Models.DocumentoViewModel>
+
+<div class="row">
+    <div class="col-md-10 offset-md-1">
+        <div class="form-group">
+            <a asp-action="Index" asp-controller="Home" class="btn btn-success">Regresar</a>
+        </div>
+        <hr />
+        @if (Model != null && Model.Count() > 0)
+        {
+            @if (Model.FirstOrDefault().FormatoDocumentoId == 5)
+            {
+                <h4>Documentación</h4>
+            }
+            @if (Model.FirstOrDefault().FormatoDocumentoId == 1)
+            {
+                <h4>Base Documental</h4>
+            }
+            @if (Model.FirstOrDefault().FormatoDocumentoId == 3)
+            {
+                <h4>Cartografía</h4>
+            }
+            @if (Model.FirstOrDefault().FormatoDocumentoId == 4)
+            {
+                <h4>Imágenes</h4>
+            }
+            @if (Model.FirstOrDefault().FormatoDocumentoId == 6)
+            {
+                <h4>Tableros</h4>
+            }
+            @if (Model.FirstOrDefault().FormatoDocumentoId == 7)
+            {
+                <h4>Datos Abiertos</h4>
+            }
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <table class="table table-hover table-responsive table-striped" style="width:100%" id="MyTable">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.FirstOrDefault().Id)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.FirstOrDefault().Titulo)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.FirstOrDefault().Anio)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.FirstOrDefault().Autor)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.FirstOrDefault().ReferenciaAPA)
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td id="@item.Id" style="width:10%">
+                                        @if (item.FormatoDocumentoId != 1 && item.FormatoDocumentoId != 6)
+                                        {
+                                            <a href='javascript:verDocumento(@item.Id,"@item.Nombre","@item.Titulo","@item.Ruta",@item.FormatoDocumentoId,@item.Anio,"@item.Autor")' class="btn btn-info fa fa-download"></a>
+                                        }
+                                        else
+                                        {
+                                            <a href='javascript:verDocumento(@item.Id,"@item.Nombre","@item.Titulo","@item.Enlace",@item.FormatoDocumentoId,@item.Anio,"@item.Autor")' class="btn btn-info fa fa-download"></a>
+                                        }
+                                        <a asp-action="ShowDetails" asp-route-id="@item.Id" class="btn btn-info" id="btnShowDetails"><i class="fa fa-edit"></i></a>
+                                    </td>
+                                    <td style="width: 5%">
+                                        @Html.DisplayFor(modelItem => item.Id)
+                                    </td>
+                                    <td style="width:20%">
+                                        @Html.DisplayFor(modelItem => item.Titulo)
+                                    </td>
+                                    <td style="width:20%">
+                                        @Html.DisplayFor(modelItem => item.Anio)
+                                    </td>
+                                    <td style="width:10%">
+                                        @Html.DisplayFor(modelItem => item.Autor)
+                                    </td>
+                                    <td style="width:10%">
+                                        @Html.DisplayFor(modelItem => item.ReferenciaAPA)
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+        else
+        {
+            <h4>No se encontraron documentos bajo los criterios de búsqueda dados!</h4>
+        }
+
+    </div>
+</div>
+
+<div class="modal" id="showDetailsDialog">
+    <div class="modal-dialog modal-lg" style="width:1250px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4>Información del Documento</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        Título :
+                    </div>
+                    <div class="col-md-9">
+                        <textarea name="textarea" id="titulo" rows="4" cols="70" readonly="readonly"></textarea>
+                    </div>
+                    <div class="col-md-3">
+                        Nombre :
+                    </div>
+                    <div class="col-md-9">
+                        <textarea name="textarea" id="nombre" rows="4" cols="70" readonly="readonly"></textarea>
+                    </div>
+                    <div class="col-md-3">
+                        Autor :
+                    </div>
+                    <div class="col-md-9">
+                        <input type="text" id="autor" name="autor" style="width:537px" readonly="readonly">
+                    </div>
+                    <div class="col-md-3">
+                        Referencia APA :
+                    </div>
+                    <div class="col-md-9">
+                        <input type="text" id="referenciaAPA" name="referenciaAPA" style="width:537px" readonly="readonly">
+                    </div>
+                    <div class="col-md-3">
+                        Tema Central :
+                    </div>
+                    <div class="col-md-9">
+                        <textarea name="textarea" id="temaCentral" rows="4" cols="70" readonly="readonly"></textarea>
+                    </div>
+                    <div class="col-md-3">
+                        Fecha Publicación :
+                    </div>
+                    <div class="col-md-9">
+                        <input type="text" id="fechaPublicacionS" name="fechaPublicacionS" readonly="readonly">
+                    </div>
+                    <div class="col-md-3">
+                        Resúmen :
+                    </div>
+                    <div class="col-md-9">
+                        <textarea name="textarea" id="resumen" rows="4" cols="70" readonly="readonly"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="close" data-dismiss="modal"><i class="fa fa-window-close"></i></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="/js/deleteDialog.js"></script>
+
+    <script type="text/javascript">
+
+        $('a[id*=btnShowDetails]').click(function () {
+            id = $(this).parent()[0].id;
+
+
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("GetDocumento")',
+                dataType: 'json',
+                MaxJsonLength: 99999999,
+                data: { id: id },
+                success: function (documento) {
+                    $('#titulo').val(documento.titulo);
+                    $('#nombre').val(documento.nombre);
+                    $('#autor').val(documento.autor);
+                    $('#referenciaAPA').val(documento.referenciaAPA);
+                    $('#temaCentral').val(documento.temaCentral);
+                    $('#fechaPublicacionS').val(documento.fechaPublicacionS);
+                    $('#resumen').val(documento.resumen);
+                },
+                error: function (ex) {
+                    alert('Se presentó un evento no esperado!' + ' - ' + ex);
+                }
+            });
+
+
+
+            $("#showDetailsDialog").modal('show');
+            return false;
+        });
+
+
+        /**
+        * Muestra el documento y su información básica
+        * param  id {int} Identifica el documento
+        * param  nombre {string} Nombre del documento
+        * param  titulo {string} Título del documento
+        * param  ruta {string} Ruta del documento
+        * param  tipodocumento {int} Identifica el tipo de documento
+        * param  descripcion {string} Descripcion del documento
+        * param  autor {string} Autor del documento
+        * return  {boolean}
+        */
+        function verDocumento(id, nombre, titulo, ruta, tipodocumento, descripcion, autor) {
+
+            if (tipodocumento > 1 && tipodocumento != 6) ruta = 'http://3.19.150.196/SinHambre/kmz/' + ruta;
+            var w = 800;
+            var h = 600;
+            if (tipodocumento === 3) {
+                w = 300;
+                h = 200;
+            }
+            var dualScreenLeft = window.screenLeft != undefined ? window.screenLeft : window.screenX;
+            var dualScreenTop = window.screenTop != undefined ? window.screenTop : window.screenY;
+
+            var width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
+            var height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
+
+            var left = ((width / 2) - (w / 2)) + dualScreenLeft;
+            var top = ((height / 2) - (h / 2)) + dualScreenTop;
+            var title = "";
+
+            if (tipodocumento === 6) {
+                title = 'Tableros';
+            }
+
+            if (tipodocumento === 5) {
+                title = 'Pdf';
+            }
+            if (tipodocumento === 4) {
+                title = 'Imágen';
+            }
+            if (tipodocumento === 3) {
+                title = 'Audio';
+            }
+            if (tipodocumento === 2) {
+                title = 'Vídeo';
+            }
+
+            if (tipodocumento === 1) {
+                title = 'Base Documental';
+            }
+
+            var newWindow = window.open(ruta, title, 'scrollbars=yes,resizable=1,status=yes, width=' + w + ', height=' + h + ', top=' + top + ', left=' + left);
+
+            // Puts focus on the newWindow
+            if (window.focus) {
+                newWindow.focus();
+            }
+        }
+
+
+        $(document).ready(function () {
+
+            $('#MyTable').DataTable({
+                language: {
+                    url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+                },
+                responsive: true
+            });
+
+        });
+    </script>
+}
+
+
+

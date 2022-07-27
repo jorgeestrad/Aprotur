@@ -484,6 +484,45 @@ namespace GeoPlus.Controllers
 
         }
 
+
+        /// <summary>
+        /// Retorna los Documentos de todos los proyectos
+        /// </summary>
+        /// <param name="id">Formato de Documento</param>
+        /// <returns></returns>
+        [HttpGet("GetDocumentosPorTipo")]
+        public IActionResult GetDocumentosPorTipo(int id)
+        {
+            try
+            {
+                var documentos = _context.DocumentoProyectos
+                    .Include(i => i.Documento).ThenInclude(i => i.FormatoDocumento)
+                    .Where(f => f.Documento.FormatoDocumento.Id_Local == id)
+                    .Select(s => new DocumentoViewModel
+                    {
+                        Id = s.Documento.Id,
+                        Autor = s.Documento.Autor,
+                        Resultado = s.Documento.Resultado,
+                        Resumen = s.Documento.Resumen,
+                        AporteDocumento = s.Documento.AporteDocumento,
+                        TemaCentral = s.Documento.TemaCentral,
+                        ReferenciaAPA = s.Documento.ReferenciaAPA,
+                        FechaPublicacion = s.Documento.FechaPublicacion,
+                        Nombre = s.Documento.Nombre,
+                        Ruta = s.Documento.Ruta,
+                        TipoDocumentoId = s.Documento.TipoDocumentoId,
+                        FormatoDocumentoId = s.Documento.FormatoDocumento.Id_Local,
+                        Titulo = s.Documento.Titulo,
+                        Enlace = s.Documento.Enlace,
+                    });
+                return View(documentos);
+            }
+            catch (Exception exp)
+            {
+                return NotFound(exp.Message);
+            }
+        }
+
         #region Proyectos vinculados con el documento
 
         /// <summary>
