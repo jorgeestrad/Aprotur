@@ -426,6 +426,21 @@ namespace GeoPlus.Controllers
             }
         }
 
+
+
+        public IActionResult GetDocumentosProyectoGen(int? id)
+        {
+            try
+            {
+                return View(id);
+            }
+            catch (Exception exp)
+            {
+                return NotFound(exp.Message);
+            }
+        }
+
+
         [HttpGet("GetDocumentosProyecto")]
         public IActionResult GetDocumentosProyecto(int id)
         {
