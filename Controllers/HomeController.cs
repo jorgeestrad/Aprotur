@@ -30,19 +30,52 @@ namespace GeoPlus.Controllers
             this.userHelper = userHelper;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int? id)
+        {
+            try
+            {
+                if (this.User.Identity.Name != null)
+                {
+                    var user = userHelper.GetUserByEmail(this.User.Identity.Name);
+
+                    if (!user.EmailConfirmed) return RedirectToAction("UserNotEnabled", "Home");
+
+                }
+
+                if (id != null)
+                {
+                    var rutaKml = _context.Proyectos
+                        .Include(i => i.DocumentosProyectos)
+                        .Where(f => f.Id == id).FirstOrDefault();
+
+                    string uploadsFolder = hostingEnvironment.ContentRootPath;
+                    string filePath = $"http://3.19.150.196/Aprotur/kmz/{rutaKml.RutaKML}";
+                    rutaKml.RutaKML = filePath;
+                    return View(rutaKml);
+                }
+                else
+                    return View(new Proyecto { Id = 0});
+            }
+            catch (Exception exp)
+            {
+                return NotFound(exp.Message);
+            }
+        }
+
+        public IActionResult AreasProtegidas()
         {
             if (this.User.Identity.Name != null)
             {
                 var user = userHelper.GetUserByEmail(this.User.Identity.Name);
 
                 if (!user.EmailConfirmed) return RedirectToAction("UserNotEnabled", "Home");
-               
+
             }
 
             return View(_context.Proyectos.ToList());
         }
 
+      
         public IActionResult Search()
         {
             try

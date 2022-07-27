@@ -1,0 +1,474 @@
+﻿@model IEnumerable<AproturWeb.Data.Entities.Proyecto>
+
+@{ ViewData["Title"] = "Home Page"; }
+
+<div class="d-flex justify-content-center">
+    <div class="spinner-border text-success"  style="display: none" id = "spinner" role="status">
+    <span class="sr-only">Loading...</span>
+    </div>
+</div>
+<div class="row offset-1">
+    <div class="col-md-3">
+        <div class="card" style="width:100%">
+            <div class="card-body" style="width:100%">
+               <h6 class="card-subtitle mb-2 text-muted">Listado de Áreas Protegidas</h6>
+                <div id="lproyectos" style="height:400px">
+                    <table class="display table-success table-striped" style="width:100%; font-size:smaller; height:auto; background-color:#007bff" id="MyTable">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th style="width:80%">
+                                    @Html.DisplayNameFor(model => model.Nombre)
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Nombre)
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div id="popup">
+            <div id="tabpanel-container">
+            </div>
+        </div>
+    </div>
+    <div id="mapa" class="col-md-8">
+    </div>
+ </div>
+
+<div id="PopupImagen">
+    <div class="form-horizontal">
+        <img id="imagenDoc" src="" style="width:100%">
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+ <script type="text/javascript">
+    var map;
+    var proyectoId = 0;
+    var comentarioId = 0;
+    var lista = [];
+    var listaN = [];
+
+    
+     
+    var table = $('#MyTable').DataTable({
+        "paging": false,
+        "info": false,
+         "columnDefs": [{
+            "orderable": false,
+            "defaultContent": '',
+            "className": 'select-checkbox',
+            "targets": 0
+        }],
+        "select": {
+            "style": 'multi',
+            "selector": 'td:first-child'
+        },
+        "order": [[1, "asc"]],
+        "scrollY": "300px",
+        "scrollCollapse": true,
+        "language": {
+            "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+        },});
+
+    var table2 = $('#MyTable2').DataTable({
+        "paging": false,
+         "info": false,
+        "columnDefs": [{
+            "orderable": false,
+            "defaultContent": '',
+            "className": 'select-checkbox',
+            "targets": 0
+        }],
+        "select": {
+            "style": 'multi',
+            "selector": 'td:first-child'
+        },
+        "order": [[1, "asc"]],
+        "scrollY": "300px",
+        "scrollCollapse": true,
+        "language": {
+            "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+        },});
+
+       var tableBaseDocumetal = $('#TableBaseDocumental').DataTable({
+            language: {
+            url: '//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json'
+        },});
+
+        var MyTablePdfs = $('#MyTablePdfs').DataTable({
+            language: {
+            url: '//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json'
+        },});
+
+         var MyTableFotos = $('#MyTableFotos').DataTable({
+            language: {
+            url: '//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json'
+        },});
+
+    var txtNombreDocumentoVideo = $("#txtNombreDocumentoVideo").dxTextBox({
+        value: ""}).dxTextBox("instance");
+
+    var txtDescripcionDocumento = $("#txtDescripcionDocumentoVideo").dxTextBox({
+        value: ""}).dxTextBox("instance");
+
+    var txtTituloDocumento = $("#txtTituloDocumentoVideo").dxTextBox({
+        value: ""}).dxTextBox("instance");
+
+    var txtComentario = $("#txtComentario").dxTextArea({
+        value: "",
+        height: 140}).dxTextArea("instance");
+
+    var txtResponder = $("#txtResponder").dxTextArea({
+        value: "",
+        height: 140}).dxTextArea("instance");
+
+        
+    
+    /**
+    * Muestra el documento y su información básica
+    * param  id {int} Identifica el documento
+    * param  nombre {string} Nombre del documento
+    * param  titulo {string} Título del documento
+    * param  ruta {string} Ruta del documento
+    * param  tipodocumento {int} Identifica el tipo de documento
+    * param  descripcion {string} Descripcion del documento
+    * param  autor {string} Autor del documento
+    * return  {boolean}
+   */
+    function verDocumento(id, nombre, titulo, ruta, tipodocumento, descripcion, autor) {
+         
+        if (tipodocumento > 1 && tipodocumento != 6) ruta = 'http://3.19.150.196/Aprotur/kmz/' + ruta;
+        var w = 800;
+        var h = 600;
+        if (tipodocumento === 3 ) 
+         {
+            w = 300;
+            h = 200;
+         }
+        var dualScreenLeft = window.screenLeft != undefined ? window.screenLeft : window.screenX;
+        var dualScreenTop = window.screenTop != undefined ? window.screenTop : window.screenY;
+
+        var width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
+        var height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
+
+        var left = ((width / 2) - (w / 2)) + dualScreenLeft;
+        var top = ((height / 2) - (h / 2)) + dualScreenTop;
+        var title = "";
+
+        
+        if (tipodocumento === 6) {
+            title = 'Tableros';
+        }
+
+        if (tipodocumento === 5) {
+            title = 'Pdf';
+        }
+        if (tipodocumento === 4) {
+           title = 'Imágen';
+        }
+        if (tipodocumento === 3) {
+            title = 'Audio';
+        }
+        if (tipodocumento === 2) {
+            title = 'Vídeo';
+        }
+
+        if (tipodocumento === 1) {
+            title = 'Base Documental';
+        }
+         var newWindow = window.open(ruta, title, 'scrollbars=yes,resizable=1,status=yes, width=' + w + ', height=' + h + ', top=' + top + ', left=' + left);
+
+        // Puts focus on the newWindow
+        if (window.focus) {
+            newWindow.focus();
+        }
+    }
+
+    $(document).ready(function () {
+
+        const spin = document.getElementById('spinner');
+        DisplayGoogleMap();
+
+        table.on('select', function (e, dt, type, indexes) {
+
+            spin.style.display = 'block';
+
+            var rowData = table.rows(indexes).data().toArray();
+            var nombre = rowData[0][1];
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("GetKmlProyecto")',
+                dataType: 'json',
+                MaxJsonLength: 99999999,
+                data: { nombre: nombre },
+                success: function (proyecto) {
+                    proyectoId = proyecto.id;
+                    var i = lista.length;
+                    lista[i] = new google.maps.KmlLayer({
+                        url: proyecto.rutaKML,
+                        preserveViewport: true,
+                        map: map
+                    });
+
+                    placeMarker(proyecto.latitud, proyecto.longitud, map, proyecto.nombre,proyecto.id);
+
+                    map.setZoom(14);
+
+                    lista[i].addListener('click', function (kmlEvent) {
+                        var content = kmlEvent.featureData.infoWindowHtml;
+                       placeMarker(kmlEvent.latLng.lat(), kmlEvent.latLng.lng(), map, kmlEvent.featureData.name,proyecto.id);
+                    });
+
+                    lista[i].setMap(map);
+                    listaN[i] = nombre;
+
+                    spin.style.display = 'none';
+
+                    
+                },
+                error: function (ex) {
+                     spin.style.display = 'none';
+                    alert('Se presentó un evento no esperado!' + ' - ' + ex);
+                }
+            });
+        }).on('deselect', function (e, dt, type, indexes) {
+            spin.style.display = 'block';
+            var j = indexes[0];
+            var rowData = table.rows(j).data().toArray();
+            var proyectoSel = rowData[0][1];
+            for (i = 0; i < listaN.length; i++) {
+                if (listaN[i] === proyectoSel) {
+                    lista[i].setMap(null);
+                }
+            }
+            spin.style.display = 'none';
+        });
+
+      
+
+        function placeMarker(lat, lng, map, nombre, id) 
+        {
+            const spin = document.getElementById('spinner');
+            spin.style.display = 'block';
+            var cadenaPdfs = "";
+            var cadenaFotos = "";
+            var cadenaAudios = "";
+            var cadenaVideos = "";
+            var cadenaProyectos = "";
+            var cadenaBaseDocumental = "";
+            var cadenaTableros = "";
+            var viewPdfs = "";
+            var viewFotos = "";
+            var viewAudios = "";
+            var viewVideos = "";
+            var viewProyectos = "";
+            var viewBaseDocumental = "";
+            var viewTableros = "";
+
+           
+            if (lat !== null && lng !== null ) {
+                    map.setCenter(new google.maps.LatLng(lat,lng));
+            }
+            
+                $.ajax(
+                {
+                        type: 'GET',
+                        url: '@Url.Action("GetDocumentosProyecto")',
+                        dataType: 'json',
+                        MaxJsonLength: 99999999,
+                        data: { id: id },
+                         success: function (documentos) 
+                         {
+                             viewPdfs = "<div style='overflow-y:scroll; height:100%'><table class='hover row-border' style='width:98%; font-size:medium' id='MyTablePdfs'><thead><tr style='color: #fff; background: #1F618D;'><th style='width:90%'>Listado de Documentos</th><th></th></tr></thead><tbody>";
+                             viewFotos = "<div style='overflow-y:scroll; height:100%'><table class='hover row-border' style='width:98%; font-size:medium' id='MyTableFotos'><thead><tr style='color: #fff; background: #1F618D;'><th style='width:90%'>Fotos</th><th></th></tr></thead><tbody>";
+                             viewAudios = "<div style='overflow-y:scroll; height:100%'><table class='hover row-border' style='width:98%; font-size:medium' id='MyTableAudios'><thead><tr style='color: #fff; background: #1F618D;'><th style='width:90%'>Audios</th><th></th></tr></thead><tbody>";
+                             viewVideos = "<div style='overflow-y:scroll; height:100%'><table class='hover row-border' style='width:98%; font-size:medium' id='MyTableVideos'><thead><tr style='color: #fff; background: #1F618D;'><th style='width:90%'>Videos</th><th></th></tr></thead><tbody>";
+                             viewProyectos = "<div id='carouselExampleControls' class='carousel slide' data-bs-ride='carousel'><div class='carousel-inner'>";
+                             viewBaseDocumental = "<div style='overflow-y:scroll; height:100%'><table class='hover row-border' style='width:98%; font-size:medium' id='MyTableBaseDocumental'><thead><tr style='color: #fff; background: #1F618D;'><th style='width:20%'>Título</th><th style='width:20%'>Autor</th><th style='width:25%'>Aporte Documento</th><th style='width:30%'>Resumen</th><th></th></tr></thead><tbody>";
+                             viewTableros = "<div style='overflow-y:scroll; height:100%'><table class='hover row-border' style='width:98%; font-size:medium' id='MyTableTableros'><thead><tr style='color: #fff; background: #1F618D;'><th style='width:90%'>Tableros</th><th></th></tr></thead><tbody>";
+                          
+                             var p = 0;
+                             var rowPar = true;
+                             $.each(documentos.$values, function (i, docu)
+                             {
+                                 if (typeof docu.nombre !== 'undefined') 
+                                 {
+                                     if (rowPar === true) {
+                                         if (docu.formatoDocumentoId === 6) {
+                                             cadenaTableros = cadenaTableros + "<tr style='border-bottom:1pt solid gray;color: #black; background: #AED6F1;'><td>" + docu.nombre + "</td><td><a href='javascript:verDocumento(" + docu.id + ",\"" + docu.nombre + "\",\"" + docu.titulo + "\",\"" + docu.enlace + "\"," + docu.formatoDocumentoId + ",\"" + docu.descripcion + "\",\"" + docu.autor + "\")' class='icon-block'><i class='fab fa-sistrix'></i></a></td></tr>";
+                                         }
+                                         if (docu.formatoDocumentoId === 5) {
+                                             cadenaPdfs = cadenaPdfs + "<tr style='border-bottom:1pt solid gray;color: #black; background: #AED6F1;'><td>" + docu.nombre + "</td><td><a href='javascript:verDocumento(" + docu.id + ",\"" + docu.nombre + "\",\"" + docu.titulo + "\",\"" + docu.ruta + "\"," + docu.formatoDocumentoId + ",\"" + docu.descripcion + "\",\"" + docu.autor + "\")' class='icon-block'><i class='fab fa-sistrix'></i></a></td></tr>";
+                                         }
+                                         if (docu.formatoDocumentoId === 4) {
+                                             cadenaFotos = cadenaFotos + "<tr style='border-bottom:1pt solid gray;color: #black; background: #AED6F1;'><td>" + docu.nombre + "</td><td><a href='javascript:verDocumento(" + docu.id + ",\"" + docu.nombre + "\",\"" + docu.titulo + "\",\"" + docu.ruta + "\"," + docu.formatoDocumentoId + ",\"" + docu.descripcion + "\",\"" + docu.autor + "\")' class='icon-block'><i class='fab fa-sistrix'></i></a></td></tr>";
+                                         }
+                                         if (docu.formatoDocumentoId === 3) {
+                                             cadenaAudios = cadenaAudios + "<tr style='border-bottom:1pt solid gray;color: #black; background: #AED6F1;'><td>" + docu.nombre + "</td><td><a href='javascript:verDocumento(" + docu.id + ",\"" + docu.nombre + "\",\"" + docu.titulo + "\",\"" + docu.ruta + "\"," + docu.formatoDocumentoId + ",\"" + docu.descripcion + "\",\"" + docu.autor + "\")' class='icon-block'><i class='icon-home icon-4x'></i><span>Escuchar</span></a></td></tr>";
+                                         }
+                                         if (docu.formatoDocumentoId === 2) {
+                                             cadenaVideos = cadenaVideos + "<tr style='border-bottom:1pt solid gray;color: #black; background: #AED6F1;'><td>" + docu.nombre + "</td><td><a href='javascript:verDocumento(" + docu.id + ",\"" + docu.nombre + "\",\"" + docu.titulo + "\",\"" + docu.ruta + "\"," + docu.formatoDocumentoId + ",\"" + docu.descripcion + "\",\"" + docu.autor + "\")' class='icon-block'><i class='fab fa-sistrix'></i></a></td></tr>";
+                                         }
+                                         if (docu.formatoDocumentoId === 1) {
+                                             cadenaBaseDocumental = cadenaBaseDocumental + "<tr style='border-bottom:1pt solid gray;'><td style='font-weight:bold;color: #black; background: #AED6F1;'>" + docu.titulo + "</td><td style='font-style: italic;color: #black; background: #AED6F1;'>" + docu.autor + "</td><td style='font-style: italic;color: #black; background: #AED6F1;'>" + docu.aporteDocumento + "</td><td style='font-style: italic;color: #black; background: #AED6F1;'>" + docu.resumen + "</td><td style='font-style: italic;color: #black; background: #AED6F1;'><a href='javascript:verDocumento(" + docu.id + ",\"" + docu.nombre + "\",\"" + docu.titulo + "\",\"" + docu.enlace + "\"," + docu.formatoDocumentoId + ",\"" + docu.descripcion + "\",\"" + docu.autor + "\")' class='icon-block'><i class='fab fa-sistrix'></i></a></td></tr>";
+                                         }
+                                         rowPar = false;
+                                     }
+                                     else {
+                                         if (docu.formatoDocumentoId === 6) {
+                                             cadenaTableros = cadenaTableros + "<tr style='border-bottom:1pt solid gray;color: #black; background: #E5E8E8;'><td>" + docu.nombre + "</td><td style='font-style: italic;color: #black; background: #E5E8E8;'><a href='javascript:verDocumento(" + docu.id + ",\"" + docu.nombre + "\",\"" + docu.titulo + "\",\"" + docu.enlace + "\"," + docu.formatoDocumentoId + ",\"" + docu.descripcion + "\",\"" + docu.autor + "\")' class='icon-block'><i class='fab fa-sistrix'></i></a></td></tr>";
+                                         }
+                                         if (docu.formatoDocumentoId === 5) {
+                                             cadenaPdfs = cadenaPdfs + "<tr style='border-bottom:1pt solid gray;color: #black; background: #E5E8E8;'><td>" + docu.nombre + "</td><td style='font-style: italic;color: #black; background: #E5E8E8;'><a href='javascript:verDocumento(" + docu.id + ",\"" + docu.nombre + "\",\"" + docu.titulo + "\",\"" + docu.ruta + "\"," + docu.formatoDocumentoId + ",\"" + docu.descripcion + "\",\"" + docu.autor + "\")' class='icon-block'><i class='fab fa-sistrix'></i></a></td></tr>";
+                                         }
+                                         if (docu.formatoDocumentoId === 4) {
+                                             cadenaFotos = cadenaFotos + "<tr style='border-bottom:1pt solid gray;color: #black; background: #E5E8E8;'><td>" + docu.nombre + "</td><td style='font-style: italic;color: #black; background: #E5E8E8;'><a href='javascript:verDocumento(" + docu.id + ",\"" + docu.nombre + "\",\"" + docu.titulo + "\",\"" + docu.ruta + "\"," + docu.formatoDocumentoId + ",\"" + docu.descripcion + "\",\"" + docu.autor + "\")' class='icon-block'><i class='fab fa-sistrix'></i></a></td></tr>";
+                                         }
+                                         if (docu.formatoDocumentoId === 3) {
+                                             cadenaAudios = cadenaAudios + "<tr style='border-bottom:1pt solid gray;color: #black; background: #E5E8E8;'><td>" + docu.nombre + "</td><td style='font-style: italic;color: #black; background: #E5E8E8;'><a href='javascript:verDocumento(" + docu.id + ",\"" + docu.nombre + "\",\"" + docu.titulo + "\",\"" + docu.ruta + "\"," + docu.formatoDocumentoId + ",\"" + docu.descripcion + "\",\"" + docu.autor + "\")' class='icon-block'><i class='icon-home icon-4x'></i><span>Escuchar</span></a></td></tr>";
+                                         }
+                                         if (docu.formatoDocumentoId === 2) {
+                                             cadenaVideos = cadenaVideos + "<tr style='border-bottom:1pt solid gray;color: #black; background: #E5E8E8;'><td>" + docu.nombre + "</td><td style='font-style: italic;color: #black; background: #E5E8E8;'><a href='javascript:verDocumento(" + docu.id + ",\"" + docu.nombre + "\",\"" + docu.titulo + "\",\"" + docu.ruta + "\"," + docu.formatoDocumentoId + ",\"" + docu.descripcion + "\",\"" + docu.autor + "\")' class='icon-block'><i class='fab fa-sistrix'></i></a></td></tr>";
+                                         }
+                                         if (docu.formatoDocumentoId === 1) {
+                                             cadenaBaseDocumental = cadenaBaseDocumental + "<tr style='border-bottom:1pt solid gray;color: #black; background: #E5E8E8;'><td style='font-weight:bold;color: #black; background: #E5E8E8;'>" + docu.titulo + "</td><td style='font-style: italic;color: #black; background: #E5E8E8;'>" + docu.autor + "</td><td style='font-style: italic;color: #black; background: #E5E8E8;'>" + docu.aporteDocumento + "</td><td style='font-style: italic;color: #black; background: #E5E8E8;'>" + docu.resumen + "</td><td style='font-style: italic;color: #black; background: #E5E8E8;'><a href='javascript:verDocumento(" + docu.id + ",\"" + docu.nombre + "\",\"" + docu.titulo + "\",\"" + docu.enlace + "\"," + docu.formatoDocumentoId + ",\"" + docu.descripcion + "\",\"" + docu.autor + "\")' class='icon-block'><i class='fab fa-sistrix'></i></a></td></tr>";
+                                         }
+                                         rowPar = true;
+                                     }
+                                 }
+                             });
+
+                             viewPdfs = viewPdfs + cadenaPdfs + "</tbody></table></div>";
+                             viewFotos = viewFotos + cadenaFotos + "</tbody></table></div>";
+                             viewAudios = viewAudios + cadenaAudios + "</tbody></table></div>";
+                             viewVideos = viewVideos + cadenaVideos + "</tbody></table></div>";
+                             viewBaseDocumental = viewBaseDocumental + cadenaBaseDocumental + "</tbody></table></div>";
+                             viewProyectos = viewProyectos + cadenaProyectos + "</div><button class='carousel-control-prev' type='button' data-bs-target='#carouselExampleControls' data-bs-slide='prev'><span class='carousel-control-prev-icon' aria-hidden='true'></span><span class='visually-hidden'>Previous</span></button><button class='carousel-control-next' type='button' data-bs-target='#carouselExampleControls' data-bs-slide='next'><span class='carousel-control-next-icon' aria-hidden='true'></span><span class='visually-hidden'>Next</span></button></div>";
+                             viewTableros = viewTableros + cadenaTableros + "</tbody></table></div>";
+
+                             var tabPanel = $("#tabpanel-container").dxTabPanel({
+                                 height:'98%',
+                                 selectedIndex: 0,
+                                 loop: false,
+                                 animationEnabled: true,
+                                 scrollingEnabled: true,
+                                 swipeEnabled: true,
+                                 items: [
+                                     {
+                                     title: "Documentos Internos",
+                                     icon: "exportpdf",
+                                     template: function (itemData, itemIndex, element) {
+                                         const textAreaDivPdfs = $(viewPdfs);
+                                         textAreaDivPdfs.appendTo(element);
+                                     }
+                                 }, {
+                                     title: "Mapa",
+                                     icon: "photo",
+                                     template: function (itemData, itemIndex, element) {
+                                         const textAreaDivFotos = $(viewFotos);
+                                         textAreaDivFotos.appendTo(element);
+                                     }
+                                 },
+                                 {
+                                         title: "Documentos Externos",
+                                         icon: "message",
+                                         template: function (itemData, itemIndex, element) {
+                                             const textAreaDivBaseDocumental = $(viewBaseDocumental);
+                                              textAreaDivBaseDocumental.appendTo(element);
+                                         }
+                                     },
+                                 {
+                                     title: "Tableros",
+                                     icon: "exportpdf",
+                                     template: function (itemData, itemIndex, element) {
+                                         const textAreaDivTableros = $(viewTableros);
+                                         textAreaDivTableros.appendTo(element);
+                                     }
+                                 }],
+                                 onSelectionChanged: function (e) {
+
+                                 }
+                             }).dxTabPanel("instance");
+
+                             $("#popup").dxPopup({
+                                 showTitle: true,
+                                 title: "Ducumentos Áreas Protegidas",
+                                 width: 1100,
+                                 height: 700,
+                                 resizeEnabled: true,
+                                 dragEnabled: true,
+                                 position: "center",
+                             });
+
+                             const popup = $("#popup").dxPopup("instance");
+                             popup.show();
+
+                             spin.style.display = 'none';
+
+                         },
+                         error: function (ex) 
+                         {
+                            spin.style.display = 'none';
+                            alert('Se presentó un evento no esperado!' + ' - ' + ex);
+                         }
+                });
+           
+        }
+
+        function DisplayGoogleMap() {
+            //Set the Latitude and Longitude of the Map
+            var myAddress = new google.maps.LatLng(6.217, -75.567);
+            //Create Options or set different Characteristics of Google Map
+            var mapOptions = {
+                center: myAddress,
+                zoom: 10,
+                minZoom: 5
+            };
+            //Display the Google map in the div control with the defined Options
+            map = new google.maps.Map(document.getElementById("mapa"), mapOptions);
+
+            var url,foldersAndFile,folders,folderpath,protocol,host,ourLocation;
+            url = window.location;
+    
+            foldersAndFile = url.pathname.split("/");
+            folders = foldersAndFile.slice(0,foldersAndFile.length-1);
+            folderpath = folders.join("/");
+    
+            protocol = url.protocol+"//";
+            host = url.host;
+    
+            ourLocation=protocol+host+"/Aprotur/Recursos/AREA_MUNICIPIOS.kmz";
+    
+           
+           var k = new google.maps.KmlLayer({
+                        url: ourLocation,
+                        preserveViewport: true,
+                        map: map
+                    });
+            k.setMap(map);
+
+            ////Set Marker on the Map
+            //var marker = new google.maps.Marker({
+            //    position: myAddress
+            //});
+            //marker.setMap(map);
+        }});
+
+ </script>
+ }

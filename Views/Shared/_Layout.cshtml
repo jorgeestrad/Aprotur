@@ -61,15 +61,14 @@
                 </div>
             </div>
             <nav class="navbar navbar-expand-lg navbar-dark bg-transparent">
-                <a class="navbar-brand" style="color:black" href="#">APROTUR</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item active">
-                            <a class="nav-link" asp-area="" style="color:black" asp-controller="Home" asp-action="Index">Home <span class="sr-only">(current)</span></a>
+                            <a class="nav-link" asp-area="" style="color:black" asp-controller="Home" asp-action="Index">Inicio <span class="sr-only">(current)</span></a>
                         </li>
 
                         @if (this.User.Identity.IsAuthenticated)
@@ -90,6 +89,34 @@
                                  </div>
                             </li>
                         }
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" asp-area="" style="color:black" asp-controller="Home" asp-action="Index" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Mapas Interativos
+                            </a>
+
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" style="color:black" asp-area="" asp-controller="Home" asp-action="AreasProtegidas">Mapa Interactivo</a>
+                                <a class="dropdown-item" style="color:black" asp-area="" asp-controller="Home" asp-action="AreasProtegidas">Áreas Protegidas</a>
+                            </div>
+                        </li>
+
+                        <li class="nav-item active">
+                            <a class="nav-link" asp-area="" style="color:black" asp-controller="Account" asp-action="ChangeUser">Tableros</a>
+                        </li>
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" asp-area="" style="color:black" asp-controller="Home" asp-action="Index" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Repositorio Documental
+                            </a>
+
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" style="color:black" asp-area="" asp-controller="Mapa Interactivo" asp-action="Index">Documentos</a>
+                                <a class="dropdown-item" style="color:black" asp-area="" asp-controller="Areas Protegidas" asp-action="Index">Mapas</a>
+                                <a class="dropdown-item" style="color:black" asp-area="" asp-controller="Areas Protegidas" asp-action="Index">Base Documental</a>
+                            </div>
+                        </li>
+
                     </ul>
                     <ul class="navbar-nav mr-auto">
                         @if (this.User.Identity.IsAuthenticated)
