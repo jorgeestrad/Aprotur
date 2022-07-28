@@ -514,7 +514,7 @@ namespace GeoPlus.Controllers
                         FormatoDocumentoId = s.Documento.FormatoDocumento.Id_Local,
                         Titulo = s.Documento.Titulo,
                         Enlace = s.Documento.Enlace,
-                    });
+                    }).Distinct();
                 return View(documentos);
             }
             catch (Exception exp)
