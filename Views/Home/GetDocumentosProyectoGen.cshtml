@@ -175,12 +175,12 @@
                     data: { id: @Model },
                     success: function (documentos) {
                         viewPdfs = "<div style='overflow-y:scroll; height:100%'><table class='hover row-border' style='width:98%; font-size:medium' id='MyTablePdfs'><thead><tr style='color: #fff; background: #1F618D;'><th style='width:90%'>Listado de Documentos</th><th></th></tr></thead><tbody>";
-                        viewFotos = "<div style='overflow-y:scroll; height:100%'><table class='hover row-border' style='width:98%; font-size:medium' id='MyTableFotos'><thead><tr style='color: #fff; background: #1F618D;'><th style='width:90%'>Fotos</th><th></th></tr></thead><tbody>";
+                        viewFotos = "<div style='overflow-y:scroll; height:100%'><table class='hover row-border' style='width:98%; font-size:medium' id='MyTableFotos'><thead><tr style='color: #fff; background: #1F618D;'><th style='width:2200px'>Fotos</th><th></th></tr></thead><tbody>";
                         viewAudios = "<div style='overflow-y:scroll; height:100%'><table class='hover row-border' style='width:98%; font-size:medium' id='MyTableAudios'><thead><tr style='color: #fff; background: #1F618D;'><th style='width:90%'>Audios</th><th></th></tr></thead><tbody>";
                         viewVideos = "<div style='overflow-y:scroll; height:100%'><table class='hover row-border' style='width:98%; font-size:medium' id='MyTableVideos'><thead><tr style='color: #fff; background: #1F618D;'><th style='width:90%'>Videos</th><th></th></tr></thead><tbody>";
                         viewProyectos = "<div id='carouselExampleControls' class='carousel slide' data-bs-ride='carousel'><div class='carousel-inner'>";
                         viewBaseDocumental = "<div style='overflow-y:scroll; height:100%'><table class='hover row-border' style='width:98%; font-size:medium' id='MyTableBaseDocumental'><thead><tr style='color: #fff; background: #1F618D;'><th style='width:20%'>Título</th><th style='width:20%'>Autor</th><th style='width:25%'>Aporte Documento</th><th style='width:30%'>Resumen</th><th></th></tr></thead><tbody>";
-                        viewTableros = "<div style='overflow-y:scroll; height:100%'><table class='hover row-border' style='width:98%; font-size:medium' id='MyTableTableros'><thead><tr style='color: #fff; background: #1F618D;'><th style='width:90%'>Tableros</th><th></th></tr></thead><tbody>";
+                        viewTableros = "<div style='overflow-y:scroll; height:100%'><table class='hover row-border' style='width:98%; font-size:medium' id='MyTableTableros'><thead><tr style='color: #fff; background: #1F618D;'><th style='width:2200px'>Tableros</th><th></th></tr></thead><tbody>";
 
                         var p = 0;
                         var rowPar = true;
@@ -241,6 +241,7 @@
 
                         var tabPanel = $("#tabpanel-container").dxTabPanel({
                             height: '98%',
+                            with : '98%',
                             selectedIndex: 0,
                             loop: false,
                             animationEnabled: true,

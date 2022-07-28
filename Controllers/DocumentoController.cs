@@ -1005,6 +1005,54 @@ namespace GeoPlus.Controllers
 
         #endregion
 
+        
+        public IActionResult GetDocumento(int? id)
+        {
+            try
+            {
+                if (id == null)
+                {
+                    return NotFound();
+                }
+
+                var documento = _context.Documentos
+                    .Select(s => new DocumentoViewModel
+                    {
+                        Id = s.Id,
+                        Titulo = s.Titulo,
+                        Ruta = s.Ruta,
+                        Portada = s.Portada,
+                        Autor = s.Autor,
+                        Anio = s.Anio,
+                        AporteDocumento = s.AporteDocumento,
+                        FormatoDocumentoId = s.FormatoDocumentoId,
+                        PaisId = s.PaisId,
+                        Resultado = s.Resultado,
+                        ReferenciaAPA = s.ReferenciaAPA,
+                        TemaCentral = s.TemaCentral,
+                        TipoFuenteBibliograficaId = s.TipoFuenteBibliograficaId,
+                        TipoDocumentoId = s.TipoDocumentoId,
+                        FechaPublicacion = s.FechaPublicacion,
+                        FechaPublicacionS = s.FechaPublicacion.ToString("MM/dd/yyyy HH:mm:ss"),
+                        Nombre = s.Nombre,
+                        Resumen = s.Resumen,
+                        Enlace = s.Enlace,
+                    })
+                    .Where(f => f.Id == id.Value).FirstOrDefault();
+
+                if (documento == null)
+                {
+                    return NotFound();
+                }
+                return Ok(documento);
+            }
+            catch (Exception exp)
+            {
+                return NotFound(exp.Message);
+            }
+        }
+
+
         public IActionResult NoDelete()
         {
             return View();
