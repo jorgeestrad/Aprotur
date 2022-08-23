@@ -19,22 +19,25 @@
                 <table class="table table-hover table-responsive table-striped" style="width:100%" id="MyTable">
                     <thead>
                         <tr>
-                            <th>
+                            <th style="font-size:small">
                                 @Html.DisplayNameFor(model => model.Documentos.FirstOrDefault().Id)
                             </th>
-                            <th>
+                                <th style="font-size:small">
+                                @Html.DisplayNameFor(model => model.Documentos.FirstOrDefault().Nombre)
+                            </th>
+                            <th style="font-size:small">
                                 @Html.DisplayNameFor(model => model.Documentos.FirstOrDefault().Titulo)
                             </th>
-                            <th>
+                            <th style="font-size:small">
                                 @Html.DisplayNameFor(model => model.Documentos.FirstOrDefault().Anio)
                             </th>
-                            <th>
+                            <th style="font-size:small">
                                 @Html.DisplayNameFor(model => model.Documentos.FirstOrDefault().Autor)
                             </th>
-                            <th>
+                            <th style ="font-size:small">
                                 @Html.DisplayNameFor(model => model.Documentos.FirstOrDefault().ReferenciaAPA)
                             </th>
-                            <th>
+                            <th style="font-size:small">
                                 @Html.DisplayNameFor(model => model.Documentos.FirstOrDefault().FormatoDocumento.Nombre)
                             </th>
                             <th></th>
@@ -44,25 +47,28 @@
                         @foreach (var item in Model.Documentos)
                         {
                         <tr>
-                            <td style="width: 5%">
+                            <td style="width: 5%; font-size:x-small">
                                 @Html.DisplayFor(modelItem => item.Id)
                             </td>
-                            <td style="width:20%">
+                            <td style="width:10%; font-size:x-small">
+                                @Html.DisplayFor(modelItem => item.Nombre)
+                            </td>
+                            <td style="width:10%; font-size:x-small">
                                 @Html.DisplayFor(modelItem => item.Titulo)
                             </td>
-                            <td style="width:20%">
+                            <td style="width:5%; font-size:x-small">
                                 @Html.DisplayFor(modelItem => item.Anio)
                             </td>
-                            <td style="width:10%">
+                            <td style="width:10%; font-size:x-small">
                                 @Html.DisplayFor(modelItem => item.Autor)
                             </td>
-                            <td style="width:10%">
+                            <td style="width:10%; font-size:x-small">
                                 @Html.DisplayFor(modelItem => item.ReferenciaAPA)
                             </td>
-                             <td style="width:10%">
+                            <td style="width:10%; font-size:x-small">
                                 @Html.DisplayFor(modelItem => item.FormatoDocumento.Nombre)
                             </td>
-                            <td  id="@item.Id" style="width:10%">
+                            <td id="@item.Id" style="width:10%; font-size:x-small">
                                 @if (item.FormatoDocumento.Id_Local != 1 && item.FormatoDocumento.Id_Local !=  6)
                                 {
                                     <a href='javascript:verDocumento(@item.Id,"@item.Nombre","@item.Titulo","@item.Ruta",@item.FormatoDocumento.Id_Local,@item.Anio,"@item.Autor")' class="btn btn-info fa fa-download"></a>

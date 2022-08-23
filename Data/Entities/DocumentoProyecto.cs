@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 namespace AproturWeb.Data.Entities
 {
@@ -19,5 +21,7 @@ namespace AproturWeb.Data.Entities
         public int ProyectoId { get; set; }
 
         public Proyecto Proyecto { get; set; }
+
+       
     }
 }

@@ -16,6 +16,8 @@
         public int FormatoDocumentoId { get; set; }
         [Display(Name = "País")]
         public int PaisId { get; set; }
+        [Display(Name = "Proyecto")]
+        public int ProyectoId { get; set; }
         [Display(Name = "Tema Central")]
         public string TemaCentral { get; set; }
         [Display(Name = "Autor")]
@@ -40,6 +42,11 @@
         /// Materias
         /// </summary>
         public IEnumerable<SelectListItem> Materias { get; set; }
+
+        /// <summary>
+        /// Materias
+        /// </summary>
+        public IEnumerable<SelectListItem> Proyectos { get; set; }
 
         /// <summary>
         /// Documentos

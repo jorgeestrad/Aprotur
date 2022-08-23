@@ -80,22 +80,50 @@ namespace GeoPlus.Controllers
         {
             try
             {
-                    BusquedaViewModel viewModel = new BusquedaViewModel
-                    {
-                        TiposDocumentos = GetTiposDocumentos(),
-                        Paises = GetPaises(),
-                        FormatosDocumentos = GetFormatosDocumentos(),
-                        Materias = GetMaterias(),
-                        Autor = "",
-                        Proyecto = "",
-                        TemaCentral = "",
-                        TituloDocumento = ""
+                BusquedaViewModel viewModel = new BusquedaViewModel
+                {
+                    TiposDocumentos = GetTiposDocumentos(),
+                    Paises = GetPaises(),
+                    FormatosDocumentos = GetFormatosDocumentos(),
+                    Materias = GetMaterias(),
+                    Proyectos = GetProyectos(),
+                    Autor = "",
+                    Proyecto = "",
+                    TemaCentral = "",
+                    TituloDocumento = ""
                     };
                     return View(viewModel);
             }
             catch (Exception exp)
             {
                 return NotFound(exp.Message);
+            }
+        }
+
+        private IEnumerable<SelectListItem> GetProyectos()
+        {
+            try
+            {
+                var la = from s in this._context.Proyectos select s;
+
+                var list = la
+                .Select(c => new SelectListItem
+                {
+                    Text = c.Nombre,
+                    Value = c.Id.ToString()
+                }).OrderBy(l => l.Text).ToList();
+
+                list.Insert(0, new SelectListItem
+                {
+                    Text = "Seleccione el Proyecto",
+                    Value = "0"
+                });
+
+                return list;
+            }
+            catch (Exception exp)
+            {
+                throw exp;
             }
         }
 
@@ -122,6 +150,7 @@ namespace GeoPlus.Controllers
                         if (busquedaVM.Proyecto == null &&
                             busquedaVM.Autor == null &&
                             busquedaVM.PaisId == 0 &&
+                            busquedaVM.ProyectoId == 0 &&
                             busquedaVM.MateriaId == 0 &&
                             busquedaVM.TipoDocumentoId == 0 &&
                             busquedaVM.FormatoDocumentoId == 0 &&
@@ -134,6 +163,7 @@ namespace GeoPlus.Controllers
                                 Paises = GetPaises(),
                                 FormatosDocumentos = GetFormatosDocumentos(),
                                 Materias = GetMaterias(),
+                                Proyectos = GetProyectos(),
                                 Autor = "",
                                 Proyecto = "",
                                 TemaCentral = "",
@@ -193,6 +223,7 @@ namespace GeoPlus.Controllers
                 if (busquedaVM.Proyecto == null &&
                              busquedaVM.Autor == null &&
                              busquedaVM.PaisId == 0 &&
+                             busquedaVM.ProyectoId == 0 &&
                              busquedaVM.MateriaId == 0 && 
                              busquedaVM.TipoDocumentoId == 0 &&
                              busquedaVM.FormatoDocumentoId == 0 &&
@@ -204,6 +235,7 @@ namespace GeoPlus.Controllers
                         TiposDocumentos = GetTiposDocumentos(),
                         Paises = GetPaises(),
                         Materias = GetMaterias(),
+                        Proyectos = GetProyectos(),
                         FormatosDocumentos = GetFormatosDocumentos(),
                         Autor = "",
                         Proyecto = "",
@@ -237,7 +269,7 @@ namespace GeoPlus.Controllers
                           f.Autor.ToLower().Trim().Contains(busquedaVM.Autor.ToLower().Trim()) ||
                           f.PaisId == busquedaVM.PaisId ||
                           f.FormatoDocumentoId == busquedaVM.FormatoDocumentoId ||
-                          f.TipoDocumentoId == busquedaVM.TipoDocumentoId
+                          f.TipoDocumentoId == busquedaVM.TipoDocumentoId 
                           ).
                     Include(i => i.FormatoDocumento).
                     Include(i => i.MateriaDocumentos).
@@ -305,8 +337,55 @@ namespace GeoPlus.Controllers
 
                 }
 
+                if (busquedaVM.ProyectoId > 0)
+                {
+                    if (documentos != null && documentos.Count > 0)
+                    {
 
+                        var docuProy = this._context.DocumentoProyectos
+                            .Include(i => i.Documento)
+                            .Where(f => f.ProyectoId == busquedaVM.ProyectoId)
+                            .Select(s => s.Documento).Intersect(documentos)
+                            .Select(s => new AproturWeb.Data.Entities.Documento
+                            {
+                                Id = s.Id,
+                                Nombre = s.Nombre,
+                                Titulo = s.Titulo,
+                                Ruta = s.Ruta,
+                                FormatoDocumentoId = s.FormatoDocumentoId,
+                                Anio = s.Anio,
+                                Autor = s.Autor,
+                                Enlace = s.Enlace,
+                                FormatoDocumento = s.FormatoDocumento,
+                                MateriaDocumentos = s.MateriaDocumentos,
+                            }).ToList();
+                        documentos = docuProy;
+                    }
+                    else
+                    {
 
+                        var docuProy = this._context.DocumentoProyectos
+                           .Include(i => i.Documento)
+                           .Where(f => f.ProyectoId == busquedaVM.ProyectoId)
+                           .Select(s => s.Documento)
+                           .Select(s => new AproturWeb.Data.Entities.Documento
+                           {
+                               Id = s.Id,
+                               Nombre = s.Nombre,
+                               Titulo = s.Titulo,
+                               Ruta = s.Ruta,
+                               FormatoDocumentoId = s.FormatoDocumentoId,
+                               Anio = s.Anio,
+                               Autor = s.Autor,
+                               Enlace = s.Enlace,
+                               FormatoDocumento = s.FormatoDocumento,
+                               MateriaDocumentos = s.MateriaDocumentos,
+                           }).ToList();
+
+                        documentos = docuProy;
+                    }
+
+                }
 
                 return documentos;
             }

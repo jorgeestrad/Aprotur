@@ -13,8 +13,8 @@
              <div class="form-group row">
                  <label asp-for="Proyecto" class="col-sm-2 col-form-label"></label>
                   <div class="col-sm-4">
-                        <input asp-for="Proyecto" class="form-control" />
-                        <span asp-validation-for="Proyecto" class="text-danger"></span>
+                    <select asp-for="ProyectoId" asp-items="Model.Proyectos" id="PaisId" class="form-control"></select>
+                        <span asp-validation-for="ProyectoId" class="text-danger"></span>
                   </div>
                   <label asp-for="PaisId" class="col-sm-2 col-form-label"></label>
                   <div class="col-sm-4">
