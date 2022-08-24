@@ -260,61 +260,16 @@ namespace GeoPlus.Controllers
         {
             try
             {
-                if (string.IsNullOrEmpty(busquedaVM.TituloDocumento)) busquedaVM.TituloDocumento = "#$#$#$#$#$#$";
-                if (string.IsNullOrEmpty(busquedaVM.TemaCentral)) busquedaVM.TemaCentral = "#$#$#$#$#$#$";
-                if (string.IsNullOrEmpty(busquedaVM.Autor)) busquedaVM.Autor = "#$#$#$#$#$#$";
-                var documentos = this._context.Documentos.
-                    Where(f => f.Titulo.ToLower().Trim().Contains(busquedaVM.TituloDocumento.ToLower().Trim()) ||
-                          f.TemaCentral.ToLower().Trim().Contains(busquedaVM.TemaCentral.ToLower().Trim()) ||
-                          f.Autor.ToLower().Trim().Contains(busquedaVM.Autor.ToLower().Trim()) ||
-                          f.PaisId == busquedaVM.PaisId ||
-                          f.FormatoDocumentoId == busquedaVM.FormatoDocumentoId ||
-                          f.TipoDocumentoId == busquedaVM.TipoDocumentoId 
-                          ).
-                    Include(i => i.FormatoDocumento).
-                    Include(i => i.MateriaDocumentos).
-                    Select(s => new AproturWeb.Data.Entities.Documento
-                    {
-                        Id = s.Id,
-                        Nombre = s.Nombre,
-                        Titulo = s.Titulo,
-                        Ruta = s.Ruta,
-                        FormatoDocumentoId = s.FormatoDocumentoId,
-                        Anio = s.Anio,
-                        Autor = s.Autor,
-                        Enlace = s.Enlace,
-                        FormatoDocumento = s.FormatoDocumento,
-                        MateriaDocumentos = s.MateriaDocumentos,
-                    }).ToList();
+                List<Documento> docuMat = new List<Documento>();
+                List<Documento> docuProy = new List<Documento>();
+
+               
 
                 if (busquedaVM.MateriaId > 0)
                 {
-                    if (documentos != null && documentos.Count > 0)
-                    {
+                   
 
-                        var docuMat = this._context.MateriaDocumentos
-                            .Include(i => i.Documento)
-                            .Where(f => f.MateriaId == busquedaVM.MateriaId)
-                            .Select(s => s.Documento).Intersect(documentos)
-                            .Select(s => new AproturWeb.Data.Entities.Documento
-                            {
-                                Id = s.Id,
-                                Nombre = s.Nombre,
-                                Titulo = s.Titulo,
-                                Ruta = s.Ruta,
-                                FormatoDocumentoId = s.FormatoDocumentoId,
-                                Anio = s.Anio,
-                                Autor = s.Autor,
-                                Enlace = s.Enlace,
-                                FormatoDocumento = s.FormatoDocumento,
-                                MateriaDocumentos = s.MateriaDocumentos,
-                            }).ToList();
-                        documentos = docuMat;
-                    }
-                    else
-                    {
-
-                        var docuMat = this._context.MateriaDocumentos
+                         docuMat = this._context.MateriaDocumentos
                            .Include(i => i.Documento)
                            .Where(f => f.MateriaId == busquedaVM.MateriaId)
                            .Select(s => s.Documento)
@@ -332,39 +287,15 @@ namespace GeoPlus.Controllers
                                MateriaDocumentos = s.MateriaDocumentos,
                            }).ToList();
 
-                        documentos = docuMat;
-                    }
+                       
+                    
 
                 }
 
                 if (busquedaVM.ProyectoId > 0)
                 {
-                    if (documentos != null && documentos.Count > 0)
-                    {
-
-                        var docuProy = this._context.DocumentoProyectos
-                            .Include(i => i.Documento)
-                            .Where(f => f.ProyectoId == busquedaVM.ProyectoId)
-                            .Select(s => s.Documento).Intersect(documentos)
-                            .Select(s => new AproturWeb.Data.Entities.Documento
-                            {
-                                Id = s.Id,
-                                Nombre = s.Nombre,
-                                Titulo = s.Titulo,
-                                Ruta = s.Ruta,
-                                FormatoDocumentoId = s.FormatoDocumentoId,
-                                Anio = s.Anio,
-                                Autor = s.Autor,
-                                Enlace = s.Enlace,
-                                FormatoDocumento = s.FormatoDocumento,
-                                MateriaDocumentos = s.MateriaDocumentos,
-                            }).ToList();
-                        documentos = docuProy;
-                    }
-                    else
-                    {
-
-                        var docuProy = this._context.DocumentoProyectos
+                   
+                         docuProy = this._context.DocumentoProyectos
                            .Include(i => i.Documento)
                            .Where(f => f.ProyectoId == busquedaVM.ProyectoId)
                            .Select(s => s.Documento)
@@ -382,11 +313,42 @@ namespace GeoPlus.Controllers
                                MateriaDocumentos = s.MateriaDocumentos,
                            }).ToList();
 
-                        documentos = docuProy;
-                    }
+                      
+                    
 
                 }
 
+                if (string.IsNullOrEmpty(busquedaVM.TituloDocumento)) busquedaVM.TituloDocumento = "#$#$#$#$#$#$";
+                if (string.IsNullOrEmpty(busquedaVM.TemaCentral)) busquedaVM.TemaCentral = "#$#$#$#$#$#$";
+                if (string.IsNullOrEmpty(busquedaVM.Autor)) busquedaVM.Autor = "#$#$#$#$#$#$";
+                var documentos = this._context.Documentos.
+                  Where(f => f.Titulo.ToLower().Trim().Contains(busquedaVM.TituloDocumento.ToLower().Trim()) ||
+                          f.TemaCentral.ToLower().Trim().Contains(busquedaVM.TemaCentral.ToLower().Trim()) ||
+                          f.Autor.ToLower().Trim().Contains(busquedaVM.Autor.ToLower().Trim()) ||
+                          f.PaisId == busquedaVM.PaisId ||
+                          f.FormatoDocumentoId == busquedaVM.FormatoDocumentoId ||
+                          f.TipoDocumentoId == busquedaVM.TipoDocumentoId
+                          ).
+                    Include(i => i.FormatoDocumento).
+                    Include(i => i.DocumentosProyectos).
+                    Include(i => i.MateriaDocumentos).
+                    Select(s => new AproturWeb.Data.Entities.Documento
+                    {
+                        Id = s.Id,
+                        Nombre = s.Nombre,
+                        Titulo = s.Titulo,
+                        Ruta = s.Ruta,
+                        FormatoDocumentoId = s.FormatoDocumentoId,
+                        Anio = s.Anio,
+                        Autor = s.Autor,
+                        Enlace = s.Enlace,
+                        FormatoDocumento = s.FormatoDocumento,
+                        MateriaDocumentos = s.MateriaDocumentos,
+                        DocumentosProyectos = s.DocumentosProyectos,
+                    }).ToList();
+
+                if (docuMat != null && docuMat.Count > 0)  documentos.AddRange(docuMat);
+                if (docuProy != null && docuProy.Count > 0) documentos.AddRange(docuProy);
                 return documentos;
             }
             catch (Exception exp)
