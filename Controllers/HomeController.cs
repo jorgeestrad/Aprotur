@@ -49,7 +49,7 @@ namespace GeoPlus.Controllers
                         .Where(f => f.Id == id).FirstOrDefault();
 
                     string uploadsFolder = hostingEnvironment.ContentRootPath;
-                    string filePath = $"http://3.19.150.196/Aprotur/kmz/{rutaKml.RutaKML}";
+                    string filePath = $"Aprotur/kmz/{rutaKml.RutaKML}";
                     rutaKml.RutaKML = filePath;
                     return View(rutaKml);
                 }
@@ -457,7 +457,7 @@ namespace GeoPlus.Controllers
                     .Where(f => f.Nombre == nombre).FirstOrDefault();
 
                 string uploadsFolder = hostingEnvironment.ContentRootPath;
-                string filePath = $"http://3.19.150.196/Aprotur/kmz/{rutaKml.RutaKML}";
+                string filePath = $"Aprotur/kmz/{rutaKml.RutaKML}";
                 rutaKml.RutaKML = filePath;
                 return Ok(rutaKml);
             }
