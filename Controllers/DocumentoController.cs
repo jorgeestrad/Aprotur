@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -18,11 +19,13 @@ namespace GeoPlus.Controllers
 
         private readonly DataContext _context;
         private readonly IWebHostEnvironment hostingEnvironment;
+        private readonly IConfiguration configuration;
 
-        public DocumentoController(DataContext context, IWebHostEnvironment hostingEnvironment)
+        public DocumentoController(DataContext context, IWebHostEnvironment hostingEnvironment, IConfiguration configuration)
         {
             _context = context;
             this.hostingEnvironment = hostingEnvironment;
+            this.configuration = configuration;
         }
 
         /// <summary>
@@ -515,6 +518,10 @@ namespace GeoPlus.Controllers
                         Titulo = s.Documento.Titulo,
                         Enlace = s.Documento.Enlace,
                     }).Distinct();
+
+                var urlSitio = this.configuration["UrlSitio:path"].ToString();
+                ViewBag.urlSitio = urlSitio;
+
                 return View(documentos);
             }
             catch (Exception exp)

@@ -170,7 +170,7 @@
         $('a[id*=btnShowDetails]').click(function () {
             id = $(this).parent()[0].id;
 
-
+            var urlSitio = "@ViewBag.urlSitio";
             $.ajax({
                 type: 'GET',
                 url: '@Url.Action("GetDocumento")',
@@ -210,7 +210,7 @@
         * return  {boolean}
         */
         function verDocumento(id, nombre, titulo, ruta, tipodocumento, descripcion, autor) {
-            if (tipodocumento > 1 && tipodocumento != 6) ruta = 'https://3.19.150.196/aprotur/kmz/' + ruta;
+            if (tipodocumento > 1 && tipodocumento != 6) ruta = urlSitio + 'kmz/' + ruta;
             var w = 800;
             var h = 600;
             if (tipodocumento === 3) {

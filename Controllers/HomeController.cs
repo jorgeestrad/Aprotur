@@ -13,6 +13,7 @@ using AproturWeb.Helpers;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using AproturWeb.Data.Entities;
+using Microsoft.Extensions.Configuration;
 
 namespace GeoPlus.Controllers
 {
@@ -22,18 +23,24 @@ namespace GeoPlus.Controllers
         private readonly DataContext _context;
         private readonly IUserHelper userHelper;
         private readonly IWebHostEnvironment hostingEnvironment;
-        public HomeController(ILogger<HomeController> logger, IUserHelper userHelper, DataContext context, IWebHostEnvironment hostingEnvironment)
+        private readonly IConfiguration configuration;
+        public HomeController(ILogger<HomeController> logger, IUserHelper userHelper, DataContext context,
+            IWebHostEnvironment hostingEnvironment, IConfiguration configuration)
         {
             _logger = logger;
             _context = context;
             this.hostingEnvironment = hostingEnvironment;
             this.userHelper = userHelper;
+            this.configuration = configuration;
         }
 
         public IActionResult Index(int? id)
         {
             try
             {
+                var urlSitio = this.configuration["UrlSitio:path"].ToString();
+                ViewBag.urlSitio = urlSitio;
+
                 if (this.User.Identity.Name != null)
                 {
                     var user = userHelper.GetUserByEmail(this.User.Identity.Name);
@@ -71,6 +78,8 @@ namespace GeoPlus.Controllers
                 if (!user.EmailConfirmed) return RedirectToAction("UserNotEnabled", "Home");
 
             }
+            var urlSitio = this.configuration["UrlSitio:path"].ToString();
+            ViewBag.urlSitio = urlSitio;
 
             return View(_context.Proyectos.ToList());
         }
@@ -220,6 +229,9 @@ namespace GeoPlus.Controllers
         {
             try
             {
+                var urlSitio = this.configuration["UrlSitio:path"].ToString();
+                ViewBag.urlSitio = urlSitio;
+
                 if (busquedaVM.Proyecto == null &&
                              busquedaVM.Autor == null &&
                              busquedaVM.PaisId == 0 &&
@@ -473,6 +485,8 @@ namespace GeoPlus.Controllers
         {
             try
             {
+                var urlSitio = this.configuration["UrlSitio:path"].ToString();
+                ViewBag.urlSitio = urlSitio;
                 return View(id);
             }
             catch (Exception exp)
