@@ -8,22 +8,31 @@
         <hr />
         @if (Model != null && Model.Count() > 0)
         {
+          
             @if (Model.FirstOrDefault().FormatoDocumentoId == 5)
             {
                 <h4>Documentación</h4>
             }
+
+          
             @if (Model.FirstOrDefault().FormatoDocumentoId == 1)
             {
                 <h4>Base Documental</h4>
             }
+
+            
             @if (Model.FirstOrDefault().FormatoDocumentoId == 3)
             {
                 <h4>Cartografía</h4>
             }
+
+         
             @if (Model.FirstOrDefault().FormatoDocumentoId == 4)
             {
                 <h4>Mapas</h4>
             }
+
+          
             @if (Model.FirstOrDefault().FormatoDocumentoId == 6)
             {
                 <h4>Tableros</h4>
@@ -60,13 +69,29 @@
                             {
                                 <tr>
                                     <td id="@item.Id" style="width:10%">
+
+                                       
                                         @if (item.FormatoDocumentoId != 1 && item.FormatoDocumentoId != 6)
                                         {
-                                            <a href='javascript:verDocumento(@item.Id,"@item.Nombre","@item.Titulo","@item.Ruta",@item.FormatoDocumentoId,@item.Anio,"@item.Autor")' class="btn btn-info fa fa-download"></a>
+                                            <a href='javascript:verDocumento(
+                                                 @item.Id,
+                                                 "@item.Nombre",
+                                                 "@item.Titulo",
+                                                 "@item.Ruta",
+                                                  @item.FormatoDocumentoId,
+                                                  @item.Anio,
+                                                 "@item.Autor")' class="btn btn-info fa fa-download"></a>
                                         }
                                         else
                                         {
-                                            <a href='javascript:verDocumento(@item.Id,"@item.Nombre","@item.Titulo","@item.Enlace",@item.FormatoDocumentoId,@item.Anio,"@item.Autor")' class="btn btn-info fa fa-download"></a>
+                                            <a href='javascript:verDocumento(
+                                                @item.Id,
+                                                "@item.Nombre",
+                                                "@item.Titulo",
+                                                "@item.Enlace",
+                                                @item.FormatoDocumentoId,
+                                                @item.Anio,
+                                                "@item.Autor")' class="btn btn-info fa fa-download"></a>
                                         }
                                         <a asp-action="ShowDetails" asp-route-id="@item.Id" class="btn btn-info" id="btnShowDetails"><i class="fa fa-edit"></i></a>
                                     </td>
@@ -166,11 +191,10 @@
     <script src="/js/deleteDialog.js"></script>
 
     <script type="text/javascript">
-
+        let urlSitio = '@ViewBag.urlSitio';
         $('a[id*=btnShowDetails]').click(function () {
             id = $(this).parent()[0].id;
 
-            var urlSitio = "@ViewBag.urlSitio";
             $.ajax({
                 type: 'GET',
                 url: '@Url.Action("GetDocumento")',
@@ -210,7 +234,11 @@
         * return  {boolean}
         */
         function verDocumento(id, nombre, titulo, ruta, tipodocumento, descripcion, autor) {
-            if (tipodocumento > 1 && tipodocumento != 6) ruta = urlSitio + 'kmz/' + ruta;
+            if (tipodocumento !== 1 && tipodocumento !== 6){
+                ruta = urlSitio + 'kmz/' + ruta;
+            }
+           
+                       
             var w = 800;
             var h = 600;
             if (tipodocumento === 3) {
@@ -235,7 +263,7 @@
                 title = 'Pdf';
             }
             if (tipodocumento === 4) {
-                title = 'Imágen';
+                title = 'Imágen/Mapa';
             }
             if (tipodocumento === 3) {
                 title = 'Audio';

@@ -226,7 +226,7 @@
                         map: map
                     });
 
-                    //placeMarker(proyecto.latitud, proyecto.longitud, map, proyecto.nombre,proyecto.id);
+                    placeMarker(proyecto.latitud, proyecto.longitud, map, proyecto.nombre,proyecto.id);
 
                     map.setZoom(14);
 
@@ -305,7 +305,7 @@
                           
                              var p = 0;
                              var rowPar = true;
-                             $.each(documentos.$values, function (i, docu)
+                             $.each(documentos, function (i, docu)
                              {
                                  if (typeof docu.nombre !== 'undefined') 
                                  {

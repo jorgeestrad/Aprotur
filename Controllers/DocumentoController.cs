@@ -498,25 +498,25 @@ namespace GeoPlus.Controllers
         {
             try
             {
-                var documentos = _context.DocumentoProyectos
-                    .Include(i => i.Documento).ThenInclude(i => i.FormatoDocumento)
-                    .Where(f => f.Documento.FormatoDocumento.Id_Local == id)
+                var documentos = _context.Documentos
+                    .Include(i => i.FormatoDocumento)
+                    .Where(f => f.FormatoDocumento.Id_Local == id)
                     .Select(s => new DocumentoViewModel
                     {
-                        Id = s.Documento.Id,
-                        Autor = s.Documento.Autor,
-                        Resultado = s.Documento.Resultado,
-                        Resumen = s.Documento.Resumen,
-                        AporteDocumento = s.Documento.AporteDocumento,
-                        TemaCentral = s.Documento.TemaCentral,
-                        ReferenciaAPA = s.Documento.ReferenciaAPA,
-                        FechaPublicacion = s.Documento.FechaPublicacion,
-                        Nombre = s.Documento.Nombre,
-                        Ruta = s.Documento.Ruta,
-                        TipoDocumentoId = s.Documento.TipoDocumentoId,
-                        FormatoDocumentoId = s.Documento.FormatoDocumento.Id_Local,
-                        Titulo = s.Documento.Titulo,
-                        Enlace = s.Documento.Enlace,
+                        Id = s.Id,
+                        Autor = s.Autor,
+                        Resultado = s.Resultado,
+                        Resumen = s.Resumen,
+                        AporteDocumento = s.AporteDocumento,
+                        TemaCentral = s.TemaCentral,
+                        ReferenciaAPA = s.ReferenciaAPA,
+                        FechaPublicacion = s.FechaPublicacion,
+                        Nombre = s.Nombre,
+                        Ruta = s.Ruta,
+                        TipoDocumentoId = s.TipoDocumentoId,
+                        FormatoDocumentoId = s.FormatoDocumento.Id_Local,
+                        Titulo = s.Titulo,
+                        Enlace = s.Enlace,
                     }).Distinct();
 
                 var urlSitio = this.configuration["UrlSitio:path"].ToString();
