@@ -464,12 +464,14 @@ namespace GeoPlus.Controllers
         {
             try
             {
+                var urlSitio = this.configuration["UrlSitio:path"].ToString();
+
                 var rutaKml = _context.Proyectos
                     .Include(i => i.DocumentosProyectos)
                     .Where(f => f.Nombre == nombre).FirstOrDefault();
 
                 string uploadsFolder = hostingEnvironment.ContentRootPath;
-                string filePath = $"Aprotur/kmz/{rutaKml.RutaKML}";
+                string filePath = $"{urlSitio}kmz/{rutaKml.RutaKML}";
                 rutaKml.RutaKML = filePath;
                 return Ok(rutaKml);
             }
